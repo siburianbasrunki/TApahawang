@@ -1,0 +1,40 @@
+.containerProfile {
+  padding: 20px;
+}
+
+.pengurus {
+  margin-top: 40px;
+}
+
+.swiper {
+  width: 100%;
+  height: max-content;
+}
+
+.swiperSlide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Media queries untuk tampilan mobile */
+@media (max-width: 768px) {
+  .containerProfile {
+    padding: 10px; /* Mengurangi padding untuk tampilan mobile */
+  }
+
+  .pengurus {
+    margin-top: 20px; /* Mengurangi margin-top untuk tampilan mobile */
+  }
+
+  .swiper {
+    height: auto; /* Mengatur tinggi menjadi otomatis untuk tampilan mobile */
+  }
+
+  .swiperSlide {
+    font-size: 16px; /* Mengurangi ukuran font untuk tampilan mobile */
+  }
+}

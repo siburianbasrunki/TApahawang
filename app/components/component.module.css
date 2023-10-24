@@ -1,0 +1,22 @@
+.Myswiper {
+  width: 100%;
+  height: 50vh;
+}
+
+.swiperSlide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.textOverlay {
+  position: relative;
+  z-index: 999; /* Sesuaikan z-index sesuai kebutuhan Anda */
+}
+
+.icon {
+  font-size: 30px;
+  margin-left: 20px;
+  color: #0f0e0e;
+  background: #ffffff;
+}
