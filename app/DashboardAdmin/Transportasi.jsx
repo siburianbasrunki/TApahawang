@@ -38,7 +38,6 @@ const Transportasi = () => {
             </tr>
           </thead>
           <tbody>
-            {/* Isi data Transportasi dari database */}
             <tr>
               <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">1</td>
               <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">1</td>
@@ -56,7 +55,6 @@ const Transportasi = () => {
                 <button className="bg-red-500 text-white rounded px-4 py-2">Tolak</button>
               </td>
             </tr>
-            {/* Tambahkan baris lain sesuai dengan data yang ada */}
           </tbody>
         </table>
       </div>

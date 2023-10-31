@@ -1,3 +1,5 @@
+"use client"
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -59,7 +61,7 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn" href="/Login">Login</a>
+          <button className="btn" onClick={() => signIn()}>Login</button>
         </div>
       </div>
     </>
