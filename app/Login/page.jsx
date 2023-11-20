@@ -1,7 +1,9 @@
+"use client"
 import Style from "./login.module.css";
 import Loginft from "../../public/assets/login.png";
 import Image from "next/image";
-
+import { useState } from "react";
+import axios from "axios";
 const Button = () => {
   return (
     <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
@@ -11,6 +13,7 @@ const Button = () => {
 };
 
 const Login = () => {
+  
   return (
     <div className={`${Style.login} min-h-screen flex flex-col justify-center items-center`}>
       <div className="bg-white p-4 sm:p-8 md:p-12 lg:w-4/5 xl:w-3/5 2xl:w-2/5 rounded-lg shadow-lg flex flex-col sm:flex-row justify-around relative">
@@ -41,7 +44,7 @@ const Login = () => {
               Belum punya akun? <a href="/Signup" className="text-blue-500">Daftar/Signup</a>
             </small>
             <div className="mt-4 sm:mt-6">
-              <Button />
+              <Button  />
             </div>
           </form>
         </div>

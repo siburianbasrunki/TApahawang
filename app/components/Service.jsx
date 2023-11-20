@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Style from "../components/component.module.css";
 
 const Service = () => {
@@ -17,9 +18,11 @@ const Service = () => {
               preservation as a volunteer.
             </p>
             <div className="card-actions justify-center">
-              <button className="btn btn-primary font-bold capitalize">
-                Learn More
-              </button>
+              <Link href="/Volunteer">
+                <button className="btn btn-primary font-bold capitalize">
+                  Daftar
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -33,9 +36,11 @@ const Service = () => {
               contribution counts!
             </p>
             <div className="card-actions justify-center">
-              <button className="btn btn-primary font-bold capitalize">
-                Donate Now
-              </button>
+              <Link href="/Donate">
+                <button className="btn btn-primary font-bold capitalize">
+                  Donate Now
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -49,9 +54,11 @@ const Service = () => {
               an amazing experience.
             </p>
             <div className="card-actions justify-center">
-              <button className="btn btn-primary font-bold capitalize">
-                Book Now
-              </button>
+              <Link href="/Villalist">
+                <button className="btn btn-primary font-bold capitalize">
+                  Book Now
+                </button>
+              </Link>
             </div>
           </div>
         </div>

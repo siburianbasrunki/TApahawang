@@ -4,6 +4,7 @@ import React from "react";
 import style from "./donate.module.css";
 import bgDonate from "../../public/assets/bgdonate.png";
 import Donateft from "../../public/assets/donateft.png";
+import FormDonate from "./formDonate"
 const Donate = () => {
   return (
     <div>
@@ -49,11 +50,12 @@ const Donate = () => {
             terumbu karang yang Anda donasi, dan kesempatan untuk meningkatkan
             kesadaran tentang kelestarian terumbu karang di seluruh dunia.
           </p>
-          <a href="/Login">
+          {/* <a href="/Login">
             <button className="btn btn-primary font-bold capitalize mt-4">
               Login untuk donasi
             </button>
-          </a>
+          </a> */}
+          <FormDonate/>
         </div>
       </div>
     </div>

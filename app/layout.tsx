@@ -3,8 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "../app/components/Navbar";
 import Footer from "./components/Footer";
-import adminNavbar from "./DashboardAdmin/Navbar";
-import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -13,11 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children, session, pageprops
+  children,
 }: {
   children: React.ReactNode;
-  session: any; // Change this to the correct type for the session
-  pageprops: any; // Change this to the correct type for pageprops
 }) {
   return (
     <html lang="en">

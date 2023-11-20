@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  bookingsVilla        BookingVilla[]
+  bookingsTransportasi BookingTransportasiLaut[]
+  donations            Donasi[]
+  purchases            Pembelian[]
+}
+
+model Villa {
+  id            String         @id @default(uuid())
+  nama          String
+  deskripsi     String
+  hargaPerMalam Float
+  gambar        String
+  ketersediaan  Int
+  bookingsVilla BookingVilla[]
+}
+
+model TransportasiLaut {
+  id                   String                    @id @default(uuid())
+  nama                 String
+  deskripsi            String
+  harga                Float
+  gambar               String
+  ketersediaan         Int
+  bookingsTransportasi BookingTransportasiLaut[]
+}
+
+model Merchandise {
+  id           String      @id @default(uuid())
+  nama         String
+  deskripsi    String
+  harga        Float
+  gambar       String
+  ketersediaan Int
+  purchases    Pembelian[]
+}
+
+model TerumbuKarang {
+  id        String   @id @default(uuid())
+  nama      String
+  deskripsi String
+  donations Donasi[]
+}
+
+model BookingVilla {
+  id              String   @id @default(uuid())
+  userId          String
+  villaId         String
+  tanggalCheckin  DateTime
+  tanggalCheckout DateTime
+  jumlahOrang     Int
+  totalHarga      Float
+  user            User     @relation(fields: [userId], references: [id])
+  villa           Villa    @relation(fields: [villaId], references: [id])
+}
+
+model BookingTransportasiLaut {
+  id               String           @id @default(uuid())
+  userId           String
+  transportasiId   String
+  tanggalCheckin   DateTime
+  jumlahPenumpang  Int
+  totalHarga       Float
+  user             User             @relation(fields: [userId], references: [id])
+  transportasiLaut TransportasiLaut @relation(fields: [transportasiId], references: [id])
+}
+
+model Donasi {
+  id              String        @id @default(uuid())
+  userId          String
+  terumbuKarangId String
+  jumlahDonasi    String
+  tanggalDonasi   String
+  buktiPembayaran String
+  nomortelepon    String
+  user            User          @relation(fields: [userId], references: [id])
+  terumbuKarang   TerumbuKarang @relation(fields: [terumbuKarangId], references: [id])
+}
+
+model Pembelian {
+  id               String      @id @default(uuid())
+  userId           String
+  merchandiseId    String
+  jumlahBarang     Int
+  totalHarga       Float
+  tanggalPembelian DateTime
+  user             User        @relation(fields: [userId], references: [id])
+  merchandise      Merchandise @relation(fields: [merchandiseId], references: [id])
+}
+
+model Volunteer {
+  id             String @id @default(uuid())
+  namaOrganisasi String
+  asal           String
+  email          String
+  noTelepon      String
+  surat          String
+}

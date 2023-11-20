@@ -1,0 +1,90 @@
+"use client";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Donasi from "../Admin/Donasi/page";
+import Transportasi from "./Transportasi/page";
+import Villa from "../Admin/Villa/page";
+import Volunteer from "./Volunteer/Volunteer";
+import Merchandise from "../Admin/Merchandise/page";
+
+const componentMap = {
+  "/Admin/Donasi": <Donasi />,
+  "/Admin/Transportasi": <Transportasi />,
+  "/Admin/Villa": <Villa />,
+  "/Admin/Volunteer": <Volunteer />,
+  "/Admin/Merchandise": <Merchandise />,
+};
+
+const DashboardUser = () => {
+  const pathName = usePathname();
+  const [content, setContent] = useState(null);
+
+  useEffect(() => {
+    if (componentMap[pathName]) {
+      setContent(componentMap[pathName]);
+    } else {
+      setContent(null);
+    }
+  }, [pathName]);
+
+  return (
+    <div className="flex">
+      <div className="w-1/4 p-4 bg-[#F8F9FA] flex justify-center">
+        <ul>
+          <li className="mb-2">
+            <Link href="/Admin/Donasi"
+                className={`cursor-pointer ${
+                  pathName === "/Admin/Donasi" ? "text-[#030DFF]" : ""
+                }`}
+              >
+                Donasi
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/Admin/Transportasi"
+                className={`cursor-pointer ${
+                  pathName === "/Admin/Transportasi" ? "text-[#030DFF]" : ""
+                }`}
+              >
+                Transportasi
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/Admin/Villa"
+                className={`cursor-pointer ${
+                  pathName === "/Admin/Villa" ? "text-[#030DFF]" : ""
+                }`}
+              >
+                Villa
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/Admin/Volunteer"
+                className={`cursor-pointer ${
+                  pathName === "/Admin/Volunteer" ? "text-[#030DFF]" : ""
+                }`}
+              >
+                Volunteer
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/Admin/Merchandise"
+                className={`cursor-pointer ${
+                  pathName === "/Admin/Merchandise" ? "text-[#030DFF]" : ""
+                }`}
+              >
+                Merchandise
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="w-3/4 p-4 renderContent">
+        {/* Render komponen yang sesuai dengan rute */}
+        {content}
+      </div>
+    </div>
+  );
+};
+
+export default DashboardUser;
