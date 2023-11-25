@@ -13,7 +13,8 @@ type Villa = {
 const deleteVilla = ({villa} :{villa: Villa}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const handleDelete = async (villaId: number) => {
+  const handleDelete = async (villaId: string) => {
+    console.log(villaId)
     await axios.delete(`/api/villas/${villaId}`)
     router.refresh();
     setIsOpen(false);
@@ -36,7 +37,7 @@ const deleteVilla = ({villa} :{villa: Villa}) => {
             <button type="button" className="btn btn-danger" onClick={handleModal}>
               No
             </button>
-            <button className="btn btn-success " type="button" onClick={() => handleDelete(Number(villa.id))}>
+            <button className="btn btn-success " type="button" onClick={() => handleDelete(villa.id)}>
               Yes
             </button>
           </div>
