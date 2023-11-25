@@ -39,7 +39,12 @@ model TransportasiLaut {
   ketersediaan         Int
   bookingsTransportasi BookingTransportasiLaut[]
 }
-
+model Paket {
+  id String @id @default(uuid())
+  namaPaket String
+  asalKomunitas String
+  nomorTelepon String
+}
 model Merchandise {
   id           String      @id @default(uuid())
   nama         String

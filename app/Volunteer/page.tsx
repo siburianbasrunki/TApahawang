@@ -92,6 +92,7 @@ const Volunteer = () => {
                 id="teamName"
                 name="teamName"
                 value={namaOrganisasi}
+                required
                 onChange={(e) => setNamaOrganisasi(e.target.value)}
                 className="w-full md:w-1/2 px-3 py-2 mt-1 rounded-md border border-blue-500 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
@@ -108,6 +109,7 @@ const Volunteer = () => {
                 id="email"
                 name="email"
                 value={email}
+                required
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full md:w-1/2 px-3 py-2 mt-1 rounded-md border border-blue-500 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
@@ -123,6 +125,7 @@ const Volunteer = () => {
                 type="number"
                 id="notelepon"
                 name="notelepon"
+                required
                 value={noTelepon}
                 onChange={(e) => setNoTelepon(e.target.value)}
                 className="w-full md:w-1/2 px-3 py-2 mt-1 rounded-md border border-blue-500 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
@@ -138,6 +141,7 @@ const Volunteer = () => {
               <input
                 type="text"
                 id="asal"
+                required
                 name="asal"
                 value={asal}
                 onChange={(e) => setAsal(e.target.value)}
@@ -157,6 +161,7 @@ const Volunteer = () => {
                 id="link"
                 name="link"
                 placeholder="misal : link Gdrive"
+                required
                 value={surat}
                 onChange={(e) => setSurat(e.target.value)}
                 className="w-full md:w-1/2 px-3 py-2 mt-1 rounded-md border border-blue-500 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"

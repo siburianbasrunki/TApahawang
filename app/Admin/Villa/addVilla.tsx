@@ -18,7 +18,7 @@ const addVilla = () => {
     // upload image to cloudinary
     const formData = new FormData();
     formData.append('file', gambar as File);
-    formData.append('upload_preset', 'my-uploads');
+    formData.append('upload_preset', 'villas');
     const data = await axios.post(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
       formData
