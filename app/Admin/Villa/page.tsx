@@ -60,6 +60,7 @@ const Villa = async () => {
           </thead>
           <tbody>
             {villas.map((villa, index) => (
+              
               <tr key={villa.id}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   {villa.id}
@@ -75,17 +76,17 @@ const Villa = async () => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   <Image
-                    src={imgVilla}
+                    src={villa.gambar}
                     alt="Villa Image"
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                   />
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   {villa.ketersediaan}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <UpdateVilla villa={villa}/>
+                  <UpdateVilla villa={villa} />
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   <DeleteVilla villa={villa} />

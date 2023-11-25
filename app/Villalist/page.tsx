@@ -8,6 +8,7 @@ interface VillaData {
   nama: string;
   deskripsi: string;
   hargaPerMalam: number;
+  gambar : string ;
 }
 
 interface VillasResponse {
@@ -70,7 +71,7 @@ const VillaComponent = () => {
                 >
                   <div className="relative h-48">
                     <Image
-                      src={Villa}
+                      src={villa.gambar}
                       alt={villa.nama}
                       layout="fill"
                       objectFit="cover"

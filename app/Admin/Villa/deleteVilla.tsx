@@ -14,7 +14,6 @@ const deleteVilla = ({villa} :{villa: Villa}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleDelete = async (villaId: string) => {
-    console.log(villaId)
     await axios.delete(`/api/villas/${villaId}`)
     router.refresh();
     setIsOpen(false);

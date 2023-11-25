@@ -39,7 +39,7 @@ const VillaComponent = async () => {
               }`}
             >
               <figure className="h-48">
-                <Image src={Villa} alt={villa.nama} />
+                <Image src={villa.gambar} alt={villa.nama} />
               </figure>
               <div className="card-body">
                 <h2 className="card-title">{villa.nama}</h2>

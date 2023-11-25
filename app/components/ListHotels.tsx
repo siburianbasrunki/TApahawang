@@ -31,7 +31,7 @@ const ListHotels = async () => {
           >
             <figure>
               <Image
-                src={Villaimg}
+                src={villa.gambar}
                 alt={villa.nama}
                 className="w-full"
                 width={400}
