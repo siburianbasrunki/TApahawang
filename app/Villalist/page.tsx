@@ -1,6 +1,6 @@
 "use client"
+
 import React, { useEffect, useState } from "react";
-import Villa from "../../public/assets/villa.png";
 import Image from "next/image";
 import FormVillaBooking from "./formVillaBooking";
 
@@ -8,7 +8,7 @@ interface VillaData {
   nama: string;
   deskripsi: string;
   hargaPerMalam: number;
-  gambar : string ;
+  gambar: string;
 }
 
 interface VillasResponse {
@@ -28,6 +28,7 @@ const SkeletonLoader = () => (
 const VillaComponent = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [villas, setVillas] = useState<VillasResponse | null>(null);
+  const [selectedVilla, setSelectedVilla] = useState<VillaData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +53,10 @@ const VillaComponent = () => {
     };
   }, []);
 
+  const handleCardClick = (villa: VillaData) => {
+    setSelectedVilla(villa);
+  };
+
   return (
     <div className="md:container mx-auto sm:container p-4">
       <h1 className="text-3xl font-bold mb-4">Villa</h1>
@@ -68,6 +73,7 @@ const VillaComponent = () => {
                   className={`card bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl ${
                     windowWidth < 768 ? "mobile-card" : ""
                   }`}
+                  onClick={() => handleCardClick(villa)}
                 >
                   <div className="relative h-48">
                     <Image
@@ -88,7 +94,7 @@ const VillaComponent = () => {
                       })}
                     </p>
 
-                    <FormVillaBooking />
+                    <FormVillaBooking selectedVilla={selectedVilla} />
                   </div>
                 </div>
               </div>
