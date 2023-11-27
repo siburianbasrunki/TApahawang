@@ -1,7 +1,25 @@
 import Link from "next/link";
 import React from "react";
+import { prisma } from "@/lib/prisma";
+import type { Volunteer } from "@prisma/client";
 
-const HeaderSection = () => {
+const CountVolunteer = async () => {
+  const count = await prisma.volunteer.count();
+  return count;
+};
+const CountVilla = async () => {
+  const count = await prisma.villa.count();
+  return count;
+};
+const CountDonatur = async () => {
+  const count = await prisma.donasi.count();
+  return count;
+};
+const HeaderSection = async () => {
+  const [volunteerCount,VillaCount,DonaturCount] = await Promise.all([
+    CountVolunteer(),CountVilla(),CountDonatur()
+  ]);
+
   return (
     <section className="header beach-hero bg-dark text-center relative h-screen">
       <div className="absolute top-0 left-0 w-full h-full ">
@@ -26,15 +44,15 @@ const HeaderSection = () => {
 
             <div className="flex mt-4 text-2xl">
               <div className="flex-1 text-center">
-                <h3 className="text-white">100</h3>
+                <h3 className="text-white">{VillaCount}</h3>
                 <p className="text-white">Penginapan</p>
               </div>
               <div className="flex-1 text-center">
-                <h3 className="text-white">100</h3>
+                <h3 className="text-white">{DonaturCount}</h3>
                 <p className="text-white">Donatur</p>
               </div>
               <div className="flex-1 text-center">
-                <h3 className="text-white">100</h3>
+                <h3 className="text-white">{volunteerCount}</h3>
                 <p className="text-white">Volunter</p>
               </div>
             </div>

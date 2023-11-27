@@ -10,7 +10,7 @@ type terumbuKarang = {
 const DeleteKarang = ({ karang }: { karang: terumbuKarang }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const handleDelete = async (karangId: number) => {
+  const handleDelete = async (karangId: string) => {
     await axios.delete(`/api/karang/${karangId}`);
     router.refresh();
     setIsOpen(false);
@@ -40,7 +40,7 @@ const DeleteKarang = ({ karang }: { karang: terumbuKarang }) => {
             <button
               className="btn btn-success "
               type="button"
-              onClick={() => handleDelete(Number(karang.id))}
+              onClick={() => handleDelete(karang.id)}
             >
               Yes
             </button>

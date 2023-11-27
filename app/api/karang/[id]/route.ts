@@ -13,6 +13,7 @@ export const PATCH = async (
     data: {
       nama: body.nama,
       deskripsi: body.deskripsi,
+      gambar:body.gambar,
     },
   });
   return NextResponse.json(karang, { status: 200 });
@@ -21,10 +22,10 @@ export const DELETE = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const karang = await prisma.terumbuKarang.delete({
+ await prisma.terumbuKarang.delete({
     where: {
       id: params.id,
     },
   });
-  return NextResponse.json(karang, { status: 200 });
+  return NextResponse.json({ status: 200 });
 };

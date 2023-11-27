@@ -1,0 +1,9 @@
+-- CreateTable
+CREATE TABLE `Paket` (
+    `id` VARCHAR(191) NOT NULL,
+    `namaPaket` VARCHAR(191) NOT NULL,
+    `asalKomunitas` VARCHAR(191) NOT NULL,
+    `nomorTelepon` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

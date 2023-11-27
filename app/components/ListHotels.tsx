@@ -4,8 +4,8 @@ import Image from "next/image";
 import Villaimg from "../../public/assets/villa.png";
 
 const getVilla = async () => {
-  const res = await fetch(process.env.BASE_URL+"/api/villas");
-  console.log(process.env.BASE_URL+"/api/villas")
+  const res = await fetch(process.env.BASE_URL + "/api/villas");
+  console.log(process.env.BASE_URL + "/api/villas")
   const json = await res.json()
   console.log(json)
   return json;
@@ -24,7 +24,7 @@ const ListHotels = async () => {
         </small>
       </div>
       <div className="listHotels grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        {villas?.villas?.map((villa:any, index:number) => (
+        {villas?.villas?.map((villa: any, index: number) => (
           <div
             key={index}
             className="card card-compact bg-base-100 shadow-xl sm:w-[282px] sm:h-[327px]"
@@ -38,14 +38,16 @@ const ListHotels = async () => {
                 height={300}
               />
             </figure>
-            <div className="card-body">
-              <h2 className="card-title">{villa.nama}</h2>
-              <div className="flex justify-between">
+            <div className="card-body items-center">
+              <h2 className="card-title font-bold">{villa.nama}</h2>
+              
                 <p className="text-sm text-gray-500">{villa.deskripsi}</p>
                 <p className="text-lg font-semibold">
-                  {villa.hargaPerMalam}/night
+                  {villa.hargaPerMalam.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  })}
                 </p>
-              </div>
             </div>
           </div>
         ))}

@@ -1,31 +1,48 @@
-"use client";
-import { useState, SyntheticEvent } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+"use client"
+import { useState, SyntheticEvent } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
 const addMerch = () => {
-  const [nama, setNama] = useState("");
-  const [deskripsi, setDeskripsi] = useState("");
-  const [harga, setHarga] = useState("");
-  const [gambar, setGambar] = useState("");
-  const [ketersediaan, setKetersediaan] = useState("");
+  const [nama, setNama] = useState('');
+  const [deskripsi, setDeskripsi] = useState('');
+  const [harga, setHarga] = useState('');
+  const [gambar, setGambar] = useState<File | null>(null);
+  const [ketersediaan, setKetersediaan] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.post("/api/merchandise", {
-      nama: nama,
-      deskripsi: deskripsi,
-      harga: Number(harga),
-      gambar: gambar,
-      ketersediaan: Number(ketersediaan),
-    });
-    setNama("");
-    setDeskripsi("");
-    setHarga("");
-    setGambar("");
-    setKetersediaan("");
-    router.refresh();
-    setIsOpen(false);
+
+    const formData = new FormData();
+    formData.append('file', gambar as File);
+    formData.append('upload_preset', 'merchandise');
+
+    try {
+      const { data } = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
+
+      await axios.post("/api/merchandise", {
+        nama: nama,
+        deskripsi: deskripsi,
+        harga: Number(harga),
+        gambar: data?.secure_url || null,
+        ketersediaan: Number(ketersediaan),
+      });
+
+      setNama('');
+      setDeskripsi('');
+      setHarga('');
+      setGambar(null);
+      setKetersediaan('');
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error('Error uploading image or posting data:', error);
+    }
   };
 
   const handleModal = () => {
@@ -37,7 +54,7 @@ const addMerch = () => {
       <button className="btn" onClick={handleModal}>
         Add New
       </button>
-      <div className={isOpen ? "modal modal-open" : "modal"}>
+      <div className={isOpen ? 'modal modal-open' : 'modal'}>
         <div className="modal-box">
           <h3 className="font-bold  text-lg">Add New Merch</h3>
           <form onSubmit={handleSubmit}>
@@ -48,7 +65,7 @@ const addMerch = () => {
                 value={nama}
                 onChange={(e) => setNama(e.target.value)}
                 className="input input-bordered"
-                placeholder="masukan nama merch"
+                placeholder="Masukkan nama merch"
               />
             </div>
             <div className="form-control w-full">
@@ -58,7 +75,7 @@ const addMerch = () => {
                 value={deskripsi}
                 onChange={(e) => setDeskripsi(e.target.value)}
                 className="input input-bordered"
-                placeholder="masukan deskripsi singkat"
+                placeholder="Masukkan deskripsi singkat"
               />
             </div>
             <div className="form-control w-full">
@@ -68,27 +85,26 @@ const addMerch = () => {
                 value={harga}
                 onChange={(e) => setHarga(e.target.value)}
                 className="input input-bordered"
-                placeholder="price"
+                placeholder="Price"
               />
             </div>
             <div className="form-control w-full">
-              <label className="label font-bold">file gambar</label>
+              <label className="label font-bold">File Gambar</label>
               <input
-                type="text"
-                value={gambar}
-                onChange={(e) => setGambar(e.target.value)}
+                type="file"
+                onChange={(e) => setGambar(e.target.files?.[0] || null)}
                 className="input input-bordered"
-                placeholder="masukan file gambar"
+                placeholder="Masukkan file gambar"
               />
             </div>
             <div className="form-control w-full">
-              <label className="label font-bold">Jumlah stok</label>
+              <label className="label font-bold">Jumlah Stok</label>
               <input
                 type="text"
                 value={ketersediaan}
                 onChange={(e) => setKetersediaan(e.target.value)}
                 className="input input-bordered"
-                placeholder="masukan jumlah stok"
+                placeholder="Masukkan jumlah stok"
               />
             </div>
             <div className="modal-action">

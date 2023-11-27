@@ -7,6 +7,7 @@ interface TransportasiData {
   nama: string;
   deskripsi: string;
   harga: number;
+  gambar : string
 }
 
 interface TransportasiResponse {
@@ -70,7 +71,7 @@ const TransportasiComponent = () => {
                 >
                   <div className="relative h-48">
                     <Image
-                      src={TransImg}
+                      src={transportasi.gambar}
                       alt={transportasi.nama}
                       layout="fill"
                       objectFit="cover"

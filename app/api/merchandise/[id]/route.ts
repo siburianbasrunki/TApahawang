@@ -24,10 +24,10 @@ export const DELETE = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const merch = await prisma.merchandise.delete({
+  await prisma.merchandise.delete({
     where: {
       id: params.id,
     },
   });
-  return NextResponse.json(merch, { status: 200 });
+  return NextResponse.json({ status: 200 });
 };

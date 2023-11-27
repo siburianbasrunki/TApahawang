@@ -1,14 +1,11 @@
-"use client";
-
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Style from "./component.module.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
-import imgActivity from "../../public/assets/activity.png";
+import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Autoplay,
   Pagination,
@@ -16,71 +13,95 @@ import {
   EffectCoverflow,
 } from "swiper/modules";
 
-const dataActivity = [
-  {
-    imageSrc: imgActivity,
-    title: "Title 1",
-    description: "Description 1",
-  },
-  {
-    imageSrc: imgActivity,
-    title: "Title 2",
-    description: "Description 2",
-  },
-  {
-    imageSrc: imgActivity,
-    title: "Title 2",
-    description: "Description 2",
-  },
-];
+interface GaleriData {
+  title: string;
+  deskripsi: string;
+  gambar: string;
+}
+
+interface GaleriResponse {
+  galeries: GaleriData[];
+}
 
 const Activity = () => {
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [galeries, setGaleries] = useState<GaleriResponse | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/galery");
+        const json: GaleriResponse = await res.json();
+        setGaleries(json);
+      } catch (error) {
+        console.error("Error fetching villas:", error);
+      }
+    };
+
+    setWindowWidth(window.innerWidth);
+
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+
+    fetchData();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div>
-      <div className="p-8">
-        <h1 className="text-3xl font-bold text-center">Our Activity</h1>
-        <Swiper
-          spaceBetween={30}
-          centeredSlides={true}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          pagination={{
-            clickable: true,
-          }}
-          navigation={true}
-          modules={[Autoplay, Pagination, Navigation, EffectCoverflow]}
-          className={Style.mySwiper}
-          effect="coverflow"
-          coverflowEffect={{
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-          }}
-        >
-          {dataActivity.map((activity, index) => (
-            <SwiperSlide key={index} className={Style.swiperSlide}>
-              <div className={Style.slideContent}>
-                <Image
-                  src={activity.imageSrc}
-                  alt={`Activity ${index + 1}`}
-                  width={500}
-                  height={300}
-                  className={Style.imageWithText}
-                />
-                <div className={Style.textOverlay}>
-                  <h2 className={Style.slideTitle}>{activity.title}</h2>
-                  <p className={Style.slideDescription}>
-                    {activity.description}
-                  </p>
+    <div className="p-8">
+      <h1 className="text-3xl font-bold text-center mb-8">Our Activity</h1>
+      <Swiper
+        spaceBetween={30}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        navigation={true}
+        modules={[Autoplay, Pagination, Navigation, EffectCoverflow]}
+        className="carousel w-full"
+        effect="coverflow"
+        coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true,
+        }}
+      >
+        {galeries ? (
+          galeries.galeries.length > 0 ? (
+            galeries.galeries.map((galeri, index) => (
+              <SwiperSlide key={index} className="carousel-item w-full rounded">
+                <div className="relative h-64 rounded">
+                  <Image
+                    src={galeri.gambar}
+                    alt={`Activity ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                  />
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              </SwiperSlide>
+            ))
+          ) : (
+            <p>tidak ada aktivitas</p>
+          )
+        ) : (
+          <p>loading</p>
+        )}
+      </Swiper>
+      <div className="flex justify-center w-full py-2 gap-2">
+        {galeries?.galeries.map((galeri, index) => (
+          <a key={index} href={`#item${index + 1}`} className="btn btn-xs">
+            {index + 1}
+          </a>
+        ))}
       </div>
     </div>
   );

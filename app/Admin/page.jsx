@@ -6,6 +6,7 @@ import Villa from "./Villa/page";
 import Merchandise from "./Merchandise/page";
 import Karang from "./Terumbu/page";
 import Volunteer from "./Volunteer/page";
+import Donasi from "./Donasi/page"
 
 const Dashboard = () => {
   return (
@@ -32,8 +33,9 @@ const Dashboard = () => {
 
         {/* Page Content */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-4">
-          <Volunteer />
+          <Donasi/>
           <Karang />
+          <Volunteer />
           <Villa />
           <Transportasi />
           <Merchandise />

@@ -5,19 +5,31 @@ import { useRouter } from "next/navigation";
 const addKarang = () => {
   const [nama, setNama] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
-  
+  const [gambar,setGambar] = useState<File | null>(null)
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('file', gambar as File);
+    formData.append('upload_preset', 'terumbukarang');
+    const data = await axios.post(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      formData
+    );
+
+
+
     await axios.post("/api/karang", {
       nama: nama,
       deskripsi: deskripsi,
+      gambar: data.data.secure_url,
       
     });
     setNama("");
     setDeskripsi("");
-    
+    setGambar(null)
     router.refresh();
     setIsOpen(false);
   };
@@ -55,7 +67,15 @@ const addKarang = () => {
                 placeholder="masukan deskripsi singkat"
               />
             </div>
-            
+            <div className='form-control w-full'>
+              <label className='label font-bold'>file gambar</label>
+              <input
+                type='file' // Updated to type="file"
+                onChange={(e) => setGambar(e.target.files?.[0] || null)} // Updated to handle file selection
+                className='input input-bordered'
+                placeholder='masukan file gambar'
+              />
+            </div>
             <div className="modal-action">
               <button type="button" className="btn" onClick={handleModal}>
                 Close

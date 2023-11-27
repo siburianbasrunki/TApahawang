@@ -25,10 +25,10 @@ export const DELETE = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const transportasi = await prisma.transportasiLaut.delete({
+  await prisma.transportasiLaut.delete({
     where: {
       id: params.id,
     },
   });
-  return NextResponse.json(transportasi, { status: 200 });
+  return NextResponse.json({ status: 200 });
 };

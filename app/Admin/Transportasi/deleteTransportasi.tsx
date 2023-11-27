@@ -14,7 +14,7 @@ type Transportasi = {
 const deleteTransportasi = ({transportasi} :{transportasi: Transportasi}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const handleDelete = async (villaId: number) => {
+  const handleDelete = async (villaId: string) => {
     await axios.delete(`/api/transportasi/${villaId}`)
     router.refresh();
     setIsOpen(false);
@@ -37,7 +37,7 @@ const deleteTransportasi = ({transportasi} :{transportasi: Transportasi}) => {
             <button type="button" className="btn btn-danger" onClick={handleModal}>
               No
             </button>
-            <button className="btn btn-success " type="button" onClick={() => handleDelete(Number(transportasi.id))}>
+            <button className="btn btn-success " type="button" onClick={() => handleDelete(transportasi.id)}>
               Yes
             </button>
           </div>

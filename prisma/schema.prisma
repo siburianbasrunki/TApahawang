@@ -16,7 +16,6 @@ model User {
 
   bookingsVilla        BookingVilla[]
   bookingsTransportasi BookingTransportasiLaut[]
-  donations            Donasi[]
   purchases            Pembelian[]
 }
 
@@ -39,12 +38,15 @@ model TransportasiLaut {
   ketersediaan         Int
   bookingsTransportasi BookingTransportasiLaut[]
 }
+
 model Paket {
-  id String @id @default(uuid())
-  namaPaket String
+  id            String @id @default(uuid())
+  namaPaket     String
   asalKomunitas String
-  nomorTelepon String
+  nomorTelepon  String
+  gambarPaket   String
 }
+
 model Merchandise {
   id           String      @id @default(uuid())
   nama         String
@@ -53,13 +55,6 @@ model Merchandise {
   gambar       String
   ketersediaan Int
   purchases    Pembelian[]
-}
-
-model TerumbuKarang {
-  id        String   @id @default(uuid())
-  nama      String
-  deskripsi String
-  donations Donasi[]
 }
 
 model BookingVilla {
@@ -85,15 +80,23 @@ model BookingTransportasiLaut {
   transportasiLaut TransportasiLaut @relation(fields: [transportasiId], references: [id])
 }
 
+model TerumbuKarang {
+  id        String   @id @default(uuid())
+  nama      String
+  deskripsi String
+  gambar    String
+  Donasi    Donasi[]
+}
+
 model Donasi {
   id              String        @id @default(uuid())
-  userId          String
+  nama            String
   terumbuKarangId String
   jumlahDonasi    String
-  tanggalDonasi   String
   buktiPembayaran String
   nomortelepon    String
-  user            User          @relation(fields: [userId], references: [id])
+  createAt        DateTime      @default(now())
+  updateAt        DateTime      @updatedAt
   terumbuKarang   TerumbuKarang @relation(fields: [terumbuKarangId], references: [id])
 }
 
@@ -115,4 +118,12 @@ model Volunteer {
   email          String
   noTelepon      String
   surat          String
+}
+
+model Galery {
+  id        String   @id @default(uuid())
+  title     String
+  deskripsi String
+  gambar    String
+  tanggal   DateTime
 }

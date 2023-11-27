@@ -1,31 +1,54 @@
-"use client";
-import { useState, SyntheticEvent } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+"use client"
+import { useState, SyntheticEvent } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
+// Interface to describe the expected structure of Cloudinary response
+interface CloudinaryResponse {
+  secure_url: string;
+  // Add other fields if necessary
+}
+
 const addTransportasi = () => {
-  const [nama, setNama] = useState("");
-  const [deskripsi, setDeskripsi] = useState("");
-  const [harga, setHarga] = useState("");
-  const [gambar, setGambar] = useState("");
-  const [ketersediaan, setKetersediaan] = useState("");
+  const [nama, setNama] = useState('');
+  const [deskripsi, setDeskripsi] = useState('');
+  const [harga, setHarga] = useState('');
+  const [gambar, setGambar] = useState<File | null>(null);
+  const [ketersediaan, setKetersediaan] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.post("/api/transportasi", {
-      nama: nama,
-      deskripsi: deskripsi,
-      harga: Number(harga),
-      gambar: gambar,
-      ketersediaan: Number(ketersediaan),
-    });
-    setNama("");
-    setDeskripsi("");
-    setHarga("");
-    setGambar("");
-    setKetersediaan("");
-    router.refresh();
-    setIsOpen(false);
+
+    const formData = new FormData();
+    formData.append('file', gambar as File);
+    formData.append('upload_preset', 'transportasi');
+
+    try {
+      const { data } = await axios.post<CloudinaryResponse>(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
+
+      await axios.post('/api/transportasi', {
+        nama: nama,
+        deskripsi: deskripsi,
+        harga: Number(harga),
+        gambar: data.secure_url,
+        ketersediaan: Number(ketersediaan),
+      });
+
+      setNama('');
+      setDeskripsi('');
+      setHarga('');
+      setGambar(null);
+      setKetersediaan('');
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error('Error uploading image or posting data:', error);
+    }
   };
 
   const handleModal = () => {
@@ -37,18 +60,18 @@ const addTransportasi = () => {
       <button className="btn" onClick={handleModal}>
         Add New
       </button>
-      <div className={isOpen ? "modal modal-open" : "modal"}>
+      <div className={isOpen ? 'modal modal-open' : 'modal'}>
         <div className="modal-box">
-          <h3 className="font-bold  text-lg">Add New Transportasi</h3>
+          <h3 className="font-bold text-lg">Add New Transportasi</h3>
           <form onSubmit={handleSubmit}>
             <div className="form-control w-full">
-              <label className="label font-bold">Nama Trasnportasi</label>
+              <label className="label font-bold">Nama Transportasi</label>
               <input
                 type="text"
                 value={nama}
                 onChange={(e) => setNama(e.target.value)}
                 className="input input-bordered"
-                placeholder="masukan nama transportasi"
+                placeholder="Masukkan nama transportasi"
               />
             </div>
             <div className="form-control w-full">
@@ -58,7 +81,7 @@ const addTransportasi = () => {
                 value={deskripsi}
                 onChange={(e) => setDeskripsi(e.target.value)}
                 className="input input-bordered"
-                placeholder="masukan deskripsi singkat"
+                placeholder="Masukkan deskripsi singkat"
               />
             </div>
             <div className="form-control w-full">
@@ -68,17 +91,16 @@ const addTransportasi = () => {
                 value={harga}
                 onChange={(e) => setHarga(e.target.value)}
                 className="input input-bordered"
-                placeholder="harga sewa"
+                placeholder="Harga sewa"
               />
             </div>
             <div className="form-control w-full">
-              <label className="label font-bold">file gambar</label>
+              <label className="label font-bold">File Gambar</label>
               <input
-                type="text"
-                value={gambar}
-                onChange={(e) => setGambar(e.target.value)}
+                type="file"
+                onChange={(e) => setGambar(e.target.files?.[0] || null)}
                 className="input input-bordered"
-                placeholder="masukan file gambar"
+                placeholder="Masukkan file gambar"
               />
             </div>
             <div className="form-control w-full">
@@ -88,7 +110,7 @@ const addTransportasi = () => {
                 value={ketersediaan}
                 onChange={(e) => setKetersediaan(e.target.value)}
                 className="input input-bordered"
-                placeholder="masukan jumlah Kursi"
+                placeholder="Masukkan jumlah kursi"
               />
             </div>
             <div className="modal-action">

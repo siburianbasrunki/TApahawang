@@ -8,7 +8,13 @@ export const POST = async (request: Request) => {
     data: {
       nama: body.nama,
       deskripsi: body.deskripsi,
+      gambar : body.gambar
     },
   });
   return NextResponse.json(karang);
 };
+
+export const GET = async (req:NextRequest ) =>{
+  const karangs = await prisma.terumbuKarang.findMany({})
+  return NextResponse.json({karangs})
+}

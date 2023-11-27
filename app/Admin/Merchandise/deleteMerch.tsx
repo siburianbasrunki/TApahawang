@@ -14,7 +14,7 @@ type Merchandise = {
 const deleteMerch = ({merch} :{merch: Merchandise}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const handleDelete = async (MerchId: number) => {
+  const handleDelete = async (MerchId: string) => {
     await axios.delete(`/api/merchandise/${MerchId}`)
     router.refresh();
     setIsOpen(false);
@@ -37,7 +37,7 @@ const deleteMerch = ({merch} :{merch: Merchandise}) => {
             <button type="button" className="btn btn-danger" onClick={handleModal}>
               No
             </button>
-            <button className="btn btn-success " type="button" onClick={() => handleDelete(Number(merch.id))}>
+            <button className="btn btn-success " type="button" onClick={() => handleDelete(merch.id)}>
               Yes
             </button>
           </div>
