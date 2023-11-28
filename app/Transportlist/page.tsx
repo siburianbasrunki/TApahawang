@@ -1,13 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TransImg from "../../public/assets/Transportasi.png";
 import Image from "next/image";
-
+import FormTransportBooking from "./FormTranportBooking";
 interface TransportasiData {
   nama: string;
   deskripsi: string;
   harga: number;
-  gambar : string
+  gambar: string
 }
 
 interface TransportasiResponse {
@@ -28,6 +27,7 @@ const TransportasiComponent = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [transportasis, setTransportasi] =
     useState<TransportasiResponse | null>(null);
+  const [selectedTransport, setSelectedTransport] = useState<TransportasiData | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +52,10 @@ const TransportasiComponent = () => {
     };
   }, []);
 
+  const handleCardClick = (transportasi: TransportasiData) => {
+    setSelectedTransport(transportasi);
+  };
+
   return (
     <div className="md:container mx-auto sm:container p-4">
       <h1 className="text-3xl font-bold mb-4">Transportasi</h1>
@@ -65,9 +69,9 @@ const TransportasiComponent = () => {
                 key={index}
               >
                 <div
-                  className={`card bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl ${
-                    windowWidth < 768 ? "mobile-card" : ""
-                  }`}
+                  className={`card bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl ${windowWidth < 768 ? "mobile-card" : ""
+                    }`}
+                    onClick={() => handleCardClick(transportasi)}
                 >
                   <div className="relative h-48">
                     <Image
@@ -88,9 +92,8 @@ const TransportasiComponent = () => {
                       })}
                     </p>
 
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
-                      Pesan
-                    </button>
+                    <FormTransportBooking selectedTransport={selectedTransport} />
+
                   </div>
                 </div>
               </div>

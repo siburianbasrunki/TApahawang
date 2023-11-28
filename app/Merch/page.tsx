@@ -1,8 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import Merch from "../../public/assets/merch.jpg";
 import Image from "next/image";
-
+import FormMerch from "./FormMerch";
 interface MerchandiseData {
   nama: string;
   deskripsi: string;
@@ -27,7 +26,7 @@ const SkeletonLoader = () => (
 const MerchComponent = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [merchs, setMerchs] = useState<MerchResponse | null>(null);
-
+  const [selectedMerch, setSelectedMerch] = useState<MerchandiseData | null>(null)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,7 +49,9 @@ const MerchComponent = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  const handleCardClick = (merch: MerchandiseData) => {
+    setSelectedMerch(merch);
+  };
   return (
     <div className="md:container mx-auto sm:container p-4">
       <h1 className="text-3xl font-bold mb-4">Merchandise</h1>
@@ -63,6 +64,7 @@ const MerchComponent = () => {
                 <div
                   className={`card bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl ${windowWidth < 768 ? "mobile-card" : ""
                     }`}
+                    onClick={() => handleCardClick(merch)}
                 >
                   <div className="relative h-48">
                     <Image
@@ -83,9 +85,7 @@ const MerchComponent = () => {
                       })}
                     </p>
 
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
-                      Pesan
-                    </button>
+                    <FormMerch selectedMerch={selectedMerch} />
                   </div>
                 </div>
               </div>

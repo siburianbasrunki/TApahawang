@@ -36,19 +36,20 @@ const UpdateMerch = ({ merch }: { merch: Merchandise }) => {
           formData
         );
 
-        setGambar(data.secure_url || null);
+        // setGambar(data.secure_url || null);
+        await axios.patch(`/api/merchandise/${merch.id}`, {
+          nama: nama,
+          deskripsi: deskripsi,
+          harga: Number(harga),
+          gambar: data?.secure_url || null,
+          ketersediaan: Number(ketersediaan),
+        });
       } catch (error) {
         console.error('Error uploading image:', error);
       }
     }
 
-    await axios.patch(`/api/merchandise/${merch.id}`, {
-      nama: nama,
-      deskripsi: deskripsi,
-      harga: Number(harga),
-      gambar: gambar,
-      ketersediaan: Number(ketersediaan),
-    });
+   
 
     router.refresh();
     setIsOpen(false);

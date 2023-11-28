@@ -65,6 +65,7 @@ model BookingVilla {
   tanggalCheckout DateTime
   jumlahOrang     Int
   totalHarga      Float
+  bukti           String
   user            User     @relation(fields: [userId], references: [id])
   villa           Villa    @relation(fields: [villaId], references: [id])
 }
