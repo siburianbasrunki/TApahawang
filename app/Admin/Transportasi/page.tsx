@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { PrismaClient } from "@prisma/client";
 import AddTransportasi from "./addTransportasi";
@@ -8,23 +9,67 @@ import NavbarAdmin from "../NavbarAdmin";
 
 const prisma = new PrismaClient();
 
-const getTransportasifromDB = async () => {
-  const res = await prisma.transportasiLaut.findMany({
-    select: {
-      id: true,
-      nama: true,
-      deskripsi: true,
-      harga: true,
-      gambar: true,
-      ketersediaan: true,
-    },
-  });
-  return res;
+interface TransportasiData {
+  id: string;
+  nama: string;
+  deskripsi: string;
+  harga: number;
+  gambar: string;
+  ketersediaan: number;
+}
+
+interface transportasiResponse {
+  transportasis: TransportasiData[];
+}
+const SkeletonTable = () => {
+  return (
+    <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
+      <table className="w-full">
+        <thead className="bg-gray-50 text-gray-700 uppercase">
+          <tr>
+            <th className="px-4 py-3 text-left">ID</th>
+            <th className="px-4 py-3 text-left">Nama Villa</th>
+            <th className="px-4 py-3 text-left">Deskripsi</th>
+            <th className="px-4 py-3 text-left">Harga Permalam (Rupiah)</th>
+            <th className="px-4 py-3 text-left">Gambar Villa</th>
+            <th className="px-4 py-3 text-left">Ketersedian Kamar</th>
+            <th className="px-4 py-3 text-left">Update</th>
+            <th className="px-4 py-3 text-left">Hapus</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white">
+          {/* Placeholder row for skeleton loading */}
+          <tr className="border-b border-gray-200">
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+          </tr>
+          {/* You can repeat the placeholder row as needed */}
+        </tbody>
+      </table>
+    </div>
+  );
 };
+const Transportasi = () => {
+  const [transportasis, setTransportasi] = useState<transportasiResponse | null>(null);
 
-const Transportasi = async () => {
-  const transportasiDB = await getTransportasifromDB();
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/transportasi");
+        const json: transportasiResponse = await res.json();
+        setTransportasi(json);
+      } catch (error) {
+        console.error("Error fetching transportasi:", error);
+      }
+    }
+    fetchData();
+  })
   return (
     <>
 
@@ -48,7 +93,7 @@ const Transportasi = async () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {transportasiDB.map((transportasi, index) => (
+            {transportasis?.transportasis?.map((transportasi, index) => (
               <tr key={transportasi.id} className="border-b border-gray-200">
                 <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                   {transportasi.id}

@@ -84,7 +84,7 @@ const NavbarAdmin = () => {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Dashboard</a>
+        <Link href="/Admin" className="btn btn-ghost text-xl">Dashboard</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
