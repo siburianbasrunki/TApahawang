@@ -1,26 +1,42 @@
 "use client";
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 type TerumbuKarang = {
-    id: string;
-    nama: string;
-    deskripsi: string;
+  id: string;
+  nama: string;
+  deskripsi: string;
+  gambar: string
 }
-const UpdateKarang = ({karang} : {karang:TerumbuKarang}) => {
+const UpdateKarang = ({ karang }: { karang: TerumbuKarang }) => {
   const [nama, setNama] = useState(karang.nama);
   const [deskripsi, setDeskripsi] = useState(karang.deskripsi);
-  
+  const [gambar, setGambar] = useState<string | null>(karang.gambar);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.patch(`/api/karang/${karang.id}`, {
-      nama: nama,
-      deskripsi: deskripsi,
-      
-    });
-    
+
+    const formData = new FormData();
+    if (selectedFile) {
+      formData.append('file', selectedFile);
+      formData.append('upload_preset', 'terumbukarang');
+      try {
+        const { data } = await axios.post(
+          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          formData
+        )
+        await axios.patch(`/api/karang/${karang.id}`, {
+          nama:nama,
+          deskripsi:deskripsi,
+          gambar:data?.secure_url || null,
+        })
+      } catch (error) {
+
+      }
+    }
+
     router.refresh();
     setIsOpen(false);
   };
@@ -29,10 +45,15 @@ const UpdateKarang = ({karang} : {karang:TerumbuKarang}) => {
     setIsOpen(!isOpen);
   };
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+  }
+
   return (
     <div>
       <button className="btn btn-info " onClick={handleModal}>
-       Edit
+        Edit
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">
@@ -58,7 +79,15 @@ const UpdateKarang = ({karang} : {karang:TerumbuKarang}) => {
                 placeholder="masukan deskripsi singkat"
               />
             </div>
-            
+            <div className="form-control w-full">
+              <label className="label font-bold">Gambar</label>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="input input-bordered"
+              />
+            </div>
+
             <div className="modal-action">
               <button type="button" className="btn" onClick={handleModal}>
                 Close

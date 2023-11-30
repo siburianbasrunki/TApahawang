@@ -2,7 +2,9 @@ import Image from "next/image";
 import imgVilla from "../../../public/assets/villa.png";
 import Link from "next/link";
 import AddGalery from "./addGaleri";
+import UpdateGalery from "./updateGaleri"
 import { prisma } from "@/lib/prisma";
+import NavbarAdmin from "../NavbarAdmin";
 const getGaleri = async () => {
   const res = await prisma.galery.findMany({
     select: {
@@ -10,6 +12,7 @@ const getGaleri = async () => {
       title: true,
       deskripsi: true,
       gambar: true,
+      tanggal:true
     },
   });
   return res;
@@ -20,11 +23,12 @@ const Villa = async () => {
 
   return (
     <div>
+      <NavbarAdmin/>
       <h1 className="text-2xl font-bold mb-4">Management Aktivitas/Galeri</h1>
       <div className="flex justify-end mb-4">
         <AddGalery/>
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto"> 
         <table className="min-w-full">
           <thead>
             <tr>
@@ -73,10 +77,10 @@ const Villa = async () => {
                   />
                 </td>
                 
-                {/* <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <UpdateVilla villa={villa} />
-                </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                  <UpdateGalery  galeri={galeri}/>
+                </td>
+                {/* <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   <DeleteVilla villa={villa} />
                 </td> */}
               </tr>

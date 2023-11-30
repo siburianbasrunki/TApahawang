@@ -52,10 +52,10 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
             <button className="btn btn-primary" onClick={handleModal}>Ayo Donasi </button>
             <div className={isOpen ? 'modal modal-open' : 'modal'}>
                 <div className="modal-box">
-                    <h3 className="font-bold text-lg">Add New Donasi</h3>
+                    <h3 className="font-bold text-lg">Formulir Donasi Terumbu Karang</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="form-control w-full">
-                            <label className="label font-bold">Nama Donasi</label>
+                            <label className="label font-bold">Nama Donatur</label>
                             <input type="text" className="input input-bordered" value={nama} onChange={(e) => setNama(e.target.value)} placeholder="nama donasi" />
                         </div>
                         <div className="form-control w-full">
@@ -79,8 +79,8 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
                                 {karangs.map((karang) => (
                                     <option value={karang.id} key={karang.id} className=" ">
 
-                                        <Image src={karang.gambar} alt={karang.nama} height={100} width={100} />
-                                        <p>{karang.nama}</p>
+
+                                        {karang.nama}
 
                                     </option>
                                 ))}
