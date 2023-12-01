@@ -4,6 +4,9 @@ import { prisma } from "@/lib/prisma";
 
 export const POST = async (request: Request) => {
   const body: Donasi = await request.json();
+  const terumbuKarang = await prisma.terumbuKarang.findUnique({
+    where: { id: body.terumbuKarangId },
+  });
   const donasi = await prisma.donasi.create({
     data: {
       terumbuKarangId: body.terumbuKarangId,
@@ -12,6 +15,7 @@ export const POST = async (request: Request) => {
       nomortelepon: body.nomortelepon,
       tanggalDonasi: "2023-11-30T00:00:00.000Z",
       userId: body.userId,
+      gambarTerumbuDonasi: terumbuKarang?.gambar || "",
     },
   });
   return NextResponse.json(donasi);
