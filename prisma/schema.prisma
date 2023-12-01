@@ -91,16 +91,16 @@ model TerumbuKarang {
 }
 
 model Donasi {
-  id                  String        @id @default(uuid())
-  userId              String
-  terumbuKarangId     String
-  jumlahDonasi        String
-  tanggalDonasi       String
-  buktiPembayaran     String
-  nomortelepon        String
-  gambarTerumbuDonasi String
-  user                User          @relation(fields: [userId], references: [id])
-  terumbuKarang       TerumbuKarang @relation(fields: [terumbuKarangId], references: [id])
+  id              String        @id @default(uuid())
+  userId          String
+  terumbuKarangId String
+  jumlahDonasi    String
+  tanggalDonasi   String
+  buktiPembayaran String
+  nomortelepon    String
+  gambar          String       
+  user            User          @relation(fields: [userId], references: [id])
+  terumbuKarang   TerumbuKarang @relation(fields: [terumbuKarangId], references: [id])
 }
 
 model Pembelian {

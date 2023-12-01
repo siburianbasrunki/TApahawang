@@ -6,12 +6,13 @@ export const PATCH = async (
   { params }: { params: { id: string } }
 ) => {
   const body: Donasi = await request.json();
+  console.log(body);
   const karang = await prisma.donasi.update({
     where: {
       id: params.id,
     },
     data: {
-      terumbuKarangId: body.terumbuKarangId,
+      gambar: body.gambar,
     },
   });
   return NextResponse.json(karang, { status: 200 });

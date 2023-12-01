@@ -10,7 +10,7 @@ const getDonasi = async () => {
   const res = await prisma.donasi.findMany({
     select: {
       id: true,
-      user:true,
+      user: true,
       terumbuKarangId: true,
       jumlahDonasi: true,
       buktiPembayaran: true,
@@ -18,6 +18,7 @@ const getDonasi = async () => {
       terumbuKarang: true,
       tanggalDonasi: true,
       userId: true,
+      gambar: true,
     },
   });
   return res;
@@ -58,7 +59,9 @@ const Donasi = async () => {
                 return (
                   <tr key={donasi.id} className="border-b">
                     <td className="px-6 py-4 text-gray-700">{donasi.id}</td>
-                    <td className="px-6 py-4 text-gray-700">{donasi.user.name}</td>
+                    <td className="px-6 py-4 text-gray-700">
+                      {donasi.user.name}
+                    </td>
                     <td className="px-6 py-4 text-gray-700">
                       Rp. {donasi.jumlahDonasi}
                     </td>
@@ -76,7 +79,7 @@ const Donasi = async () => {
                     </td>
                     <td className="px-6 py-4 text-gray-700">
                       <Image
-                        src={donasi.terumbuKarang.gambar}
+                        src={donasi.gambar}
                         alt={donasi.terumbuKarang.nama}
                         width={100}
                         height={100}
@@ -87,7 +90,9 @@ const Donasi = async () => {
                       <UpdateDonasi donasi={donasi} />
                     </td>
                     <td className="px-6 py-4 text-gray-700 text-4xl text-green-500">
-                      <Link href={`https://wa.me/${donasi.nomortelepon}`}><FaWhatsapp/></Link>
+                      <Link href={`https://wa.me/${donasi.nomortelepon}`}>
+                        <FaWhatsapp />
+                      </Link>
                     </td>
                   </tr>
                 );
