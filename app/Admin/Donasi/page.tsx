@@ -2,20 +2,17 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import AddDonasi from "./addDonasi";
 import Image from "next/image";
-import UpdateDonasi from "./updateDonasi"
+import UpdateDonasi from "./updateDonasi";
 import NavbarAdmin from "../NavbarAdmin";
 const getDonasi = async () => {
   const res = await prisma.donasi.findMany({
     select: {
       id: true,
-      nama: true,
       terumbuKarangId: true,
       jumlahDonasi: true,
       buktiPembayaran: true,
       nomortelepon: true,
-      terumbuKarang:true,
-      createAt:true,
-      updateAt:true,
+      terumbuKarang: true,
     },
   });
   return res;

@@ -6,11 +6,12 @@ export const POST = async (request: Request) => {
   const body: Donasi = await request.json();
   const donasi = await prisma.donasi.create({
     data: {
-      nama: body.nama,
       terumbuKarangId: body.terumbuKarangId,
       jumlahDonasi: body.jumlahDonasi,
-      buktiPembayaran:body.buktiPembayaran,
-      nomortelepon:body.nomortelepon
+      buktiPembayaran: body.buktiPembayaran,
+      nomortelepon: body.nomortelepon,
+      tanggalDonasi: "2023-11-30T00:00:00.000Z",
+      userId: body.userId,
     },
   });
   return NextResponse.json(donasi);

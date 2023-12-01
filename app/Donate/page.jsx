@@ -4,17 +4,17 @@ import React from "react";
 import style from "./donate.module.css";
 import bgDonate from "../../public/assets/bgdonate.png";
 import Donateft from "../../public/assets/donateft.png";
-import FormDonate from "./formDonate"
+import FormDonate from "./formDonate";
 import { prisma } from "@/lib/prisma";
-import AddDonasi from "../Admin/Donasi/addDonasi"
+import AddDonasi from "../Admin/Donasi/addDonasi";
 
 const getKarang = async () => {
-  const res = await prisma.terumbuKarang.findMany()
-  return res
-}
+  const res = await prisma.terumbuKarang.findMany();
+  return res;
+};
 
 const Donate = async () => {
-  const Karangs = await getKarang()
+  const Karangs = await getKarang();
   return (
     <div>
       <section className="header beach-hero bg-dark text-center relative h-screen">
@@ -64,7 +64,7 @@ const Donate = async () => {
               Login untuk donasi
             </button>
           </a> */}
-          <AddDonasi karangs={Karangs}/>
+          <AddDonasi karangs={Karangs} />
         </div>
       </div>
     </div>

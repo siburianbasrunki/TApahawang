@@ -2,20 +2,35 @@
 // Importing necessary modules and components
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 
 const ProfilePage: NextPage = () => {
   const [session, setSession] = useState(null);
+  const [userId, setUserId] = useState("");
   const [showBookingHistory, setShowBookingHistory] = useState(true);
+  const [dataDonasi, setDataDonasi] = useState([]);
+
+  const fetchData = async () => {
+    const sessionData = await fetch("/api/auth/session").then((res) =>
+      res.json()
+    );
+    setUserId(sessionData.id);
+    setSession(sessionData);
+  };
+
+  const fetcDataDonasi = async (userId: string) => {
+    const data_donasi = await axios.post("/api/donasi/user", {
+      userId: userId,
+    });
+    setDataDonasi([...data_donasi.data.donasis]);
+    console.log(data_donasi.data.donasis);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const sessionData = await fetch("/api/auth/session").then((res) => res.json());
-      setSession(sessionData);
-    };
-
     fetchData();
-  }, []);
+    fetcDataDonasi(userId);
+  }, [userId]);
 
   if (!session) {
     return (
@@ -37,7 +52,9 @@ const ProfilePage: NextPage = () => {
         <div className="flex justify-around">
           <button
             className={`px-4 py-2 focus:outline-none ${
-              showBookingHistory ? "bg-blue-500 text-white" : "bg-gray-300 text-blue-500"
+              showBookingHistory
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-blue-500"
             }`}
             onClick={() => setShowBookingHistory(true)}
           >
@@ -45,7 +62,9 @@ const ProfilePage: NextPage = () => {
           </button>
           <button
             className={`px-4 py-2 focus:outline-none ${
-              !showBookingHistory ? "bg-blue-500 text-white" : "bg-gray-300 text-blue-500"
+              !showBookingHistory
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-blue-500"
             }`}
             onClick={() => setShowBookingHistory(false)}
           >
@@ -60,6 +79,19 @@ const ProfilePage: NextPage = () => {
           ) : (
             <div className="bg-white p-4 rounded shadow">
               <p>Riwayat Donasi</p>
+              {dataDonasi.length > 0 &&
+                dataDonasi.map((donasi) => {
+                  return (
+                    <div key={donasi.id}>
+                      <p>id Donasi: {donasi.id}</p>
+                      <p>buktiPembayaran donasi: {donasi.buktiPembayaran}</p>
+                      <p>jumlahDonasi : {donasi.jumlahDonasi}</p>
+                      <p>tanggalDonasi : {donasi.tanggalDonasi}</p>
+                      <p>terumbuKarangId: {donasi.terumbuKarangId}</p>
+                      <p>userId: {donasi.userId}</p>
+                    </div>
+                  );
+                })}
             </div>
           )}
         </div>

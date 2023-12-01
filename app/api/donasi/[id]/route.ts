@@ -8,20 +8,20 @@ export const PATCH = async (
   const body: Donasi = await request.json();
   const karang = await prisma.donasi.update({
     where: {
-      id:params.id,
+      id: params.id,
     },
     data: {
-      terumbuKarangId:body.terumbuKarangId,
-      
+      terumbuKarangId: body.terumbuKarangId,
     },
   });
   return NextResponse.json(karang, { status: 200 });
 };
+
 export const DELETE = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
- await prisma.donasi.delete({
+  await prisma.donasi.delete({
     where: {
       id: params.id,
     },

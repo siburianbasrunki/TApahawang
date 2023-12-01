@@ -16,6 +16,7 @@ model User {
 
   bookingsVilla        BookingVilla[]
   bookingsTransportasi BookingTransportasiLaut[]
+  donations            Donasi[]
   purchases            Pembelian[]
 }
 
@@ -91,13 +92,13 @@ model TerumbuKarang {
 
 model Donasi {
   id              String        @id @default(uuid())
-  nama            String
+  userId          String
   terumbuKarangId String
   jumlahDonasi    String
+  tanggalDonasi   String
   buktiPembayaran String
   nomortelepon    String
-  createAt        DateTime      @default(now())
-  updateAt        DateTime      @updatedAt
+  user            User          @relation(fields: [userId], references: [id])
   terumbuKarang   TerumbuKarang @relation(fields: [terumbuKarangId], references: [id])
 }
 

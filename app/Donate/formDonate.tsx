@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 const getTerumbu = async () => {
-    const res = await prisma.terumbuKarang.findMany();
-    return res;
-  };
+  const res = await prisma.terumbuKarang.findMany();
+  return res;
+};
 const formDonate = () => {
   const [terumbuKarang, setTerumbu] = useState("");
   const [jlhDonasi, setJlhDonasi] = useState("");
@@ -19,13 +19,14 @@ const formDonate = () => {
 
   const hadleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.post("/api/donasi", {
+    const data = await axios.post("/api/donasi", {
       terumbuKarangId: terumbuKarang,
       jumlahDonasi: jlhDonasi,
       tanggalDonasi: tglDonasi,
       buktiPembayaran: bukti,
       nomortelepon: telepon,
     });
+
     setTerumbu("");
     setJlhDonasi("");
     setTglDonasi("");
@@ -37,7 +38,6 @@ const formDonate = () => {
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
-  
 
   return (
     <>
