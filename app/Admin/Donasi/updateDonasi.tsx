@@ -1,17 +1,18 @@
-"use client"
-import { useState, SyntheticEvent, ChangeEvent } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState, SyntheticEvent, ChangeEvent } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 type Donasi = {
-    id: string;
-    terumbuKarangId: string;
-    jumlahDonasi: string;
-    buktiPembayaran: string;
-    nomortelepon: string;
-}
+  id: string;
+  terumbuKarangId: string;
+  jumlahDonasi: string;
+  buktiPembayaran: string;
+  nomortelepon: string;
+};
 const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
-  
-  const [karangid, setKarangId] = useState<string | null>(donasi.terumbuKarangId);
+  const [karangid, setKarangId] = useState<string | null>(
+    donasi.terumbuKarangId
+  );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -21,8 +22,8 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
 
     const formData = new FormData();
     if (selectedFile) {
-      formData.append('file', selectedFile);
-      formData.append('upload_preset', 'buktipembayaran');
+      formData.append("file", selectedFile);
+      formData.append("upload_preset", "buktipembayaran");
 
       try {
         const { data } = await axios.post(
@@ -32,15 +33,12 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
 
         // setGambar(data.secure_url || null);
         await axios.patch(`/api/donasi/${donasi.id}`, {
-          
           gambar: data?.secure_url || null,
         });
       } catch (error) {
-        console.error('Error uploading image:', error);
+        console.error("Error uploading image:", error);
       }
     }
-
-   
 
     router.refresh();
     setIsOpen(false);
@@ -59,13 +57,10 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
       <button className="btn btn-info" onClick={handleModal}>
         Edit
       </button>
-      <div className={isOpen ? 'modal modal-open' : 'modal'}>
+      <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">
           <h3 className="font-bold text-lg">Update Gambar Terumbu Karang</h3>
           <form onSubmit={handleUpdate}>
-            
-            
-            
             <div className="form-control w-full">
               <label className="label font-bold">Gambar</label>
               <input
@@ -74,7 +69,7 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
                 className="input input-bordered"
               />
             </div>
-            
+
             <div className="modal-action">
               <button type="button" className="btn" onClick={handleModal}>
                 Close

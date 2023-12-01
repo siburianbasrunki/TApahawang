@@ -12,6 +12,7 @@ export const POST = async (request: Request) => {
       nomortelepon: body.nomortelepon,
       tanggalDonasi: "2023-11-30T00:00:00.000Z",
       userId: body.userId,
+      gambar: body.gambar,
     },
   });
   return NextResponse.json(donasi);

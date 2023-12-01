@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState, SyntheticEvent } from "react";
 import type { TerumbuKarang } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    const gambar_karang = karangs.find((karang) => karang.id === terumbuKarang);
 
     const formData = new FormData();
     formData.append("file", bukti as File);
@@ -32,6 +33,7 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
       buktiPembayaran: data.data.secure_url,
       nomortelepon: telepon,
       userId: userId,
+      gambar: gambar_karang?.gambar,
     });
 
     setTerumbuKarang("");
@@ -147,7 +149,8 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
             />
           </svg>
           <span>
-            Donasi Berhasil, Informasi Selanjutnya Akan Dikirim Melalui WhatsApp.Cek riwayat donasi Anda di profile
+            Donasi Berhasil, Informasi Selanjutnya Akan Dikirim Melalui
+            WhatsApp.Cek riwayat donasi Anda di profile
           </span>
         </div>
       )}
