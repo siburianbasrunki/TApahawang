@@ -53,19 +53,21 @@ const ProfilePage: NextPage = () => {
       <div className="mt-4">
         <div className="flex justify-around">
           <button
-            className={`px-4 py-2 focus:outline-none ${showBookingHistory
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-blue-500"
-              }`}
+            className={`px-4 py-2 focus:outline-none ${
+              showBookingHistory
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-blue-500"
+            }`}
             onClick={() => setShowBookingHistory(true)}
           >
             Riwayat Booking
           </button>
           <button
-            className={`px-4 py-2 focus:outline-none ${!showBookingHistory
-              ? "bg-blue-500 text-white"
-              : "bg-gray-300 text-blue-500"
-              }`}
+            className={`px-4 py-2 focus:outline-none ${
+              !showBookingHistory
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-blue-500"
+            }`}
             onClick={() => setShowBookingHistory(false)}
           >
             Riwayat Donasi
@@ -81,17 +83,22 @@ const ProfilePage: NextPage = () => {
               <p className="text-2xl font-bold mb-4">Riwayat Donasi</p>
               {dataDonasi.length > 0 &&
                 dataDonasi.map((donasi) => (
-                  <div key={donasi.id} className="bg-base-200 mb-4 p-4 sm:p-6 lg:p-8">
+                  <div
+                    key={donasi.id}
+                    className="bg-base-200 mb-4 p-4 sm:p-6 lg:p-8"
+                  >
                     <div className="flex flex-col md:flex-row">
                       <Image
-                        src={donasi.terumbuKarang.gambar}
+                        src={donasi.gambar}
                         alt="gambarkarang"
                         className="max-w-md md:max-w-xs lg:max-w-md rounded-lg shadow-2xl mb-4 md:mb-0 items-center flex"
                         width={isMobile ? 200 : 300}
                         height={isMobile ? 200 : 300}
                       />
                       <div className="flex-1 p-4">
-                        <p className="text-xl md:text-2xl lg:text-xl font-bold mb-4">ID Donasi: {donasi.id}</p>
+                        <p className="text-xl md:text-2xl lg:text-xl font-bold mb-4">
+                          ID Donasi: {donasi.id}
+                        </p>
                         <p className="text-lg py-2">
                           <span className="font-semibold">Jumlah Donasi:</span>
                           {donasi.jumlahDonasi.toLocaleString("id-ID", {
@@ -99,14 +106,16 @@ const ProfilePage: NextPage = () => {
                             currency: "IDR",
                           })}
                           <br />
-                          <span className="font-semibold">Terumbu Karang ID:</span> {donasi.terumbuKarangId}
+                          <span className="font-semibold">
+                            Terumbu Karang ID:
+                          </span>{" "}
+                          {donasi.terumbuKarangId}
                         </p>
                       </div>
                     </div>
                   </div>
                 ))}
             </div>
-
           )}
         </div>
       </div>
