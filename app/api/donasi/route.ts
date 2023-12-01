@@ -15,11 +15,7 @@ export const POST = async (request: Request) => {
       nomortelepon: body.nomortelepon,
       tanggalDonasi: "2023-11-30T00:00:00.000Z",
       userId: body.userId,
-<<<<<<< HEAD
-      gambarTerumbuDonasi: terumbuKarang?.gambar || "",
-=======
       gambar: body.gambar,
->>>>>>> da51d6eb51564f14b5ef115e749245ddb81adbc5
     },
   });
   return NextResponse.json(donasi);
