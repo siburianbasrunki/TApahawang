@@ -4,13 +4,10 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 type Donasi = {
     id: string;
-    nama: string;
     terumbuKarangId: string;
     jumlahDonasi: string;
     buktiPembayaran: string;
     nomortelepon: string;
-    createAt: Date;
-    updateAt: Date;
 }
 const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
   
@@ -64,7 +61,7 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
       </button>
       <div className={isOpen ? 'modal modal-open' : 'modal'}>
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Update {donasi.nama}</h3>
+          <h3 className="font-bold text-lg">Update Gambar Terumbu Karang</h3>
           <form onSubmit={handleUpdate}>
             
             

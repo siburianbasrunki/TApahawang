@@ -8,6 +8,16 @@ export const POST = async (req: NextRequest) => {
     where: {
       userId: body.userId,
     },
+    select :{
+      id: true,
+      terumbuKarangId: true,
+      jumlahDonasi: true,
+      buktiPembayaran: true,
+      nomortelepon: true,
+      tanggalDonasi:true,
+      userId:true,
+      terumbuKarang: true,
+    }
   });
   return NextResponse.json({ donasis });
 };
