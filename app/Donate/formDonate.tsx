@@ -8,7 +8,7 @@ const getTerumbu = async () => {
   const res = await prisma.terumbuKarang.findMany();
   return res;
 };
-const formDonate = () => {
+const FormDonate = () => {
   const [terumbuKarang, setTerumbu] = useState("");
   const [jlhDonasi, setJlhDonasi] = useState("");
   const [tglDonasi, setTglDonasi] = useState("");
@@ -116,4 +116,4 @@ const formDonate = () => {
   );
 };
 
-export default formDonate;
+export default FormDonate;

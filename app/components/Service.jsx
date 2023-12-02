@@ -50,7 +50,7 @@ const Service = () => {
               Booking
             </h2>
             <p className="text-white">
-              Reserve your stay at Pulau Pahawang's finest hotels and villas for
+              Reserve your stay at Pulau Pahawang finest hotels and villas for
               an amazing experience.
             </p>
             <div className="card-actions justify-center">

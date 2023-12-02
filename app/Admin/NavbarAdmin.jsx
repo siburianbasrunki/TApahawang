@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 const NavbarAdmin = () => {
   return (
@@ -159,7 +160,7 @@ const NavbarAdmin = () => {
             className="btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              <img
+              <Image
                 alt="Tailwind CSS Navbar component"
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
               />
