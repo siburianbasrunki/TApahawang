@@ -10,7 +10,7 @@ type Villa = {
     gambar: string;
     ketersediaan: number;
 }
-const deleteVilla = ({villa} :{villa: Villa}) => {
+const DeleteVilla = ({villa} :{villa: Villa}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleDelete = async (villaId: string) => {
@@ -46,4 +46,4 @@ const deleteVilla = ({villa} :{villa: Villa}) => {
   );
 };
 
-export default deleteVilla;
+export default DeleteVilla;

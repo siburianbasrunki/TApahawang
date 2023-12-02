@@ -3,7 +3,7 @@ import { useState, SyntheticEvent } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const addVilla = () => {
+const AddVilla = () => {
   const [nama, setNama] = useState('');
   const [deskripsi, setDeskripsi] = useState('');
   const [hargaPerMalam, setHargaPerMalam] = useState('');
@@ -118,4 +118,4 @@ const addVilla = () => {
   );
 };
 
-export default addVilla;
+export default AddVilla;

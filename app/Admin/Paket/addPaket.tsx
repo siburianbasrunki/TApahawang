@@ -3,7 +3,7 @@ import { useState, SyntheticEvent } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 
-const addPaket = () => {
+const AddPaket = () => {
     const [namaPaket, setNamaPaket] = useState("");
     const [asalKomunitas, setAsalKomunitas] = useState("");
     const [nomorTelepon, setNomorTelepon] = useState("");
@@ -107,4 +107,4 @@ const addPaket = () => {
 }
 
 
-export default addPaket
+export default AddPaket

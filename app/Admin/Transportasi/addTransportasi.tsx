@@ -9,7 +9,7 @@ interface CloudinaryResponse {
   // Add other fields if necessary
 }
 
-const addTransportasi = () => {
+const AddTransportasi = () => {
   const [nama, setNama] = useState('');
   const [deskripsi, setDeskripsi] = useState('');
   const [harga, setHarga] = useState('');
@@ -128,4 +128,4 @@ const addTransportasi = () => {
   );
 };
 
-export default addTransportasi;
+export default AddTransportasi;

@@ -3,7 +3,7 @@ import { useState, SyntheticEvent } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-const addMerch = () => {
+const AddMerch = () => {
   const [nama, setNama] = useState('');
   const [deskripsi, setDeskripsi] = useState('');
   const [harga, setHarga] = useState('');
@@ -122,4 +122,4 @@ const addMerch = () => {
   );
 };
 
-export default addMerch;
+export default AddMerch;

@@ -2,7 +2,7 @@
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-const addKarang = () => {
+const AddKarang = () => {
   const [nama, setNama] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [gambar,setGambar] = useState<File | null>(null)
@@ -91,4 +91,4 @@ const addKarang = () => {
   );
 };
 
-export default addKarang;
+export default AddKarang;

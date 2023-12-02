@@ -11,7 +11,7 @@ type Merchandise = {
     gambar: string;
     ketersediaan: number;
 }
-const deleteMerch = ({merch} :{merch: Merchandise}) => {
+const DeleteMerch = ({merch} :{merch: Merchandise}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleDelete = async (MerchId: string) => {
@@ -47,4 +47,4 @@ const deleteMerch = ({merch} :{merch: Merchandise}) => {
   );
 };
 
-export default deleteMerch;
+export default DeleteMerch;

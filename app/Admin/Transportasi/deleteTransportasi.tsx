@@ -11,7 +11,7 @@ type Transportasi = {
     gambar: string;
     ketersediaan: number;
 }
-const deleteTransportasi = ({transportasi} :{transportasi: Transportasi}) => {
+const DeleteTransportasi = ({transportasi} :{transportasi: Transportasi}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleDelete = async (villaId: string) => {
@@ -47,4 +47,4 @@ const deleteTransportasi = ({transportasi} :{transportasi: Transportasi}) => {
   );
 };
 
-export default deleteTransportasi;
+export default DeleteTransportasi;
