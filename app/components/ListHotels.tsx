@@ -5,15 +5,12 @@ import Villaimg from "../../public/assets/villa.png";
 
 const getVilla = async () => {
   const res = await fetch(process.env.BASE_URL + "/api/villas");
-  console.log(process.env.BASE_URL + "/api/villas")
   const json = await res.json()
-  console.log(json)
   return json;
 };
 
 const ListHotels = async () => {
   const villas = await getVilla();
-  console.log(villas)
   return (
     <div className="bg-[#D9D9D9] text-center">
       <div className="p-4">
