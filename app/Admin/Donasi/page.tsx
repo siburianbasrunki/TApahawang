@@ -45,7 +45,7 @@ const Donasi = async () => {
             <thead className="bg-gray-100 text-gray-600 uppercase">
               <tr>
                 <th className="px-6 py-3 text-left">ID</th>
-                <th className="px-6 py-3 text-lefy">Nama Donatur</th>
+                <th className="px-6 py-3 text-left">Nama Donatur</th>
                 <th className="px-6 py-3 text-left">Jumlah Donasi</th>
                 <th className="px-6 py-3 text-left">Bukti Pembayaran</th>
                 <th className="px-6 py-3 text-left">Nomor WhatsApp</th>
