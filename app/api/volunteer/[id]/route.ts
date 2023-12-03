@@ -16,8 +16,8 @@ export const PATCH = async (
       asal: body.asal,
       email: body.email,
       noTelepon: body.noTelepon,
-      tanggalKegiatan: body.tanggalKegiatan,
       surat: body.surat,
+      
     },
   });
   return NextResponse.json(volunteer, { status: 200 });
