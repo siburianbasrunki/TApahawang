@@ -33,36 +33,6 @@ export const DELETE = async (
   return NextResponse.json({ status: 200 });
 };
 
-export const POST = async (
-  request: Request,
-  { params }: { params: { id: string } }
-) => {
-  const body: BookingVilla = await request.json();
-
-  const villa = await prisma.villa.findUnique({
-    where: {
-      id: params.id,
-    },
-  });
-
-  if (!villa) {
-    return NextResponse.json({ error: "Villa not found" }, { status: 400 });
-  }
-
-  const totalHarga = body.jumlahOrang * villa.hargaPerMalam;
-
-  const bookingVilla = await prisma.bookingVilla.create({
-    data: {
-      villaId: params.id,
-      userId: body.userId,
-      tanggalCheckin: body.tanggalCheckin,
-      tanggalCheckout: body.tanggalCheckout,
-      jumlahOrang: body.jumlahOrang,
-      totalHarga: body.totalHarga,
-    },
-  });
-  return NextResponse.json(bookingVilla, { status: 200 });
-};
 
 export const GET = async (
   request: Request,

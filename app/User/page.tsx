@@ -6,12 +6,26 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
+interface Donasi {
+  id: string;
+  user: string;
+  terumbuKarangId: string;
+  chatDonasi: string;
+  buktiPembayaran: string;
+  nomortelepon: string;
+  terumbuKarang: string;
+  tanggalDonasi: string;
+  jumlahDonasi: string;
+  userId: string;
+  gambar: string;
+}
 const ProfilePage: NextPage = () => {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState<{ user: { name: string } } | null>(null);
+
   const [userId, setUserId] = useState("");
+
   const [showBookingHistory, setShowBookingHistory] = useState(true);
-  const [dataDonasi, setDataDonasi] = useState([]);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [dataDonasi, setDataDonasi] = useState<Donasi[]>([]);
 
   const fetchData = async () => {
     const sessionData = await fetch("/api/auth/session").then((res) =>
@@ -48,26 +62,25 @@ const ProfilePage: NextPage = () => {
     <div className="max-w-screen-md mx-auto">
       <div className="bg-blue-500 p-4 text-white text-center w-full">
         <h1 className="text-2xl font-bold">Profile Page</h1>
-        <p>Welcome, {session.user ? session.user.name : "Guest"}!</p>
+        <p>Selamat datang, {session?.user?.name || "Guest(belum Login)"}!</p>
+
       </div>
       <div className="mt-4">
         <div className="flex justify-around">
           <button
-            className={`px-4 py-2 focus:outline-none ${
-              showBookingHistory
+            className={`px-4 py-2 focus:outline-none ${showBookingHistory
                 ? "bg-blue-500 text-white"
                 : "bg-gray-300 text-blue-500"
-            }`}
+              }`}
             onClick={() => setShowBookingHistory(true)}
           >
             Riwayat Booking
           </button>
           <button
-            className={`px-4 py-2 focus:outline-none ${
-              !showBookingHistory
+            className={`px-4 py-2 focus:outline-none ${!showBookingHistory
                 ? "bg-blue-500 text-white"
                 : "bg-gray-300 text-blue-500"
-            }`}
+              }`}
             onClick={() => setShowBookingHistory(false)}
           >
             Riwayat Donasi
@@ -87,15 +100,15 @@ const ProfilePage: NextPage = () => {
                   <div key={donasi.id} className="bg-base-200 mb-4 p-4 sm:p-6 lg:p-8">
                     <div role="alert" className="alert alert-info mb-4">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                      <span>Gambar dari terumbu karang  {donasi.terumbuKarang.nama} akan diupdate setiap bulan</span>
+                      <span>Gambar dari terumbu karang yang didonasi akan diupdate setiap bulan</span>
                     </div>
                     <div className="flex flex-col md:flex-row">
                       <Image
                         src={donasi.gambar}
                         alt="gambarkarang"
                         className="max-w-md md:max-w-xs lg:max-w-md rounded-lg shadow-2xl mb-4 md:mb-0 items-center flex"
-                        width={isMobile ? 200 : 300}
-                        height={isMobile ? 200 : 300}
+                        width={300}
+                        height={300}
                       />
                       <div className="flex-1 p-4">
                         <p className="text-xl md:text-2xl lg:text-xl font-bold mb-4">
@@ -103,10 +116,7 @@ const ProfilePage: NextPage = () => {
                         </p>
                         <p className="text-lg py-2">
                           <span className="font-semibold">Jumlah Donasi:</span>
-                          {donasi.jumlahDonasi.toLocaleString("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                          })}
+                          {donasi.jumlahDonasi}
                           <br />
                           <span className="font-semibold">
                             Terumbu Karang ID:

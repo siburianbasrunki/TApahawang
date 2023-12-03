@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import profileAdmin from "../../public/assets/profile.jpg";
 const NavbarAdmin = () => {
   return (
     <div className="navbar bg-base-100">
@@ -163,8 +164,8 @@ const NavbarAdmin = () => {
               <Image
                 alt="Tailwind CSS Navbar component"
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                width={40}
-                height={40}
+                width={60}
+                height={60}
               />
             </div>
           </div>
