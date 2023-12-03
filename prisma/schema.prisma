@@ -13,6 +13,7 @@ model User {
   name     String
   email    String @unique
   password String
+  role     Role     @default(USER)
 
   bookingsVilla        BookingVilla[]
   bookingsTransportasi BookingTransportasiLaut[]
@@ -129,4 +130,9 @@ model Galery {
   deskripsi String
   gambar    String
   tanggal   DateTime
+}
+
+enum Role {
+  USER
+  ADMIN
 }
