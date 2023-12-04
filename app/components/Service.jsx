@@ -8,7 +8,7 @@ const Service = () => {
         Our Service
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="flex items-center card w-96 bg-[#727379] shadow-xl">
+        <div className="flex items-center card sm:w-full md:w-full lg:w-96 bg-[#727379] shadow-xl">
           <div className="card-body">
             <h2 className="card-title text-black text-3xl font-bold">
               Volunteer
@@ -26,7 +26,7 @@ const Service = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center card w-96 bg-[#727379] shadow-xl">
+        <div className="flex items-center card sm:w-full md:w-full lg:w-96 bg-[#727379] shadow-xl">
           <div className="card-body">
             <h2 className="card-title text-black text-3xl font-bold">
               Donation
@@ -44,7 +44,7 @@ const Service = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center card w-96 bg-[#727379] shadow-xl">
+        <div className="flex items-center card sm:w-full md:w-full lg:w-96 bg-[#727379] shadow-xl">
           <div className="card-body">
             <h2 className="card-title text-black text-3xl font-bold">
               Booking
@@ -66,4 +66,5 @@ const Service = () => {
     </div>
   );
 };
+
 export default Service;

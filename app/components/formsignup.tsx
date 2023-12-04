@@ -1,5 +1,4 @@
 "use client";
-
 import { signIn } from "next-auth/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 
@@ -23,67 +22,77 @@ export default function RegisterForm() {
         body: JSON.stringify(formValues),
       });
 
-      if (!res.ok) return alert("register failed");
+      if (!res.ok) return alert("Register failed");
 
       setFormValues({});
       return signIn(undefined, { callbackUrl: "/" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
   return (
-    <div className="shadow-md rounded-md p-6 w-[40vw] bg-white">
-      <h3 className="text-xl text-center">Register</h3>
-      <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="name">Name</label>
-          <input
-            className="border-b border-b-black py-1 px-2"
-            type="text"
-            name="name"
-            id="name"
-            placeholder="John"
-            onChange={handleInput}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            className="border-b border-b-black py-1 px-2"
-            name="email"
-            id="email"
-            placeholder="example@gmail.com"
-            onChange={handleInput}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            className="border-b border-b-black py-1 px-2"
-            name="password"
-            id="password"
-            onChange={handleInput}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="confirm">Confirm</label>
-          <input
-            type="password"
-            className="border-b border-b-black py-1 px-2"
-            name="confirm"
-            id="confirm"
-            onChange={handleInput}
-          />
-        </div>
-        <div className="text-center">
-          <button className="px-6 py-2 bg-sky-600 text-slate-100 rounded-md">
-            Register
-          </button>
-        </div>
-      </form>
+    <div className="flex justify-center items-center ">
+      <div className="shadow-md rounded-md p-6 w-full sm:w-96 bg-white">
+        <h3 className="text-2xl font-semibold mb-6 text-center">Register</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="John"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              onChange={handleInput}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="example@gmail.com"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              onChange={handleInput}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              onChange={handleInput}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="confirm" className="block text-sm font-medium text-gray-600">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              name="confirm"
+              id="confirm"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+              onChange={handleInput}
+            />
+          </div>
+          <div className="text-center">
+            <button className="px-6 py-2 bg-blue-500 text-white rounded-md">
+              Register
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

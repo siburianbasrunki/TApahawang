@@ -68,7 +68,9 @@ const Navbar = () => {
                   </ul>
                 </details>
               </li>
-
+              <li>
+                <Link href="/User">Profile</Link>
+              </li>
               <li>
                 <Link href="/Signup">Register</Link>
               </li>
