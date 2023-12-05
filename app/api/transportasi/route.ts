@@ -15,6 +15,6 @@ export const POST = async (request: Request) => {
   return NextResponse.json(transportasi);
 };
 export const GET = async (req:NextRequest ) =>{
-  const transportasi = await prisma.transportasiLaut.findMany({})
-  return NextResponse.json({transportasi})
+  const transportasis = await prisma.transportasiLaut.findMany({})
+  return NextResponse.json({transportasis})
 }

@@ -6,7 +6,7 @@ import type { Volunteer } from "@prisma/client";
 
 export const POST = async (request: Request) => {
   const body: Volunteer = await request.json();
-  const Volunteer = await prisma.volunteer.create({
+  const volunteer = await prisma.volunteer.create({
     data: {
       namaOrganisasi: body.namaOrganisasi,
       asal: body.asal,
@@ -15,10 +15,10 @@ export const POST = async (request: Request) => {
       surat: body.surat,
     },
   });
-  return NextResponse.json(Volunteer);
+  return NextResponse.json(volunteer);
 };
 
 export const GET = async (req: NextRequest) => {
-  const Volunteers = await prisma.volunteer.findMany({});
-  return NextResponse.json({ Volunteers });
+  const volunteers = await prisma.volunteer.findMany({});
+  return NextResponse.json({ volunteers });
 };

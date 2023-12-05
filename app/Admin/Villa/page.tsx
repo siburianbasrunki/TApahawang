@@ -51,7 +51,7 @@ const SkeletonTable = () => {
             <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
             <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
           </tr>
-          {/* You can repeat the placeholder row as needed */}
+          
         </tbody>
       </table>
     </div>
@@ -67,6 +67,7 @@ const Villa = () => {
         const res = await fetch("/api/villas");
         const json: VillaResponse = await res.json();
         setVillas(json);
+        
       } catch (error) {
         console.error("Error fetching villas:", error);
       }
@@ -76,14 +77,13 @@ const Villa = () => {
 
   return (
     <>
-      <NavbarAdmin />
       <div className="bg-white shadow-md rounded-md p-4">
         <h1 className="text-2xl font-bold mb-4">Management Villa</h1>
         <div className="flex justify-end mb-4">
           <AddVilla />
         </div>
 
-        {/* Display either the skeleton table or the actual data */}
+        
         {villas ? (
           <table className="w-full overflow-x-auto">
             <thead className="bg-gray-50 text-gray-700 uppercase">

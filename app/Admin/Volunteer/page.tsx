@@ -1,91 +1,128 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import { prisma } from "@/lib/prisma";
 import { FaWhatsapp } from "react-icons/fa";
 import NavbarAdmin from "../NavbarAdmin";
-const getListDaftarVolunteer = async () => {
-  const res = await prisma.volunteer.findMany({
-    select: {
-      id: true,
-      namaOrganisasi: true,
-      asal: true,
-      email: true,
-      noTelepon: true,
-      surat: true,
-    },
-  });
-  return res;
-};
+interface VolunteerData {
+  id: string;
+  namaOrganisasi: string;
+  asal: string;
+  email: string;
+  noTelepon: string;
+  surat: string;
+}
+interface VolunteerResponse {
+  volunteers: VolunteerData[];
+}
 
-const Volunteer = async () => {
-  const volunteers = await getListDaftarVolunteer();
+
+const SkeletonTable = () => {
+  return (
+    <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
+      <table className="w-full">
+        <thead className="bg-gray-50 text-gray-700 uppercase">
+          <tr>
+            <th className="px-4 py-3 text-left">ID</th>
+            <th className="px-4 py-3 text-left">Nama Organisasi</th>
+            <th className="px-4 py-3 text-left">Asal Organisasi</th>
+            <th className="px-4 py-3 text-left">Email</th>
+            <th className="px-4 py-3 text-left">No. Telepon</th>
+            <th className="px-4 py-3 text-left">Surat</th>
+            <th className="px-4 py-3 text-left">Update</th>
+            <th className="px-4 py-3 text-left">Hapus</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white">
+          {/* Placeholder row for skeleton loading */}
+          <tr className="border-b border-gray-200">
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace
+            -no-wrap text-gray-700">Loading...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+const Volunteer = () => {
+  const [volunteers, setVolunteers] = useState<VolunteerResponse | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/volunteer');
+        const data = await response.json();
+        setVolunteers(data);
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
-      <NavbarAdmin />
       <div className="bg-white shadow-md rounded-md p-4">
         <h1 className="text-2xl font-bold mb-4">List Daftar Volunteer</h1>
         <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                  Nama Organisasi
-                </th>
-                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                  Asal Organisasi
-                </th>
-                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                  No Telepon/WA
-                </th>
-                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                  Link Berkas
-                </th>
-                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                  Chat WA Volunteer
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {volunteers.map((volunteer, index) => (
-                <tr key={volunteer.id}>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    {volunteer.id}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    {volunteer.namaOrganisasi}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    {volunteer.asal}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    {volunteer.email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    {volunteer.noTelepon}
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <a
-                      href={volunteer.surat}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {volunteer.surat}
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <a href={`https://wa.me/${volunteer.noTelepon}`}>
-                      <FaWhatsapp size={24} color="green" />
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {
+            volunteers ? (
+              <table className="w-full">
+                <thead className="bg-gray-50 text-gray-700 uppercase">
+                  <tr>
+                    <th className="px-4 py-3 text-left">ID</th>
+                    <th className="px-4 py-3 text-left">Nama Organisasi</th>
+                    <th className="px-4 py-3 text-left">Asal Organisasi</th>
+                    <th className="px-4 py-3 text-left">Email</th>
+                    <th className="px-4 py-3 text-left">No. Telepon</th>
+                    <th className="px-4 py-3 text-left">Surat</th>
+                    <th className="px-4 py-3 text-left">Update</th>
+                    <th className="px-4 py-3 text-left">Hapus</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white">
+                  {volunteers.volunteers.map((volunteer, index) => (
+
+                    <tr className="border-b border-gray-200" key={volunteer.id}>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">{volunteer.id}</td>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">{volunteer.namaOrganisasi}</td>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">{volunteer.asal}</td>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">{volunteer.email}</td>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">{volunteer.noTelepon}</td>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">{volunteer.surat}</td>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">Update</td>
+                      <td className="px-4 py-3 whitespace
+                      -no-wrap text-gray-700">Hapus</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <SkeletonTable />
+            )
+          }
         </div>
       </div>
     </>

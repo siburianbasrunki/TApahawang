@@ -1,100 +1,125 @@
-import React from 'react'
-import imgPaket from "../../../public/assets/packet.png"
+"use client"
+import React, { useEffect, useState } from 'react'
 import { prisma } from '@/lib/prisma'
 import Image from 'next/image'
 import AddPaket from "./addPaket"
 import UpdatePaket from './updatePaket'
 import DeletePaket from './deletePaket'
-import NavbarAdmin from '../NavbarAdmin'
-const getPaket = async () => {
-    const res = await prisma.paket.findMany({
-        select: {
-            id: true,
-            namaPaket: true,
-            asalKomunitas: true,
-            gambarPaket: true,
-            nomorTelepon: true
-        }
-    })
-    return res
+interface PaketData {
+    id: string;
+    namaPaket: string;
+    asalKomunitas: string;
+    nomorTelepon: string;
+    gambarPaket: string;
 }
-const Paket = async () => {
-    const pakets = await getPaket()
+
+interface PaketResponse {
+    pakets: PaketData[];
+}
+
+const SkeletonTable = () => {
+    return (
+        <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
+            <table className="w-full">
+                <thead className="bg-gray-50 text-gray-700 uppercase">
+                    <tr>
+                        <th className="px-4 py-3 text-left">ID Paket</th>
+                        <th className="px-4 py-3 text-left">Nama Paket</th>
+                        <th className="px-4 py-3 text-left">Asal Komunitas</th>
+                        <th className="px-4 py-3 text-left">Nomor Telepon</th>
+                        <th className="px-4 py-3 text-left">Gambar Paket</th>
+                        <th className="px-4 py-3 text-left">Update</th>
+                        <th className="px-4 py-3 text-left">Hapus</th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white">
+                    {/* Placeholder row for skeleton loading */}
+                    <tr className="border-b border-gray-200">
+                        <td className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700">Loading...</td>
+                        <td className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700">Loading...</td>
+                        <td className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700">Loading...</td>
+                        <td className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700">Loading...</td>
+                        <td className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700">Loading...</td>
+                        <td className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700">Loading...</td>
+                        <td className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    );
+
+}
+
+const Paket = () => {
+    const [pakets, setPakets] = useState<PaketResponse | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/api/paket');
+                const data = await response.json();
+                setPakets(data);
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <>
-            <NavbarAdmin />
             <div>
                 <h1 className="text-2xl font-bold mb-4">Management Villa</h1>
                 <div className="flex justify-end mb-4">
                     <AddPaket />
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="min-w-full">
-                        <thead>
-                            <tr>
-                                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                                    ID Paket
-                                </th>
-                                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                                    Nama Paket
-                                </th>
-                                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                                    Asal Komunitas
-                                </th>
-                                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                                    Nomor Telepon
-                                </th>
-                                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                                    Gambar Paket
-                                </th>
-                                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                                    update
-                                </th>
-                                <th className="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                                    hapus
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {pakets.map((paket, index) => (
-
-                                <tr key={paket.id}>
-                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        {paket.id}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        {paket.namaPaket}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        {paket.asalKomunitas}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        {paket.nomorTelepon}
-                                    </td>
-
-                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        <Image
-                                            src={paket.gambarPaket}
-                                            alt="Villa Image"
-                                            width={100}
-                                            height={100}
-                                        />
-                                    </td>
-
-                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        <UpdatePaket paket={paket} />
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                        <DeletePaket paket={paket} />
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                {
+                    pakets ? (
+                        <div>
+                            <table className="w-full">
+                                <thead className="bg-gray-50 text-gray-700 uppercase">
+                                    <tr>
+                                        <th className="px-4 py-3 text-left">ID Paket</th>
+                                        <th className="px-4 py-3 text-left">Nama Paket</th>
+                                        <th className="px-4 py-3 text-left">Asal Komunitas</th>
+                                        <th className="px-4 py-3 text-left">Nomor Telepon</th>
+                                        <th className="px-4 py-3 text-left">Gambar Paket</th>
+                                        <th className="px-4 py-3 text-left">Update</th>
+                                        <th className="px-4 py-3 text-left">Hapus</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white">
+                                    {pakets.pakets.map((paket, index) => (
+                                        <tr className="border-b border-gray-200" key={paket.id}>
+                                            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{paket.id}</td>
+                                            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{paket.namaPaket}</td>
+                                            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{paket.asalKomunitas}</td>
+                                            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{paket.nomorTelepon}</td>
+                                            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                                                <Image src={paket.gambarPaket} alt={paket.gambarPaket} width={100} height={100} />
+                                            </td>
+                                            <td className="px-4 py-3 whitespace-no-wrap text-gray-700"><UpdatePaket paket={paket} /></td>
+                                            <td className="px-4 py-3 whitespace-no-wrap text-gray-700"><DeletePaket paket={paket} /></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <SkeletonTable />
+                    )
+                }
             </div>
         </>
     )
 }
 
-export default Paket
+export default Paket;

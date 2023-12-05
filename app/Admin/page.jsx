@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import NavbarAdmin from "./NavbarAdmin";
 import Transportasi from "./Transportasi/page";
@@ -7,9 +7,10 @@ import Merchandise from "./Merchandise/page";
 import Karang from "./Terumbu/page";
 import Volunteer from "./Volunteer/page";
 import Donasi from "./Donasi/page";
-
+import Paket from "./Paket/page";
+import Galery from "../Admin/Galery/page";
 const Dashboard = () => {
-  const [activePage, setActivePage] = React.useState("Transportasi");
+  const [activePage, setActivePage] = React.useState("Villa");
 
   const handleChangePage = (pageName) => {
     setActivePage(pageName);
@@ -21,22 +22,53 @@ const Dashboard = () => {
       <div className="w-64 bg-gray-800 text-white h-full">
         <ul className="flex flex-col h-full">
           <li className="px-4 py-2 text-lg font-bold">Dashboard</li>
-          <li className="px-4 py-2 cursor-pointer" onClick={() => handleChangePage("Transportasi")}>
-            Transportasi
-          </li>
-          <li className="px-4 py-2 cursor-pointer" onClick={() => handleChangePage("Villa")}>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Villa")}
+          >
             Villa
           </li>
-          <li className="px-4 py-2 cursor-pointer" onClick={() => handleChangePage("Merchandise")}>
+
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Merchandise")}
+          >
             Merchandise
           </li>
-          <li className="px-4 py-2 cursor-pointer" onClick={() => handleChangePage("Karang")}>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Karang")}
+          >
             Terumbu Karang
           </li>
-          <li className="px-4 py-2 cursor-pointer" onClick={() => handleChangePage("Volunteer")}>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Volunteer")}
+          >
             Volunteer
           </li>
-          <li className="px-4 py-2 cursor-pointer" onClick={() => handleChangePage("Donasi")}>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Transportasi")}
+          >
+            Transportasi
+          </li>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Paket")}
+          >
+            Paket
+          </li>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Galery")}
+          >
+            Galery
+          </li>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("Donasi")}
+          >
             Donasi
           </li>
         </ul>
@@ -54,6 +86,8 @@ const Dashboard = () => {
           {activePage === "Merchandise" && <Merchandise />}
           {activePage === "Karang" && <Karang />}
           {activePage === "Volunteer" && <Volunteer />}
+          {activePage === "Paket" && <Paket />}
+          {activePage === "Galery" && <Galery />}
           {activePage === "Donasi" && <Donasi />}
         </main>
       </div>
