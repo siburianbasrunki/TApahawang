@@ -7,7 +7,7 @@ import Donateft from "../../public/assets/donateft.png";
 import FormDonate from "./formDonate";
 import { prisma } from "@/lib/prisma";
 import AddDonasi from "../Admin/Donasi/addDonasi";
-
+import ListTerumbu from "./ListTerumbu";
 const getKarang = async () => {
   const res = await prisma.terumbuKarang.findMany();
   return res;
@@ -40,6 +40,10 @@ const Donate = async () => {
           </div>
         </div>
       </section>
+
+
+      <ListTerumbu/>
+
       <div className="flex flex-col lg:flex-row items-center p-4 lg:p-8 bg-[#F3F5F7]">
         <div className={`lg:w-1/2 ${style.AboutImg}`}>
           <Image src={Donateft} width={400} alt="AboutImg" height={300} />
