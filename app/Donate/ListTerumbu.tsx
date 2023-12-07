@@ -72,7 +72,7 @@ const ListTerumbu = () => {
             >
                     {karangs ? (
                         karangs.karangs.map((karang) => (
-                            <SwiperSlide className={Style.swiper}>
+                            <SwiperSlide className={Style.swiper} key={karang.id}>
                                 <Image src={karang.gambar} alt={karang.gambar} width={300} height={300} className="rounded items-center"/> 
                             </SwiperSlide>
                         ))
