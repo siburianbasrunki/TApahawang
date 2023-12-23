@@ -61,7 +61,7 @@ const TransportasiComponent = () => {
       <h1 className="text-3xl font-bold mb-4">Transportasi</h1>
 
       {transportasis ? (
-        transportasis.transportasi.length > 0 ? (
+        transportasis?.transportasi?.length > 0 ? (
           <div className="flex flex-wrap -mx-4">
             {transportasis.transportasi.map((transportasi, index) => (
               <div

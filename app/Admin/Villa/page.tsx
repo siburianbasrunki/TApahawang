@@ -42,16 +42,31 @@ const SkeletonTable = () => {
         <tbody className="bg-white">
           {/* Placeholder row for skeleton loading */}
           <tr className="border-b border-gray-200">
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Loading...</td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
+            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+              Loading...
+            </td>
           </tr>
-          
         </tbody>
       </table>
     </div>
@@ -67,7 +82,6 @@ const Villa = () => {
         const res = await fetch("/api/villas");
         const json: VillaResponse = await res.json();
         setVillas(json);
-        
       } catch (error) {
         console.error("Error fetching villas:", error);
       }
@@ -78,12 +92,13 @@ const Villa = () => {
   return (
     <>
       <div className="bg-white shadow-md rounded-md p-4">
-        <h1 className="text-2xl font-bold mb-4">Management Villa</h1>
+        <div>
+          <h1 className="text-2xl font-bold mb-4">Management Villa</h1>
+        </div>
         <div className="flex justify-end mb-4">
           <AddVilla />
         </div>
 
-        
         {villas ? (
           <table className="w-full overflow-x-auto">
             <thead className="bg-gray-50 text-gray-700 uppercase">
@@ -101,14 +116,29 @@ const Villa = () => {
             <tbody className="bg-white">
               {villas.villas.map((villa, index) => (
                 <tr key={villa.id} className="border-b border-gray-200">
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{villa.id}</td>
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{villa.nama}</td>
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{villa.deskripsi}</td>
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">Rp {villa.hargaPerMalam}</td>
                   <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                    <Image src={villa.gambar} alt="Villa Image" width={100} height={100} />
+                    {villa.id}
                   </td>
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">{villa.ketersediaan}</td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    {villa.nama}
+                  </td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    {villa.deskripsi}
+                  </td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    Rp {villa.hargaPerMalam}
+                  </td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    <Image
+                      src={villa.gambar}
+                      alt="Villa Image"
+                      width={100}
+                      height={100}
+                    />
+                  </td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    {villa.ketersediaan}
+                  </td>
                   <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                     <UpdateVilla villa={villa} />
                   </td>

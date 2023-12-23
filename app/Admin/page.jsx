@@ -77,10 +77,11 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Navbar */}
-        <NavbarAdmin />
+        {/* <NavbarAdmin /> */}
 
         {/* Page Content */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-4">
+          {activePage === "Donasi" && <Donasi />}
           {activePage === "Transportasi" && <Transportasi />}
           {activePage === "Villa" && <Villa />}
           {activePage === "Merchandise" && <Merchandise />}
@@ -88,7 +89,6 @@ const Dashboard = () => {
           {activePage === "Volunteer" && <Volunteer />}
           {activePage === "Paket" && <Paket />}
           {activePage === "Galery" && <Galery />}
-          {activePage === "Donasi" && <Donasi />}
         </main>
       </div>
     </div>
