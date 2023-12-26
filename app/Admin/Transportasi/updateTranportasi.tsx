@@ -75,7 +75,7 @@ const UpdateTranportasi = ({transportasi} : {transportasi:Transportasi}) => {
                 placeholder="price"
               />
             </div>
-            <div className="form-control w-full">
+            {/* <div className="form-control w-full">
               <label className="label font-bold">file gambar</label>
               <input
                 type="text"
@@ -84,7 +84,7 @@ const UpdateTranportasi = ({transportasi} : {transportasi:Transportasi}) => {
                 className="input input-bordered"
                 placeholder="masukan file gambar"
               />
-            </div>
+            </div> */}
             <div className="form-control w-full">
               <label className="label font-bold">Jumlah kursi</label>
               <input

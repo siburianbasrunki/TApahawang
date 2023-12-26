@@ -17,39 +17,17 @@ const UpdateKarang = ({ karang }: { karang: TerumbuKarang }) => {
   const router = useRouter();
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
+    await axios.patch(`/api/karang/${karang.id}`, {
+      nama : nama,
+      deskripsi : deskripsi,
+    })
 
-    const formData = new FormData();
-    if (selectedFile) {
-      formData.append('file', selectedFile);
-      formData.append('upload_preset', 'terumbukarang');
-      try {
-        const { data } = await axios.post(
-          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          formData
-        )
-        await axios.patch(`/api/karang/${karang.id}`, {
-          nama:nama,
-          deskripsi:deskripsi,
-          gambar:data?.secure_url || null,
-        })
-      } catch (error) {
-
-      }
-    }
-
-    router.refresh();
+    router.refresh()
     setIsOpen(false);
   };
-
   const handleModal = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setSelectedFile(file);
   }
-
   return (
     <div>
       <button className="btn btn-info " onClick={handleModal}>
@@ -79,15 +57,7 @@ const UpdateKarang = ({ karang }: { karang: TerumbuKarang }) => {
                 placeholder="masukan deskripsi singkat"
               />
             </div>
-            <div className="form-control w-full">
-              <label className="label font-bold">Gambar</label>
-              <input
-                type="file"
-                onChange={handleFileChange}
-                className="input input-bordered"
-              />
-            </div>
-
+            
             <div className="modal-action">
               <button type="button" className="btn" onClick={handleModal}>
                 Close

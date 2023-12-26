@@ -14,7 +14,6 @@ const AddGalery = () => {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    // upload image to cloudinary
     const formData = new FormData();
     formData.append('file', gambar as File);
     formData.append('upload_preset', 'aktivitas');
@@ -44,7 +43,7 @@ const AddGalery = () => {
 
   return (
     <div>
-      <button className='btn' onClick={handleModal}>
+      <button className='btn ' onClick={handleModal}>
         Add Activity
       </button>
       <div className={isOpen ? 'modal modal-open' : 'modal'}>

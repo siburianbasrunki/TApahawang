@@ -1,20 +1,21 @@
-"use client"
-import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
+"use client";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 interface GaleriData {
-  gambar: string
-  title: string
+  gambar: string;
+  title: string;
 }
 
 interface GaleriResponse {
-  galeries: GaleriData[]
+  galeries: GaleriData[];
 }
-
 
 const SkeletonLoader = () => (
   <div className="bg-gray-200 p-4 rounded-md w-full md:w-80 animate-pulse">
-    <div className='w-full h-48 bg-gray-300 mb-4'></div>
+    <div className="w-full h-48 bg-gray-300 mb-4"></div>
   </div>
 );
 const Galery = () => {
@@ -46,26 +47,34 @@ const Galery = () => {
 
   return (
     <>
-      <div className='md:container mx-auto sm:container p-4'>
-        <div className='text-3xl font-bold mb-4'>Galery Konsevasi</div>
+      <div>
+        <Navbar />
+      </div>
+      <div className="md:container mx-auto sm:container p-4">
+        <div className="text-3xl font-bold mb-4">Galery Konsevasi</div>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {galeries ? (
             galeries.galeries.length > 0 ? (
               galeries.galeries.map((galeri, index) => (
-                <div key={index} className='relative overflow-hidden rounded-md'>
+                <div
+                  key={index}
+                  className="relative overflow-hidden rounded-md"
+                >
                   <Image
                     src={galeri.gambar}
                     alt={galeri.title}
-                    layout='responsive'
+                    layout="responsive"
                     height={400}
                     width={400}
-                    objectFit='cover'
-                    className='transition-transform transform hover:scale-110'
+                    objectFit="cover"
+                    className="transition-transform transform hover:scale-110"
                   />
                 </div>
               ))
-            ) : <p>tidak ada foto konsevasi</p>
+            ) : (
+              <p>tidak ada foto konsevasi</p>
+            )
           ) : (
             Array.from({ length: 8 }, (_, index) => (
               <SkeletonLoader key={index} />
@@ -73,9 +82,11 @@ const Galery = () => {
           )}
         </div>
       </div>
+      <div>
+        <Footer />
+      </div>
     </>
   );
 };
-
 
 export default Galery;

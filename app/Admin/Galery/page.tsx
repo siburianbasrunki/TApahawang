@@ -1,11 +1,10 @@
-"use client"
+"use client";
 import Image from "next/image";
 import AddGalery from "./addGaleri";
-import UpdateGalery from "./updateGaleri"
-import { prisma } from "@/lib/prisma";
-import NavbarAdmin from "../NavbarAdmin";
+import UpdateGalery from "./updateGaleri";
 import { useEffect, useState } from "react";
-
+import DeleteGalery from "./DeleteGalery";
+import { FiRefreshCcw } from "react-icons/fi";
 interface GaleryData {
   id: string;
   title: string;
@@ -33,57 +32,113 @@ const SkeletonTable = () => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {/* Placeholder row for skeleton loading */}
           <tr className="border-b border-gray-200">
-            <td className="px-4 py-3 whitespace
-            -no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace
-            -no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace
-            -no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace
-            -no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace
-            -no-wrap text-gray-700">Loading...</td>
-            <td className="px-4 py-3 whitespace
-            -no-wrap text-gray-700">Loading...</td>
+            <td
+              className="px-4 py-3 whitespace
+            -no-wrap text-gray-700"
+            >
+              Loading...
+            </td>
+            <td
+              className="px-4 py-3 whitespace
+            -no-wrap text-gray-700"
+            >
+              Loading...
+            </td>
+            <td
+              className="px-4 py-3 whitespace
+            -no-wrap text-gray-700"
+            >
+              Loading...
+            </td>
+            <td
+              className="px-4 py-3 whitespace
+            -no-wrap text-gray-700"
+            >
+              Loading...
+            </td>
+            <td
+              className="px-4 py-3 whitespace
+            -no-wrap text-gray-700"
+            >
+              Loading...
+            </td>
+            <td
+              className="px-4 py-3 whitespace
+            -no-wrap text-gray-700"
+            >
+              Loading...
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   );
-}
+};
 
-
-const Villa = () => {
+const Galery = () => {
   const [galeries, setGaleries] = useState<GaleryResponse | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [galeriPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/api/galery");
+      const data = await response.json();
+      setGaleries(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleRefreshClick = () => {
+    setIsRefreshing(true);
+    fetchData();
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/galery');
-        const data = await response.json();
-        setGaleries(data);
-        console.log(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
     fetchData();
   }, []);
+
+  const indexOfLastGaleri = currentPage * galeriPerPage;
+  const indexOfFirstGaleri = indexOfLastGaleri - galeriPerPage;
+  const currentsGaleri = galeries
+    ? galeries.galeries.slice(indexOfFirstGaleri, indexOfLastGaleri)
+    : [];
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Management Aktivitas/Galeri</h1>
-      <div className="flex justify-end mb-4">
-        <AddGalery />
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold mb-4">
+            Management Aktivitas/Galeri
+          </h1>
+        </div>
+        <div className="flex justify-end items-center gap-4  mb-4">
+          <div
+            className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+            onClick={handleRefreshClick}
+          >
+            <div>
+              <small>refresh data</small>
+            </div>
+            <div>
+              <FiRefreshCcw />
+            </div>
+          </div>
+          <div>
+            <AddGalery />
+          </div>
+        </div>
       </div>
       <div className="overflow-x-auto">
-        {
-          galeries ? (
+        {galeries ? (
+          <div>
             <table className="w-full">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
+              <thead className="bg-gray-100 text-gray-700 uppercase">
                 <tr>
-                  <th className="px-4 py-3 text-left">ID</th>
                   <th className="px-4 py-3 text-left">Judul</th>
                   <th className="px-4 py-3 text-left">Deskripsi</th>
                   <th className="px-4 py-3 text-left">Gambar</th>
@@ -94,14 +149,22 @@ const Villa = () => {
               <tbody className="bg-white">
                 {galeries.galeries.map((galery) => (
                   <tr key={galery.id} className="border-b border-gray-200">
-                    <td className="px-4 py-3 whitespace
-                    -no-wrap text-gray-700">{galery.id}</td>
-                    <td className="px-4 py-3 whitespace
-                    -no-wrap text-gray-700">{galery.title}</td>
-                    <td className="px-4 py-3 whitespace
-                    -no-wrap text-gray-700">{galery.deskripsi}</td>
-                    <td className="px-4 py-3 whitespace
-                    -no-wrap text-gray-700">
+                    <td
+                      className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700"
+                    >
+                      {galery.title}
+                    </td>
+                    <td
+                      className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700"
+                    >
+                      {galery.deskripsi}
+                    </td>
+                    <td
+                      className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700"
+                    >
                       <Image
                         src={galery.gambar}
                         alt="Gambar"
@@ -109,25 +172,46 @@ const Villa = () => {
                         height={100}
                       />
                     </td>
-                    {/* <td className="px-4 py-3 whitespace
-                    -no-wrap text-gray-700">
-                      <UpdateGalery galery={galery} />
+                    <td
+                      className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700"
+                    >
+                      <UpdateGalery galeri={galery} />
                     </td>
-                    <td className="px-4 py-3 whitespace
-                    -no-wrap text-gray-700">
-                      <DeleteGalery galery={galery} />
-                    </td> */}
+                    <td
+                      className="px-4 py-3 whitespace
+                    -no-wrap text-gray-700"
+                    >
+                      <DeleteGalery galeri={galery} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          ) : (
-            <SkeletonTable />
-          )
-        }
+
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="bg-gray-300 px-3 py-1 mr-2"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={indexOfLastGaleri >= galeries.galeries.length}
+                className="bg-gray-300 px-3 py-1"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        ) : (
+          <SkeletonTable />
+        )}
       </div>
     </div>
   );
 };
 
-export default Villa;
+export default Galery;

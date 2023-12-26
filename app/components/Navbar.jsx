@@ -1,7 +1,6 @@
 "use client";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { AiOutlineLink } from "react-icons/ai";
 
 const Navbar = () => {
   return (

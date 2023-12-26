@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import bgVolunteer from "../../public/assets/bgdonate.png";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Volunteer = () => {
   const [namaOrganisasi, setNamaOrganisasi] = useState("");
@@ -27,7 +29,9 @@ const Volunteer = () => {
         noTelepon: noTelepon,
         surat: surat,
       });
-      setSuccessMessage("Pendaftaran berhasil! Terima kasih atas partisipasinya.");
+      setSuccessMessage(
+        "Pendaftaran berhasil! Terima kasih atas partisipasinya."
+      );
       setNamaOrganisasi("");
       setAsal("");
       setEmail("");
@@ -45,6 +49,9 @@ const Volunteer = () => {
 
   return (
     <>
+      <div>
+        <Navbar />
+      </div>
       <section className="header beach-hero bg-dark text-center relative h-screen">
         <div className="absolute top-0 left-0 w-full h-full">
           <Image
@@ -125,6 +132,7 @@ const Volunteer = () => {
                 type="number"
                 id="notelepon"
                 name="notelepon"
+                placeholder="+628227761162"
                 required
                 value={noTelepon}
                 onChange={(e) => setNoTelepon(e.target.value)}
@@ -171,13 +179,16 @@ const Volunteer = () => {
           <button
             type="submit"
             className={`mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 ${
-              isLoading ? 'opacity-50 cursor-not-allowed' : '' // Disable button and adjust styling when loading
+              isLoading ? "opacity-50 cursor-not-allowed" : "" 
             }`}
             disabled={isLoading}
           >
-            {isLoading ? 'Submitting...' : 'Submit'}
+            {isLoading ? "Submitting..." : "Submit"}
           </button>
         </form>
+      </div>
+      <div>
+        <Footer />
       </div>
     </>
   );

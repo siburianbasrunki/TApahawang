@@ -18,10 +18,9 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
       <div className="w-64 bg-gray-800 text-white h-full">
         <ul className="flex flex-col h-full">
-          <li className="px-4 py-2 text-lg font-bold">Dashboard</li>
+          <li className="px-4 py-2 text-2xl  font-bold ">Dashboard</li>
           <li
             className="px-4 py-2 cursor-pointer"
             onClick={() => handleChangePage("Villa")}
@@ -77,7 +76,6 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Navbar */}
-        {/* <NavbarAdmin /> */}
 
         {/* Page Content */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-4">
