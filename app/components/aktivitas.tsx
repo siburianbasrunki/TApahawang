@@ -1,17 +1,7 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import "swiper/css/effect-coverflow";
-import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Autoplay,
-  Pagination,
-  Navigation,
-  EffectCoverflow,
-} from "swiper/modules";
+import Link from "next/link";
 
 interface GaleriData {
   title: string;
@@ -51,57 +41,43 @@ const Activity = () => {
   }, []);
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold text-center mb-8">Our Activity</h1>
-      <Swiper
-        spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Autoplay, Pagination, Navigation, EffectCoverflow]}
-        className="carousel w-full"
-        effect="coverflow"
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
-      >
-        {galeries ? (
-          galeries.galeries.length > 0 ? (
-            galeries.galeries.map((galeri, index) => (
-              <SwiperSlide key={index} className="carousel-item w-full rounded">
-                <div className="relative h-64 rounded">
+    <div className="container mx-auto">
+      <div className="text-center text-2xl font-bold p-8">
+        <h1 className="mb-4">Aktivitas Terakhir Kami</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {galeries ? (
+            galeries.galeries.length > 0 ? (
+              galeries.galeries.slice(0, 3).map((galeri, index) => (
+                <div
+                  key={index}
+                  className="overflow-hidden bg-gray-300 rounded-lg"
+                >
                   <Image
                     src={galeri.gambar}
-                    alt={`Activity ${index + 1}`}
-                    layout="fill"
+                    width={400}
+                    height={400}
+                    alt={galeri.title}
                     objectFit="cover"
+                    className="w-full h-40 md:h-48 lg:h-56 object-cover"
                   />
+                  <div className="p-4">
+                    <h2 className="text-lg font-semibold">{galeri.title}</h2>
+                  </div>
                 </div>
-              </SwiperSlide>
-            ))
+              ))
+            ) : (
+              <p>No activities available</p>
+            )
           ) : (
-            <p>tidak ada aktivitas</p>
-          )
-        ) : (
-          <p>loading</p>
-        )}
-      </Swiper>
-      <div className="flex justify-center w-full py-2 gap-2">
-        {galeries?.galeries.map((galeri, index) => (
-          <a key={index} href={`#item${index + 1}`} className="btn btn-xs">
-            {index + 1}
-          </a>
-        ))}
+            <p>Loading...</p>
+          )}
+        </div>
+        <Link
+          href="/Galery"
+          className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+        >
+          More Aktivitas
+        </Link>
       </div>
     </div>
   );

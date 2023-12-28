@@ -21,7 +21,7 @@ const HeaderSection = async () => {
   ]);
 
   return (
-    <section className="header beach-hero bg-dark text-center relative h-screen">
+    <section className="header beach-hero bg-dark text-center relative h-screen container mx-auto">
       <div className="absolute top-0 left-0 w-full h-full ">
         <video autoPlay muted loop className="w-full h-full object-cover">
           <source src="assets/bgvideo.mp4" type="video/mp4" />

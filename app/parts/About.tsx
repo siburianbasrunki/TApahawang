@@ -1,37 +1,60 @@
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
-import style from "./parts.module.css";
 
 const About = () => {
-  return (
-    <div className="flex flex-col lg:flex-row items-center p-4 lg:p-8 bg-[#F3F5F7]">
-      {/* Bagian Gambar */}
-      <div className={`lg:w-1/2 ${style.AboutImg}`}>
-        <Image
-          src="/assets/pulau.png"
-          width={500}
-          alt="AboutImg"
-          height={500}
-        />
-      </div>
+  const initialDisplayLength = 200;
+  const [displayLength, setDisplayLength] = useState(initialDisplayLength);
+  const fullText =
+    "Selamat datang di situs web kami, tempat terbaik untuk mendapatkan informasi lengkap seputar pesan villa, pemesanan transportasi, pembelian merchandise eksklusif, dan pengalaman fitur unggulan kami: donasi untuk terumbu karang. Kami berkomitmen untuk menyediakan layanan terbaik bagi Anda yang ingin merencanakan liburan tanpa repot. Dari informasi rinci tentang berbagai villa hingga opsi transportasi yang nyaman, serta merchandise berkualitas tinggi untuk melengkapi perjalanan Anda, kami siap memenuhi kebutuhan perjalanan Anda. Tidak hanya itu, melalui fitur donasi untuk terumbu karang, Anda dapat berkontribusi dalam menjaga keberlanjutan lingkungan laut yang sangat berharga. Bergabunglah dengan kami di perjalanan tak terlupakan Anda, di mana setiap langkah memberikan dampak positif untuk keberlanjutan lingkungan.";
 
-      {/* Bagian Teks */}
-      <div className={`lg:w-1/2 ${style.AboutTxt} lg:pl-8`}>
-        <h1 className="text-4xl lg:text-5xl font-bold mb-4">About Us</h1>
-        <p className="text-lg leading-relaxed">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis
-          voluptatum illo consectetur, molestiae numquam cum porro atque et
-          inventore expedita magni. Tempora qui hic iusto libero. Vitae,
-          doloremque. Sapiente iure magnam nisi error necessitatibus saepe,
-          dicta alias ad aspernatur harum, sed perspiciatis nulla placeat nam,
-          reiciendis numquam! Vitae illo voluptatum, dignissimos, eum odio ad,
-          dolore vel laborum dolor expedita ullam explicabo nulla neque nostrum
-          nihil reiciendis ut voluptatem doloribus ea impedit dolorum laudantium
-          aut! Officiis veniam dolorem eaque nihil, ex eveniet aliquid
-          recusandae repellat itaque. Sit nulla esse illum quisquam unde
-          laboriosam eligendi blanditiis, necessitatibus itaque iusto quae
-          temporibus deleniti.
-        </p>
+  const toggleReadMore = () => {
+    setDisplayLength(
+      displayLength === initialDisplayLength
+        ? fullText.length
+        : initialDisplayLength
+    );
+  };
+
+  return (
+    <div className="bg-[#F3F5F7]">
+      <div className="container mx-auto ">
+      <div className="flex flex-col lg:flex-row items-center p-4 lg:p-8">
+        <div className={`lg:w-full mb-4 lg:mb-0`}>
+          <Image
+            src="/assets/pulau.png"
+            width={500}
+            height={500}
+            alt="AboutImg"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className={`lg:w-full mb-4 lg:mb-0`}>
+          <h3 className="text-2xl lg:text-3xl font-bold mb-4">About Us</h3>
+          <p className="text-base lg:text-lg xl:text-xl leading-relaxed">
+            {fullText.slice(0, displayLength)}
+            {displayLength === initialDisplayLength &&
+              fullText.length > initialDisplayLength && (
+                <span
+                  onClick={toggleReadMore}
+                  className="text-blue-500 cursor-pointer"
+                >
+                  ... Read More
+                </span>
+              )}
+            {displayLength !== initialDisplayLength && (
+              <span
+                onClick={toggleReadMore}
+                className="text-blue-500 cursor-pointer"
+              >
+                {" "}
+                Read Less
+              </span>
+            )}
+          </p>
+        </div>
       </div>
+    </div>
     </div>
   );
 };

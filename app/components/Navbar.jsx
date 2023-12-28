@@ -5,7 +5,7 @@ import Link from "next/link";
 const Navbar = () => {
   return (
     <>
-      <div className="navbar bg-[#F8F9FA] ">
+      <div className="navbar bg-[#F8F9FA] container mx-auto">
         <div className="navbar-start ">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">

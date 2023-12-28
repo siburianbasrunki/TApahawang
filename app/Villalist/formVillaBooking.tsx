@@ -1,9 +1,10 @@
-"use client"
-
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface VillaData {
+  id: string;
   nama: string;
   deskripsi: string;
   hargaPerMalam: number;
@@ -14,12 +15,76 @@ interface FormVillaBookingProps {
   selectedVilla: VillaData | null;
 }
 
-const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) => {
+const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
+  selectedVilla,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [nama, setNama] = useState("");
+  const [tanggalCheckin, setTanggalCheckin] = useState("");
+  const [tanggalCheckout, setTanggalCheckout] = useState("");
+  const [bukti, setBukti] = useState<File | null>(null);
+  const [alertSuccess, setAlertSuccess] = useState(false);
+
+  
+  const router = useRouter();
+
+  
+  const handleSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+  
+    
+    if (!selectedVilla?.id) {
+      console.error("Invalid villaId");
+      return;
+    }
+  
+    
+    const formData = new FormData();
+    formData.append("file", bukti as File);
+    formData.append("upload_preset", "buktipembayaran");
+    const data = await axios.post(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      formData
+    );
+  
+    await axios.post("/api/villas/booking", {
+      villaID: selectedVilla.id, 
+      tanggalCheckin: tanggalCheckin,
+      tanggalCheckout: tanggalCheckout,
+      bukti: data.data.secure_url,
+      nama: nama,
+      userId: userId,
+    });
+  
+    
+    setNama("");
+    setTanggalCheckin("");
+    setTanggalCheckout("");
+    setBukti(null);
+    setAlertSuccess(true);
+    setIsOpen(false);
+    router.refresh(); 
+  };
 
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const sessionData = await fetch("/api/auth/session").then((res) =>
+          res.json()
+        );
+        setUserId(sessionData.id);
+      } catch (error) {
+        console.error("Error fetching user session data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -48,9 +113,10 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) =>
               </svg>
             </button>
           </div>
+
           {selectedVilla && (
             <div className="mb-4 bg-white p-4 rounded-lg shadow-md flex justify-between items-center">
-              <div className=" mb-2">
+              <div className="mb-2">
                 <h4 className="font-bold text-xl">{selectedVilla.nama}</h4>
                 <h4 className="font-semibold italic text-xl">
                   {selectedVilla.hargaPerMalam.toLocaleString("id-ID", {
@@ -60,13 +126,18 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) =>
                 </h4>
               </div>
               <div className="flex justify-center mb-2">
-                <Image src={selectedVilla.gambar} alt={selectedVilla.nama} height={100} width={100} className="rounded-md" />
+                <Image
+                  src={selectedVilla.gambar}
+                  alt={selectedVilla.nama}
+                  height={100}
+                  width={100}
+                  className="rounded-md"
+                />
               </div>
-              
             </div>
-
           )}
-          <form>
+
+          <form onSubmit={handleSubmit}>
             <div className="form-control">
               <label className="label font-bold" htmlFor="nama">
                 Nama
@@ -76,6 +147,8 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) =>
                 id="nama"
                 className="input input-bordered"
                 placeholder="Masukkan nama Anda"
+                value={nama}
+                onChange={(e) => setNama(e.target.value)}
               />
             </div>
 
@@ -87,6 +160,8 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) =>
                 type="date"
                 id="checkIn"
                 className="input input-bordered"
+                value={tanggalCheckin}
+                onChange={(e) => setTanggalCheckin(e.target.value)}
               />
             </div>
 
@@ -98,6 +173,8 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) =>
                 type="date"
                 id="checkOut"
                 className="input input-bordered"
+                value={tanggalCheckout}
+                onChange={(e) => setTanggalCheckout(e.target.value)}
               />
             </div>
 
@@ -110,6 +187,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) =>
                   type="file"
                   id="buktiPembayaran"
                   className="file-input"
+                  onChange={(e) => setBukti(e.target.files?.[0] || null)}
                 />
               </div>
             </div>
@@ -122,7 +200,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({ selectedVilla }) =>
               >
                 Tutup
               </button>
-              <button type="button" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary">
                 Submit
               </button>
             </div>

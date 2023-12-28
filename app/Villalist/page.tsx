@@ -6,6 +6,7 @@ import FormVillaBooking from "./formVillaBooking";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 interface VillaData {
+  id: string;
   nama: string;
   deskripsi: string;
   hargaPerMalam: number;

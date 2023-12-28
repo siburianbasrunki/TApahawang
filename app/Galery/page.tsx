@@ -13,13 +13,7 @@ interface GaleriResponse {
   galeries: GaleriData[];
 }
 
-const SkeletonLoader = () => (
-  <div className="bg-gray-200 p-4 rounded-md w-full md:w-80 animate-pulse">
-    <div className="w-full h-48 bg-gray-300 mb-4"></div>
-  </div>
-);
 const Galery = () => {
-  const [windowWidth, setWindowWidth] = useState(0);
   const [galeries, setGaleries] = useState<GaleriResponse | null>(null);
 
   useEffect(() => {
@@ -33,25 +27,14 @@ const Galery = () => {
       }
     };
 
-    setWindowWidth(window.innerWidth);
-
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-
     fetchData();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
 
   return (
     <>
-      <div>
-        <Navbar />
-      </div>
-      <div className="md:container mx-auto sm:container p-4">
-        <div className="text-3xl font-bold mb-4">Galery Konsevasi</div>
+      <Navbar />
+      <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold mb-4">Galery Konservasi</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {galeries ? (
@@ -59,21 +42,23 @@ const Galery = () => {
               galeries.galeries.map((galeri, index) => (
                 <div
                   key={index}
-                  className="relative overflow-hidden rounded-md"
+                  className="overflow-hidden bg-gray-300 rounded-lg"
                 >
                   <Image
                     src={galeri.gambar}
-                    alt={galeri.title}
-                    layout="responsive"
-                    height={400}
                     width={400}
+                    height={400}
+                    alt={galeri.title}
                     objectFit="cover"
-                    className="transition-transform transform hover:scale-110"
+                    className="w-full h-40 md:h-48 lg:h-56 object-cover"
                   />
+                  <div className="p-4">
+                    <h2 className="text-lg font-semibold">{galeri.title}</h2>
+                  </div>
                 </div>
               ))
             ) : (
-              <p>tidak ada foto konsevasi</p>
+              <p>tidak ada foto konservasi</p>
             )
           ) : (
             Array.from({ length: 8 }, (_, index) => (
@@ -82,11 +67,15 @@ const Galery = () => {
           )}
         </div>
       </div>
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </>
   );
 };
+
+const SkeletonLoader = () => (
+  <div className="bg-gray-200 p-4 rounded-md w-full md:w-80 animate-pulse">
+    <div className="w-full h-48 bg-gray-300 mb-4"></div>
+  </div>
+);
 
 export default Galery;
