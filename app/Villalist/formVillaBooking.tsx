@@ -26,45 +26,41 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
   const [bukti, setBukti] = useState<File | null>(null);
   const [alertSuccess, setAlertSuccess] = useState(false);
 
-  
   const router = useRouter();
 
-  
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-  
-    
+
     if (!selectedVilla?.id) {
       console.error("Invalid villaId");
       return;
     }
-  
-    
+
     const formData = new FormData();
     formData.append("file", bukti as File);
     formData.append("upload_preset", "buktipembayaran");
+
     const data = await axios.post(
       `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
       formData
     );
-  
+
     await axios.post("/api/villas/booking", {
-      villaID: selectedVilla.id, 
+      villaId: selectedVilla?.id,
       tanggalCheckin: tanggalCheckin,
       tanggalCheckout: tanggalCheckout,
       bukti: data.data.secure_url,
       nama: nama,
       userId: userId,
     });
-  
-    
+
     setNama("");
     setTanggalCheckin("");
     setTanggalCheckout("");
     setBukti(null);
     setAlertSuccess(true);
+    router.refresh();
     setIsOpen(false);
-    router.refresh(); 
   };
 
   const handleModal = () => {
@@ -73,14 +69,11 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const sessionData = await fetch("/api/auth/session").then((res) =>
-          res.json()
-        );
-        setUserId(sessionData.id);
-      } catch (error) {
-        console.error("Error fetching user session data:", error);
-      }
+      const sessionData = await fetch("/api/auth/session").then((res) =>
+        res.json()
+      );
+
+      setUserId(sessionData.id);
     };
 
     fetchData();

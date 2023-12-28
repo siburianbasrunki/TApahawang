@@ -9,16 +9,19 @@ export const POST = async (request: Request) => {
     const bookingVilla = await prisma.bookingVilla.create({
       data: {
         villaId: body.villaId,
-        tanggalCheckin: body.tanggalCheckin,
-        tanggalCheckout: body.tanggalCheckout,
+        tanggalCheckin: body.tanggalCheckin + "T00:00:00.000Z",
+        tanggalCheckout: body.tanggalCheckout + "T00:00:00.000Z",
         bukti: body.bukti,
-        userId:body.userId
+        userId: body.userId,
       },
     });
 
     return NextResponse.json(bookingVilla);
   } catch (error) {
     console.error("Error creating villa booking:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 };
