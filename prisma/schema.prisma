@@ -13,7 +13,7 @@ model User {
   name     String
   email    String @unique
   password String
-  role     Role     @default(USER)
+  role     Role   @default(USER)
 
   bookingsVilla        BookingVilla[]
   bookingsTransportasi BookingTransportasiLaut[]
@@ -75,8 +75,10 @@ model BookingTransportasiLaut {
   userId           String
   transportasiId   String
   tanggalCheckin   DateTime
+  nama             String
+  noTelepon        String
   jumlahPenumpang  Int
-  totalHarga       Float
+  buktiTranfer     String
   user             User             @relation(fields: [userId], references: [id])
   transportasiLaut TransportasiLaut @relation(fields: [transportasiId], references: [id])
 }
@@ -97,7 +99,7 @@ model Donasi {
   tanggalDonasi   String
   buktiPembayaran String
   nomortelepon    String
-  gambar          String       
+  gambar          String
   user            User          @relation(fields: [userId], references: [id])
   terumbuKarang   TerumbuKarang @relation(fields: [terumbuKarangId], references: [id])
 }

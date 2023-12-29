@@ -4,15 +4,18 @@ import Image from "next/image";
 import FormTransportBooking from "./FormTranportBooking";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { MdAirlineSeatReclineNormal } from "react-icons/md";
 interface TransportasiData {
+  id: string;
   nama: string;
   deskripsi: string;
   harga: number;
   gambar: string;
+  ketersediaan: number;
 }
 
 interface TransportasiResponse {
-  transportasi: TransportasiData[];
+  transportasis: TransportasiData[];
 }
 
 const SkeletonLoader = () => (
@@ -68,9 +71,9 @@ const TransportasiComponent = () => {
         <h1 className="text-3xl font-bold mb-4">Transportasi</h1>
 
         {transportasis ? (
-          transportasis?.transportasi?.length > 0 ? (
+          transportasis?.transportasis?.length > 0 ? (
             <div className="flex flex-wrap -mx-4">
-              {transportasis.transportasi.map((transportasi, index) => (
+              {transportasis.transportasis.map((transportasi, index) => (
                 <div
                   className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4"
                   key={index}
@@ -94,8 +97,15 @@ const TransportasiComponent = () => {
                       <h2 className="text-xl font-bold mb-2">
                         {transportasi.nama}
                       </h2>
-                      <p className="text-gray-600 mb-4">
+                      <p className="text-gray-600 mb-2">
                         {transportasi.deskripsi}
+                      </p>
+
+                      <p className="text-gray-600 mb-2">
+                        Jlh Penumpang :{" "}
+                        <span className="font-bold">
+                          {transportasi.ketersediaan}
+                        </span>
                       </p>
                       <p className="text-blue-500 font-semibold">
                         {transportasi.harga.toLocaleString("id-ID", {

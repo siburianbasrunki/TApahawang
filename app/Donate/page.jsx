@@ -4,7 +4,6 @@ import React from "react";
 import style from "./donate.module.css";
 import bgDonate from "../../public/assets/bgdonate.png";
 import Donateft from "../../public/assets/donateft.png";
-import FormDonate from "./formDonate";
 import { prisma } from "@/lib/prisma";
 import AddDonasi from "../Admin/Donasi/addDonasi";
 import ListTerumbu from "./ListTerumbu";

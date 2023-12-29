@@ -9,10 +9,12 @@ import Volunteer from "./Volunteer/Volunteer";
 import Merchandise from "../Admin/Merchandise/page";
 import Paket from "../Admin/Paket/page";
 import Galery from "./Galery/page";
+import BookingVillas from "../Admin/BookingVilla/page"
 const componentMap = {
   "/Admin/Donasi": <Donasi />,
   "/Admin/Transportasi": <Transportasi />,
   "/Admin/Villa": <Villa />,
+  "/Admin/BookingVilla": <BookingVillas />,
   "/Admin/Volunteer": <Volunteer />,
   "/Admin/Merchandise": <Merchandise />,
   "/Admin/Paket": <Paket/>,
@@ -60,6 +62,15 @@ const DashboardUser = () => {
                 }`}
               >
                 Villa
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link href="/Admin/BookingVillas"
+                className={`cursor-pointer ${
+                  pathName === "/Admin/BookingVillas" ? "text-[#030DFF]" : ""
+                }`}
+              >
+                Data Booking Villas
             </Link>
           </li>
           <li className="mb-2">

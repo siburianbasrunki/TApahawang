@@ -3,7 +3,7 @@ import React, { useEffect, useState, SyntheticEvent } from "react";
 import type { TerumbuKarang } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Image from "next/image";
+import Swal from 'sweetalert2';
 
 const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
   const [jlhDonasi, setJlhDonasi] = useState("");
@@ -12,7 +12,6 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
   const [terumbuKarang, setTerumbuKarang] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
-  const [alertSuccess, setAlertSuccess] = useState(false); // State untuk alert
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -40,9 +39,14 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
     setJlhDonasi("");
     setBukti(null);
     setTelepon("");
-    setAlertSuccess(true); // Menampilkan alert
     router.refresh();
     setIsOpen(false);
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Donasi Berhasil!',
+      text: 'Informasi Selanjutnya Akan Dikirim Melalui WhatsApp. Cek riwayat donasi Anda di profil.',
+    });
   };
 
   const handleModal = () => {
@@ -131,29 +135,6 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
           </form>
         </div>
       </div>
-
-      {/* Alert for Success */}
-      {alertSuccess && (
-        <div role="alert" className="alert alert-success">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="stroke-current shrink-0 h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span>
-            Donasi Berhasil, Informasi Selanjutnya Akan Dikirim Melalui
-            WhatsApp.Cek riwayat donasi Anda di profile
-          </span>
-        </div>
-      )}
     </div>
   );
 };

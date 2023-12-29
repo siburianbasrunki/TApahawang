@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import bgVolunteer from "../../public/assets/bgdonate.png";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Swal from 'sweetalert2';
 
 const Volunteer = () => {
   const [namaOrganisasi, setNamaOrganisasi] = useState("");
@@ -21,7 +22,8 @@ const Volunteer = () => {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     try {
-      setIsLoading(true); // Set loading to true during form submission
+      setIsLoading(true);
+
       await axios.post("/api/volunteer", {
         namaOrganisasi: namaOrganisasi,
         asal: asal,
@@ -29,9 +31,14 @@ const Volunteer = () => {
         noTelepon: noTelepon,
         surat: surat,
       });
-      setSuccessMessage(
-        "Pendaftaran berhasil! Terima kasih atas partisipasinya."
-      );
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Pendaftaran Berhasil!',
+        text: 'Selanjutnya akan di chat melalui WhatsApp jika Kualifikasi Anda Lengkap',
+      });
+
+      setSuccessMessage("");
       setNamaOrganisasi("");
       setAsal("");
       setEmail("");
@@ -39,11 +46,15 @@ const Volunteer = () => {
       setSurat("");
       router.refresh();
     } catch (error) {
-      // Handle error if submission fails
       console.error("Error submitting form:", error);
-      // You may want to set an error state and display an error message
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Terjadi kesalahan saat mengirim formulir. Silakan coba lagi .',
+      });
     } finally {
-      setIsLoading(false); // Set loading back to false after form submission, whether success or failure
+      setIsLoading(false);
     }
   };
 
@@ -106,7 +117,7 @@ const Volunteer = () => {
             </div>
             <div>
               <label
-                htmlFor="teamName"
+                htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
                 Email
@@ -123,7 +134,7 @@ const Volunteer = () => {
             </div>
             <div>
               <label
-                htmlFor="teamName"
+                htmlFor="notelepon"
                 className="block text-sm font-medium text-gray-700"
               >
                 No Telepon/WhatsApp
@@ -141,7 +152,7 @@ const Volunteer = () => {
             </div>
             <div>
               <label
-                htmlFor="teamName"
+                htmlFor="asal"
                 className="block text-sm font-medium text-gray-700"
               >
                 Asal
@@ -156,10 +167,9 @@ const Volunteer = () => {
                 className="w-full md:w-1/2 px-3 py-2 mt-1 rounded-md border border-blue-500 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
             </div>
-
             <div>
               <label
-                htmlFor="teamName"
+                htmlFor="link"
                 className="block text-sm font-medium text-gray-700"
               >
                 Link Berkas Pendukung Volunteer
@@ -179,7 +189,7 @@ const Volunteer = () => {
           <button
             type="submit"
             className={`mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 ${
-              isLoading ? "opacity-50 cursor-not-allowed" : "" 
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
             disabled={isLoading}
           >

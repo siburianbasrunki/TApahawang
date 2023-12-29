@@ -9,6 +9,7 @@ import Volunteer from "./Volunteer/page";
 import Donasi from "./Donasi/page";
 import Paket from "./Paket/page";
 import Galery from "../Admin/Galery/page";
+import BookingVilla from "../Admin/BookingVilla/page"
 const Dashboard = () => {
   const [activePage, setActivePage] = React.useState("Villa");
 
@@ -26,6 +27,12 @@ const Dashboard = () => {
             onClick={() => handleChangePage("Villa")}
           >
             Villa
+          </li>
+          <li
+            className="px-4 py-2 cursor-pointer"
+            onClick={() => handleChangePage("BookingVilla")}
+          >
+            Data Booking Villa
           </li>
 
           <li
@@ -82,6 +89,7 @@ const Dashboard = () => {
           {activePage === "Donasi" && <Donasi />}
           {activePage === "Transportasi" && <Transportasi />}
           {activePage === "Villa" && <Villa />}
+          {activePage === "BookingVilla" && <BookingVilla />}
           {activePage === "Merchandise" && <Merchandise />}
           {activePage === "Karang" && <Karang />}
           {activePage === "Volunteer" && <Volunteer />}

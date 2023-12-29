@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import imgVilla from "../../../public/assets/villa.png";
 import Link from "next/link";
 import AddVilla from "./addVilla";
 import DeleteVilla from "./deleteVilla";

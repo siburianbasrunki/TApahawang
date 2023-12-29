@@ -1,7 +1,9 @@
+"use client";
 import Image from "next/image";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 interface VillaData {
   id: string;
@@ -36,31 +38,48 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", bukti as File);
-    formData.append("upload_preset", "buktipembayaran");
+    try {
+      const formData = new FormData();
+      formData.append("file", bukti as File);
+      formData.append("upload_preset", "buktipembayaran");
 
-    const data = await axios.post(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      formData
-    );
+      const data = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
 
-    await axios.post("/api/villas/booking", {
-      villaId: selectedVilla?.id,
-      tanggalCheckin: tanggalCheckin,
-      tanggalCheckout: tanggalCheckout,
-      bukti: data.data.secure_url,
-      nama: nama,
-      userId: userId,
-    });
+      await axios.post("/api/villas/booking", {
+        villaId: selectedVilla?.id,
+        tanggalCheckin: tanggalCheckin,
+        tanggalCheckout: tanggalCheckout,
+        bukti: data.data.secure_url,
+        nama: nama,
+        userId: userId,
+      });
 
-    setNama("");
-    setTanggalCheckin("");
-    setTanggalCheckout("");
-    setBukti(null);
-    setAlertSuccess(true);
-    router.refresh();
-    setIsOpen(false);
+      setNama("");
+      setTanggalCheckin("");
+      setTanggalCheckout("");
+      setBukti(null);
+      setAlertSuccess(true);
+
+      Swal.fire({
+        icon: "success",
+        title: "Pesan Villa Berhasil",
+        text: "Info Pemesanan Akan di Kirim Lewat Nomor WhatsApp Anda",
+      });
+
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during booking:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Pemesanan Gagal",
+        text: "Cek Apakah Anda sudah Login Atau Daftar Akun",
+      });
+    }
   };
 
   const handleModal = () => {

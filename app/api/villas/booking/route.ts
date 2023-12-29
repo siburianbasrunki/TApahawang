@@ -25,3 +25,8 @@ export const POST = async (request: Request) => {
     );
   }
 };
+
+export const GET = async (req: NextRequest) => {
+  const bookings = await prisma.bookingVilla.findMany({});
+  return NextResponse.json({ bookings });
+};
