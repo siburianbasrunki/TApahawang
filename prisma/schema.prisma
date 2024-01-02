@@ -108,8 +108,12 @@ model Pembelian {
   id               String      @id @default(uuid())
   userId           String
   merchandiseId    String
+  nama             String
   jumlahBarang     Int
-  totalHarga       Float
+  Alamat           String
+  totalHarga       Int
+  buktiTranfer     String
+  noTelepon        String
   tanggalPembelian DateTime
   user             User        @relation(fields: [userId], references: [id])
   merchandise      Merchandise @relation(fields: [merchandiseId], references: [id])
