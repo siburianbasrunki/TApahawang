@@ -60,7 +60,7 @@ const Donasi = async () => {
                   <tr key={donasi.id} className="border-b">
                     <td className="px-6 py-4 text-gray-700">{donasi.id}</td>
                     <td className="px-6 py-4 text-gray-700">
-                      {donasi.user.name}
+                      {donasi.user ? donasi.user.name : "Unknown User"}
                     </td>
                     <td className="px-6 py-4 text-gray-700">
                       Rp. {donasi.jumlahDonasi}
