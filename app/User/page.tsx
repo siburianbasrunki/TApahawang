@@ -1,5 +1,4 @@
 "use client";
-// Importing necessary modules and components
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import axios from "axios";
@@ -21,35 +20,61 @@ interface Donasi {
   userId: string;
   gambar: string;
 }
+
+interface BoVillas {
+  id: string;
+  villaId: string;
+  tanggalCheckin: string;
+  tanggalCheckout: string;
+}
+
 const ProfilePage: NextPage = () => {
   const [session, setSession] = useState<{ user: { name: string } } | null>(
     null
   );
-
   const [userId, setUserId] = useState("");
-
   const [showBookingHistory, setShowBookingHistory] = useState(true);
+  const [dataBoVillas, setDataBoVillas] = useState<BoVillas[]>([]);
   const [dataDonasi, setDataDonasi] = useState<Donasi[]>([]);
 
   const fetchData = async () => {
-    const sessionData = await fetch("/api/auth/session").then((res) =>
-      res.json()
-    );
-    setUserId(sessionData.id);
-    setSession(sessionData);
+    try {
+      const sessionData = await fetch("/api/auth/session").then((res) =>
+        res.json()
+      );
+      setUserId(sessionData.id);
+      setSession(sessionData);
+    } catch (error) {
+      console.error("Error fetching session data:", error);
+    }
   };
 
-  const fetcDataDonasi = async (userId: string) => {
-    const data_donasi = await axios.post("/api/donasi/user", {
-      userId: userId,
-    });
-    setDataDonasi([...data_donasi.data.donasis]);
-    // console.log(data_donasi.data.donasis);
+  const fetchDataDonasi = async (userId: string) => {
+    try {
+      const data_donasi = await axios.post("/api/donasi/user", {
+        userId: userId,
+      });
+      setDataDonasi([...data_donasi.data.donasis]);
+    } catch (error) {
+      console.error("Error fetching donation data:", error);
+    }
+  };
+
+  const fetchDataBoVillas = async (userId: string) => {
+    try {
+      const data_villa = await axios.post("/api/villas/user", {
+        userId: userId,
+      });
+      setDataBoVillas([...data_villa.data.bovillas]);
+    } catch (error) {
+      console.error("Error fetching booking data:", error);
+    }
   };
 
   useEffect(() => {
     fetchData();
-    fetcDataDonasi(userId);
+    fetchDataDonasi(userId);
+    fetchDataBoVillas(userId);
   }, [userId]);
 
   if (!session) {
@@ -99,11 +124,25 @@ const ProfilePage: NextPage = () => {
             {showBookingHistory ? (
               <div className="bg-white p-4 rounded shadow">
                 <p>Riwayat Booking</p>
+                {dataBoVillas.length > 0 ? (
+                  dataBoVillas.map((bovilla) => (
+                    <div
+                      key={bovilla.id}
+                      className="bg-base-200 mb-4 p-4 sm:p-6 lg:p-8"
+                    >
+                      <p>ID Villa: {bovilla.villaId}</p>
+                      <p>Check-in: {bovilla.tanggalCheckin}</p>
+                      <p>Check-out: {bovilla.tanggalCheckout}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>Tidak ada riwayat booking.</p>
+                )}
               </div>
             ) : (
               <div className="bg-white p-4 rounded shadow">
                 <p className="text-2xl font-bold mb-4">Riwayat Donasi</p>
-                {dataDonasi.length > 0 &&
+                {dataDonasi.length > 0 ? (
                   dataDonasi.map((donasi) => (
                     <div
                       key={donasi.id}
@@ -143,7 +182,7 @@ const ProfilePage: NextPage = () => {
                           <p className="text-lg py-2">
                             <span className="font-semibold">
                               Jumlah Donasi:
-                            </span>
+                            </span>{" "}
                             {donasi.jumlahDonasi}
                             <br />
                             <span className="font-semibold">
@@ -154,7 +193,10 @@ const ProfilePage: NextPage = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <p>Tidak ada riwayat donasi.</p>
+                )}
               </div>
             )}
           </div>
