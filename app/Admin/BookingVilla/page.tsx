@@ -9,6 +9,7 @@ interface BookingVillaData {
   tanggalCheckout: string;
   bukti: string;
   userId: string;
+  totalbayar: string;
 }
 interface BookingVillaResponse {
   bookings: BookingVillaData[];
@@ -105,6 +106,7 @@ const BookingVilla = () => {
                   <th className="px-4 py-3 text-left">Check In</th>
                   <th className="px-4 py-3 text-left">Check Out</th>
                   <th className="px-4 py-3 text-left">Bukti Pembayaran</th>
+                  <th className="px-4 py-3 text-left">Total Pembayaran</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
@@ -129,6 +131,9 @@ const BookingVilla = () => {
                         width={100}
                         height={100}
                       />
+                    </td>
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                      {booking.totalbayar}
                     </td>
                   </tr>
                 ))}

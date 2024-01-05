@@ -13,6 +13,7 @@ export const POST = async (request: Request) => {
         tanggalCheckout: body.tanggalCheckout + "T00:00:00.000Z",
         bukti: body.bukti,
         userId: body.userId,
+        totalbayar :body.totalbayar,
       },
     });
 

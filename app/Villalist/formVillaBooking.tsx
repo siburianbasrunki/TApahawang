@@ -27,7 +27,8 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
   const [tanggalCheckout, setTanggalCheckout] = useState("");
   const [bukti, setBukti] = useState<File | null>(null);
   const [alertSuccess, setAlertSuccess] = useState(false);
-
+  const [totalBayar, setTotalBayar] = useState("");
+  const [jumlahHari, setJumlahHari] = useState<number>(0);
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -55,6 +56,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
         bukti: data.data.secure_url,
         nama: nama,
         userId: userId,
+        totalbayar: totalBayar,
       });
 
       setNama("");
@@ -62,7 +64,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
       setTanggalCheckout("");
       setBukti(null);
       setAlertSuccess(true);
-
+      setTotalBayar("");
       Swal.fire({
         icon: "success",
         title: "Pesan Villa Berhasil",
@@ -86,6 +88,14 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
     setIsOpen(!isOpen);
   };
 
+  const hitungJumlahHari = () => {
+    const checkinDate = new Date(tanggalCheckin);
+    const checkoutDate = new Date(tanggalCheckout);
+    const differenceInTime = checkoutDate.getTime() - checkinDate.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    setJumlahHari(differenceInDays);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const sessionData = await fetch("/api/auth/session").then((res) =>
@@ -97,6 +107,23 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    hitungJumlahHari();
+  }, [tanggalCheckin, tanggalCheckout]);
+
+  useEffect(() => {
+    if (selectedVilla) {
+      const hargaPerMalam = selectedVilla.hargaPerMalam;
+      const total = hargaPerMalam * jumlahHari;
+      setTotalBayar(
+        total.toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        })
+      );
+    }
+  }, [jumlahHari, selectedVilla]);
 
   return (
     <div>
@@ -189,7 +216,14 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
                 onChange={(e) => setTanggalCheckout(e.target.value)}
               />
             </div>
-
+            <div>
+              <label className="label font-bold" htmlFor="jumlahbarang">
+                Total Harga
+              </label>
+              <div className="flex items-center">
+                <span className="text-lg mr-2">{totalBayar}</span>
+              </div>
+            </div>
             <div className="form-control">
               <label className="label font-bold" htmlFor="buktiPembayaran">
                 Upload Bukti Pembayaran

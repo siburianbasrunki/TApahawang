@@ -67,6 +67,7 @@ CREATE TABLE "BookingVilla" (
     "tanggalCheckin" TIMESTAMP(3) NOT NULL,
     "tanggalCheckout" TIMESTAMP(3) NOT NULL,
     "bukti" TEXT NOT NULL,
+    "totalbayar" TEXT NOT NULL,
 
     CONSTRAINT "BookingVilla_pkey" PRIMARY KEY ("id")
 );
