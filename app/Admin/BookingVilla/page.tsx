@@ -3,7 +3,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import LaporanVilla from "./laporanvilla";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import dynamic from "next/dynamic";
+// Import PDFDownloadLink dynamically (only on the client side)
+const DynamicPDFDownloadLink = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
+  { ssr: false }
+);
+
 interface BookingVillaData {
   villaId: string;
   tanggalCheckin: string;
@@ -95,7 +101,7 @@ const BookingVilla = () => {
               </div>
             </div>
             <div>
-              <PDFDownloadLink
+              <DynamicPDFDownloadLink
                 document={
                   <LaporanVilla bookingData={bookingVillas?.bookings || []} />
                 }
@@ -108,7 +114,7 @@ const BookingVilla = () => {
                     <button>Download File</button>
                   )
                 }
-              </PDFDownloadLink>
+              </DynamicPDFDownloadLink>
             </div>
           </div>
         </div>

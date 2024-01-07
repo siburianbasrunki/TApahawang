@@ -8,6 +8,7 @@ import {
   View,
 } from "@react-pdf/renderer";
 
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
