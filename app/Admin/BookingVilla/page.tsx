@@ -2,7 +2,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
-
+import LaporanVilla from "./laporanvilla";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 interface BookingVillaData {
   villaId: string;
   tanggalCheckin: string;
@@ -92,6 +93,22 @@ const BookingVilla = () => {
               <div>
                 <FiRefreshCcw />
               </div>
+            </div>
+            <div>
+              <PDFDownloadLink
+                document={
+                  <LaporanVilla bookingData={bookingVillas?.bookings || []} />
+                }
+                fileName="laporanbookingvilla"
+              >
+                {({ loading }) =>
+                  loading ? (
+                    <button>Loading Document...</button>
+                  ) : (
+                    <button>Download File</button>
+                  )
+                }
+              </PDFDownloadLink>
             </div>
           </div>
         </div>
