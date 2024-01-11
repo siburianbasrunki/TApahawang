@@ -10,6 +10,7 @@ export const POST = async (request: Request) => {
       harga: body.harga,
       gambar: body.gambar,
       ketersediaan: body.ketersediaan,
+      noTelepon : body.noTelepon
     },
   });
   return NextResponse.json(merch);

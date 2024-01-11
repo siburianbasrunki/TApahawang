@@ -10,15 +10,15 @@ type Merchandise = {
   harga: number;
   gambar: string;
   ketersediaan: number;
+  noTelepon:string;
 };
 
 const UpdateMerch = ({ merch }: { merch: Merchandise }) => {
   const [nama, setNama] = useState(merch.nama);
   const [deskripsi, setDeskripsi] = useState(merch.deskripsi);
   const [harga, setHarga] = useState(merch.harga);
-  
   const [ketersediaan, setKetersediaan] = useState(merch.ketersediaan);
-
+const [noTelepon,setNoTelepon] = useState(merch.noTelepon);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -29,6 +29,7 @@ const UpdateMerch = ({ merch }: { merch: Merchandise }) => {
       deskripsi: deskripsi,
       harga: Number(harga),
       ketersediaan: Number(ketersediaan),
+      noTelepon:noTelepon,
     });
 
     router.refresh();
@@ -75,6 +76,16 @@ const UpdateMerch = ({ merch }: { merch: Merchandise }) => {
                 onChange={(e) => setHarga(Number(e.target.value))}
                 className="input input-bordered"
                 placeholder="harga"
+              />
+            </div>
+            <div className="form-control w-full">
+              <label className="label font-bold">Nomor Telepon/WA</label>
+              <input
+                type="text"
+                value={noTelepon}
+                onChange={(e) => setNoTelepon(e.target.value)}
+                className="input input-bordered"
+                placeholder="nomor telepon/Wa"
               />
             </div>
             

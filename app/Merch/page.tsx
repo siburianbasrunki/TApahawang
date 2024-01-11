@@ -1,14 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import FormMerch from "./FormMerch";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { FaWhatsapp } from "react-icons/fa";
+import Link from "next/link";
+
 interface MerchandiseData {
   nama: string;
   deskripsi: string;
   harga: number;
   gambar: string;
+  noTelepon: string;
 }
 
 interface MerchResponse {
@@ -97,7 +100,13 @@ const MerchComponent = () => {
                         })}
                       </p>
 
-                      <FormMerch selectedMerch={selectedMerch} />
+                      <Link
+                        href={`https://wa.me/${merch.noTelepon}`}
+                        className="flex items-center justify-center text-white bg-green-500 py-2 px-3 mt-4 rounded"
+                      >
+                        <FaWhatsapp className="mr-2" />
+                        Pesan Via Chat WA
+                      </Link>
                     </div>
                   </div>
                 </div>

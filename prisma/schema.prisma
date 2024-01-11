@@ -57,6 +57,7 @@ model Merchandise {
   harga        Float
   gambar       String
   ketersediaan Int
+  noTelepon    String
   purchases    Pembelian[]
 }
 

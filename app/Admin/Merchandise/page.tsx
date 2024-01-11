@@ -15,6 +15,7 @@ interface MerchData {
   harga: number;
   gambar: string;
   ketersediaan: number;
+  noTelepon : string;
 }
 
 interface MerchResponse {
@@ -31,6 +32,7 @@ const SkeletonTabel = () => {
             <th className="px-4 py-3 text-left">Nama Barang</th>
             <th className="px-4 py-3 text-left">Deskripsi</th>
             <th className="px-4 py-3 text-left">Harga (Rupiah)</th>
+            <th className="px-4 py-3 text-left">Nomor Telepon </th>
             <th className="px-4 py-3 text-left">Gambar Barang</th>
             <th className="px-4 py-3 text-left">Update</th>
             <th className="px-4 py-3 text-left">Hapus</th>
@@ -144,6 +146,7 @@ const Merchandise = () => {
                   </th>
                   <th className="px-4 py-3 text-left">Deskripsi</th>
                   <th className="px-4 py-3 text-left">Gambar Barang</th>
+                  <th className="px-4 py-3 text-left">Nomor Telepon</th>
                   <th className="px-4 py-3 text-left">Harga (Rupiah)</th>
                   <th className="px-4 py-3 text-left">Update</th>
                   <th className="px-4 py-3 text-left">Hapus</th>
@@ -165,6 +168,10 @@ const Merchandise = () => {
                         width={100}
                         height={100}
                       />
+                    </td>
+                    
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                      {merch.noTelepon}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {merch.harga}

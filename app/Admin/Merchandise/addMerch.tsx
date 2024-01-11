@@ -9,6 +9,7 @@ const AddMerch = () => {
   const [harga, setHarga] = useState('');
   const [gambar, setGambar] = useState<File | null>(null);
   const [ketersediaan, setKetersediaan] = useState('');
+  const [noTelepon,setNoTelepon] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -30,6 +31,7 @@ const AddMerch = () => {
         deskripsi: deskripsi,
         harga: Number(harga),
         gambar: data?.secure_url || null,
+        noTelepon : noTelepon,
         ketersediaan: Number(ketersediaan),
       });
 
@@ -38,6 +40,7 @@ const AddMerch = () => {
       setHarga('');
       setGambar(null);
       setKetersediaan('');
+      setNoTelepon('');
       router.refresh();
       setIsOpen(false);
     } catch (error) {
@@ -86,6 +89,16 @@ const AddMerch = () => {
                 onChange={(e) => setHarga(e.target.value)}
                 className="input input-bordered"
                 placeholder="Price"
+              />
+            </div>
+            <div className="form-control w-full">
+              <label className="label font-bold">Nomor Telepon/WA </label>
+              <input
+                type="number"
+                value={noTelepon}
+                onChange={(e) => setNoTelepon(e.target.value)}
+                className="input input-bordered"
+                placeholder="Nomor Telepon/WA"
               />
             </div>
             <div className="form-control w-full">
