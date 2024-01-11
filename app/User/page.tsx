@@ -6,7 +6,13 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
+import dynamic from "next/dynamic";
+import PdfTiketFile from "./pdftiketvilla";
+// Import PDFDownloadLink dynamically (only on the client side)
+const DynamicPDFDownloadLink = dynamic(
+  () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
+  { ssr: false }
+);
 interface Donasi {
   id: string;
   user: string;
@@ -70,6 +76,10 @@ const ProfilePage: NextPage = () => {
       console.error("Error fetching booking data:", error);
     }
   };
+  function formatDate(dateString: string): string {
+    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("id-ID", options);
+}
 
   useEffect(() => {
     fetchData();
@@ -81,7 +91,7 @@ const ProfilePage: NextPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <p className="text-blue-500 text-2xl font-bold">
-          Anda belum masuk. Silahkan Login atau Daftar Akun.
+          Please Wait.... Sedang Cek Data
         </p>
       </div>
     );
@@ -123,20 +133,45 @@ const ProfilePage: NextPage = () => {
           <div className="mt-4">
             {showBookingHistory ? (
               <div className="bg-white p-4 rounded shadow">
-                <p>Riwayat Booking</p>
+                <h2 className="text-2xl font-bold mb-4">Riwayat Booking</h2>
                 {dataBoVillas.length > 0 ? (
                   dataBoVillas.map((bovilla) => (
                     <div
                       key={bovilla.id}
-                      className="bg-base-200 mb-4 p-4 sm:p-6 lg:p-8"
+                      className="bg-gray-100 mb-6 p-6 rounded-lg shadow-md"
                     >
-                      <p>ID Villa: {bovilla.villaId}</p>
-                      <p>Check-in: {bovilla.tanggalCheckin}</p>
-                      <p>Check-out: {bovilla.tanggalCheckout}</p>
+                      <p className="text-lg font-semibold mb-2">
+                        ID Villa: {bovilla.villaId}
+                      </p>
+                      <p className="mb-2">
+                        Check-in: {formatDate(bovilla.tanggalCheckin)}
+                      </p>
+                      <p className="mb-4">
+                        Check-out: {formatDate(bovilla.tanggalCheckout)}
+                      </p>
+                      <div className="flex justify-end">
+                        <DynamicPDFDownloadLink
+                          document={<PdfTiketFile bookingData={bovilla} />}
+                          fileName="tiketvillapahawang"
+                        >
+                          {({ loading }) => (
+                            <button
+                              className={`px-4 py-2 bg-blue-500 text-white rounded ${
+                                loading ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                              disabled={loading}
+                            >
+                              {loading
+                                ? "Loading Document..."
+                                : "Download File"}
+                            </button>
+                          )}
+                        </DynamicPDFDownloadLink>
+                      </div>
                     </div>
                   ))
                 ) : (
-                  <p>Tidak ada riwayat booking.</p>
+                  <p className="text-gray-500">Tidak ada riwayat booking.</p>
                 )}
               </div>
             ) : (

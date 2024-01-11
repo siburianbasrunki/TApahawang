@@ -8,7 +8,18 @@ import {
   View,
 } from "@react-pdf/renderer";
 
+interface BookingVillaData {
+  villaId: string;
+  tanggalCheckin: string;
+  tanggalCheckout: string;
+  bukti: string;
+  userId: string;
+  totalbayar: string;
+}
 
+interface LaporanVillaProps {
+  bookingData: BookingVillaData[];
+}
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
@@ -64,18 +75,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const formatDate = (dateString) => {
-  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+const formatDate = (dateString: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
-const LaporanVilla = ({ bookingData }) => {
+const LaporanVilla: React.FC<LaporanVillaProps> = ({ bookingData }) => {
   if (!bookingData || bookingData.length === 0) {
     return <Text>Data booking tidak tersedia</Text>;
   }
 
   const totalPendapatan = bookingData.reduce((acc, booking) => {
-    const totalBayar = parseFloat(booking.totalbayar.replace(/[^0-9.-]+/g, "").replace(",", ""));
+    const totalBayar = parseFloat(
+      booking.totalbayar.replace(/[^0-9.-]+/g, "").replace(",", "")
+    );
     if (!isNaN(totalBayar)) {
       acc += totalBayar;
     } else {
@@ -103,10 +120,11 @@ const LaporanVilla = ({ bookingData }) => {
 
           {bookingData.map((booking, index) => (
             <View key={index} style={styles.tableRow}>
-              {/* Limit Villa ID and Id Pemesan to 8 digits */}
-              <Text style={styles.tableCell}>{(booking.villaId || '').slice(0, 8)}</Text>
+              <Text style={styles.tableCell}>
+                {(booking.villaId || "").slice(0, 8)}
+              </Text>
               <Text style={[styles.tableCell, styles.longTextCell]}>
-                {(booking.userId || '').slice(0, 8)}
+                {(booking.userId || "").slice(0, 8)}
               </Text>
               <Text style={styles.tableCell}>
                 {formatDate(booking.tanggalCheckin)}
@@ -122,15 +140,17 @@ const LaporanVilla = ({ bookingData }) => {
           ))}
         </View>
         <View style={styles.tableRow}>
-          <Text style={[styles.tableCell, styles.headerCell]} colSpan={5}>
-            Total Pendapatan
-          </Text>
-          <Text style={[styles.tableCell, styles.headerCell]}>
-            {totalPendapatan.toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-            })}
-          </Text>
+          <View style={[styles.tableCell, styles.headerCell, { flex: 5 }]}>
+            <Text>Total Pendapatan</Text>
+          </View>
+          <View style={[styles.tableCell, styles.headerCell, { flex: 1 }]}>
+            <Text>
+              {totalPendapatan.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+              })}
+            </Text>
+          </View>
         </View>
       </Page>
     </Document>
