@@ -140,14 +140,14 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          {userId === "" && (
+          {userId === undefined && (
             <>
               <button className="btn btn-sm" onClick={() => signIn()}>
                 Sign In
               </button>
             </>
           )}
-          {userId !== "" && (
+          {userId !== undefined && (
             <>
               <button className="btn btn-sm" onClick={() => signOut()}>
                 Sign Out
