@@ -1,8 +1,22 @@
 "use client";
+import { useEffect, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 
 const Navbar = () => {
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const sessionData = await fetch("/api/auth/session").then((res) =>
+        res.json()
+      );
+      setUserId(sessionData.id);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="navbar bg-[#F8F9FA] container mx-auto">
@@ -126,13 +140,23 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-sm" onClick={() => signIn()}>
-            Sign In
-          </button>
-
-          <button className="btn btn-sm" onClick={() => signOut()}>
-            Sign Out
-          </button>
+          {userId === "" && (
+            <>
+              <button className="btn btn-sm" onClick={() => signIn()}>
+                Sign In
+              </button>
+              <button className="btn btn-sm" onClick={() => signOut()}>
+                Sign Out
+              </button>
+            </>
+          )}
+          {userId !== "" && (
+            <>
+              <button className="btn btn-sm" onClick={() => signOut()}>
+                Sign Out
+              </button>
+            </>
+          )}
         </div>
       </div>
     </>

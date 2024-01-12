@@ -1,23 +1,23 @@
-import type { NextAuthOptions } from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import bcrypt from 'bcrypt';
-import { prisma } from '@/lib/prisma';
+import type { NextAuthOptions } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
+import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   providers: [
     Credentials({
       credentials: {
         email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'example@example.com',
+          label: "Email",
+          type: "email",
+          placeholder: "example@example.com",
         },
         password: {
-          label: 'Password',
-          type: 'password',
+          label: "Password",
+          type: "password",
         },
       },
       async authorize(credentials) {
