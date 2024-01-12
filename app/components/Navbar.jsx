@@ -145,9 +145,6 @@ const Navbar = () => {
               <button className="btn btn-sm" onClick={() => signIn()}>
                 Sign In
               </button>
-              <button className="btn btn-sm" onClick={() => signOut()}>
-                Sign Out
-              </button>
             </>
           )}
           {userId !== "" && (
