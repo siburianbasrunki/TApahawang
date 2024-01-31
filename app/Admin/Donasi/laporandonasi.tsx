@@ -8,17 +8,27 @@ import {
   View,
 } from "@react-pdf/renderer";
 
-interface BookingVillaData {
-  villaId: string;
-  tanggalCheckin: string;
-  tanggalCheckout: string;
-  bukti: string;
+interface DonasiData {
+  id: number;
+  user: {
+    name: string;
+  } | null;
+  terumbuKarangId: number;
+  jumlahDonasi: number;
+  buktiPembayaran: string;
+  nomortelepon: string;
+  terumbuKarang: {
+    nama: string;
+  };
+  tanggalDonasi: string;
   userId: string;
-  totalbayar: string;
+  gambar: string;
 }
-interface LaporanVillaProps {
-  bookingData: BookingVillaData[];
+
+interface LaporanDonasiProps {
+  donasiData: DonasiData[];
 }
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
@@ -83,76 +93,64 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
-const LaporanVilla: React.FC<LaporanVillaProps> = ({ bookingData }) => {
-  if (!bookingData || bookingData.length === 0) {
-    return <Text>Data booking tidak tersedia</Text>;
+const LaporanDonasi: React.FC<LaporanDonasiProps> = ({ donasiData }) => {
+  if (!donasiData || donasiData.length === 0) {
+    return <Text>Data donasi tidak tersedia</Text>;
   }
 
-  const totalPendapatan = bookingData.reduce((acc, booking) => {
-    const totalBayar = parseFloat(
-      booking.totalbayar.replace(/[^0-9.-]+/g, "").replace(",", "")
-    );
-    if (!isNaN(totalBayar)) {
-      acc += totalBayar;
-    } else {
-      console.error(`Invalid totalbayar value for booking ID ${booking.id}`);
-    }
+  const totalDonasi = donasiData.reduce((acc, donasi) => {
+    acc += donasi.jumlahDonasi;
     return acc;
   }, 0);
 
   return (
     <Document>
       <Page size="A1" style={styles.page}>
-        <Text style={styles.title}>
-          Tabel Laporan Booking Villa Pulau Pahawang
-        </Text>
+        <Text style={styles.title}>Tabel Laporan Donasi</Text>
 
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.headerCell]}>
-            <Text style={[styles.tableCell]}>Villa ID</Text>
-            <Text style={[styles.tableCell]}>Id Pemesan</Text>
-            <Text style={[styles.tableCell]}>Check In</Text>
-            <Text style={[styles.tableCell]}>Check Out</Text>
+            <Text style={[styles.tableCell]}>ID</Text>
+            <Text style={[styles.tableCell]}>Nama Donatur</Text>
+            <Text style={[styles.tableCell]}>Jumlah Donasi</Text>
             <Text style={[styles.tableCell]}>Bukti Pembayaran</Text>
-            <Text style={[styles.tableCell]}>Total Pembayaran</Text>
+            <Text style={[styles.tableCell]}>Nomor WhatsApp</Text>
+            <Text style={[styles.tableCell]}>Terumbu Karang</Text>
+            <Text style={[styles.tableCell]}>Tanggal Donasi</Text>
           </View>
 
-          {bookingData.map((booking, index) => (
+          {donasiData.map((donasi, index) => (
             <View key={index} style={styles.tableRow}>
-              <Text style={styles.tableCell}>
-                {(booking.villaId || "").slice(0, 8)}
-              </Text>
+              <Text style={styles.tableCell}>{donasi.id}</Text>
               <Text style={[styles.tableCell, styles.longTextCell]}>
-                {(booking.userId || "").slice(0, 8)}
+                {donasi.user?.name || "Unknown User"}
               </Text>
-              <Text style={styles.tableCell}>
-                {formatDate(booking.tanggalCheckin)}
-              </Text>
-              <Text style={styles.tableCell}>
-                {formatDate(booking.tanggalCheckout)}
-              </Text>
+              <Text style={styles.tableCell}>Rp. {donasi.jumlahDonasi}</Text>
               <View style={styles.imageCell}>
-                <Image style={styles.image} src={booking.bukti} />
+                <Image style={styles.image} src={donasi.buktiPembayaran} />
                 <Text style={{ fontSize: 10, textAlign: "center" }}>
                   Bukti Pembayaran
                 </Text>
               </View>
-
-              <Text style={styles.tableCell}>{booking.totalbayar}</Text>
+              <Text style={styles.tableCell}>{donasi.nomortelepon}</Text>
+              <View style={styles.imageCell}>
+                <Image style={styles.image} src={donasi.gambar} />
+                <Text style={{ fontSize: 10, textAlign: "center" }}>
+                  Gambar Terumbu Karang
+                </Text>
+              </View>
+              <Text style={styles.tableCell}>
+                {formatDate(donasi.tanggalDonasi)}
+              </Text>
             </View>
           ))}
         </View>
         <View style={styles.tableRow}>
           <View style={[styles.tableCell, styles.headerCell, { flex: 5 }]}>
-            <Text>Total Pendapatan</Text>
+            <Text>Total Donasi</Text>
           </View>
           <View style={[styles.tableCell, styles.headerCell, { flex: 1 }]}>
-            <Text>
-              {totalPendapatan.toLocaleString("id-ID", {
-                style: "currency",
-                currency: "IDR",
-              })}
-            </Text>
+            <Text>Rp. {totalDonasi}</Text>
           </View>
         </View>
       </Page>
@@ -160,4 +158,4 @@ const LaporanVilla: React.FC<LaporanVillaProps> = ({ bookingData }) => {
   );
 };
 
-export default LaporanVilla;
+export default LaporanDonasi;

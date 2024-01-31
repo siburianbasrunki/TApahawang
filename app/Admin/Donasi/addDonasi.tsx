@@ -89,7 +89,7 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
                 Bukti Pembayaran (image)
               </label>
               <p className="text-lg text-semibold mb-4 mt-4">
-                Nomor Rekening : 123456789
+                Nomor Rekening : 4100301083554 a.n Herwin (BANK LAMPUNG)
               </p>
               <input
                 type="file"

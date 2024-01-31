@@ -6,6 +6,7 @@ import UpdateDonasi from "./updateDonasi";
 import NavbarAdmin from "../NavbarAdmin";
 import { FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
+
 const getDonasi = async () => {
   const res = await prisma.donasi.findMany({
     select: {
@@ -38,7 +39,10 @@ const Donasi = async () => {
       <div className="bg-white shadow-md rounded-md p-4">
         <h1 className="text-2xl font-bold mb-4">Manajemen Donasi</h1>
         <div className="mb-2">
-          <AddDonasi karangs={Karangs} />
+          <div><AddDonasi karangs={Karangs} /></div>
+          <div>
+            {/* tombol download tabel donasi */}
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full">

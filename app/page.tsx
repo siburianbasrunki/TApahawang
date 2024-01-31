@@ -5,6 +5,7 @@ import ListHotels from "../app/components/ListHotels";
 import Activity from "./components/aktivitas";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Maps from "./components/Maps"
 export default async function Home() {
   return (
     <>
@@ -14,6 +15,7 @@ export default async function Home() {
       <Service />
       <ListHotels />
       <Activity />
+      <Maps/>
       <Footer />
     </>
   );

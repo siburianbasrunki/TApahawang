@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import LaporanVilla from "./laporanvilla";
 import dynamic from "next/dynamic";
-// Import PDFDownloadLink dynamically (only on the client side)
 const DynamicPDFDownloadLink = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
   { ssr: false }

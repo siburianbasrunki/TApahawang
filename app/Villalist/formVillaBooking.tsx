@@ -110,7 +110,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
 
   useEffect(() => {
     hitungJumlahHari();
-  }, [tanggalCheckin, tanggalCheckout]);
+  }, [tanggalCheckin, tanggalCheckout, hitungJumlahHari]);
 
   useEffect(() => {
     if (selectedVilla) {
@@ -228,6 +228,9 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
               <label className="label font-bold" htmlFor="buktiPembayaran">
                 Upload Bukti Pembayaran
               </label>
+              <p className="text-lg text-semibold mb-4 mt-4">
+                Nomor Rekening : 4100301083554 a.n Herwin (BANK LAMPUNG)
+              </p>
               <div className="file-input-wrapper">
                 <input
                   type="file"
