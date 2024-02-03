@@ -202,6 +202,10 @@ const FormTransportBooking: React.FC<FormTransportBookingProps> = ({
             </div>
 
             <div className="form-control">
+              <label className="label font-bold">Nomor Rekening :</label>
+              <p className="text-md text-semibold">
+                4100301083554 ( Bank Lampung) a.n HERWIN
+              </p>
               <label className="label font-bold" htmlFor="buktiPembayaran">
                 Upload Bukti Pembayaran
               </label>
@@ -211,7 +215,7 @@ const FormTransportBooking: React.FC<FormTransportBookingProps> = ({
                   required
                   id="buktiPembayaran"
                   className="file-input"
-                  onChange={(e) => setBuktiTranfer(e.target.files?.[0] || null )}
+                  onChange={(e) => setBuktiTranfer(e.target.files?.[0] || null)}
                 />
               </div>
             </div>

@@ -225,9 +225,14 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
               </div>
             </div>
             <div className="form-control">
+              <label className="label font-bold">Nomor Rekening :</label>
+              <p className="text-md text-semibold">
+                4100301083554 ( Bank Lampung) a.n HERWIN
+              </p>
               <label className="label font-bold" htmlFor="buktiPembayaran">
                 Upload Bukti Pembayaran
               </label>
+              
               <div className="file-input-wrapper">
                 <input
                   type="file"

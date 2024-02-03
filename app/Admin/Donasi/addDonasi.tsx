@@ -3,7 +3,7 @@ import React, { useEffect, useState, SyntheticEvent } from "react";
 import type { TerumbuKarang } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
   const [jlhDonasi, setJlhDonasi] = useState("");
@@ -43,9 +43,9 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
     setIsOpen(false);
 
     Swal.fire({
-      icon: 'success',
-      title: 'Donasi Berhasil!',
-      text: 'Informasi Selanjutnya Akan Dikirim Melalui WhatsApp. Cek riwayat donasi Anda di profil.',
+      icon: "success",
+      title: "Donasi Berhasil!",
+      text: "Informasi Selanjutnya Akan Dikirim Melalui WhatsApp. Cek riwayat donasi Anda di profil.",
     });
   };
 
@@ -85,12 +85,14 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
               />
             </div>
             <div className="form-control w-full">
+              <label className="label font-bold">Nomor Rekening :</label>
+              <p className="text-md text-semibold">
+                4100301083554 ( Bank Lampung) a.n HERWIN
+              </p>
               <label className="label font-bold">
                 Bukti Pembayaran (image)
               </label>
-              <p className="text-lg text-semibold mb-4 mt-4">
-                Nomor Rekening : 123456789
-              </p>
+
               <input
                 type="file"
                 className="input input-bordered"
