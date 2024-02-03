@@ -8,21 +8,26 @@ import { FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
 
 const getDonasi = async () => {
-  const res = await prisma.donasi.findMany({
-    select: {
-      id: true,
-      user: true,
-      terumbuKarangId: true,
-      jumlahDonasi: true,
-      buktiPembayaran: true,
-      nomortelepon: true,
-      terumbuKarang: true,
-      tanggalDonasi: true,
-      userId: true,
-      gambar: true,
-    },
-  });
-  return res;
+  try {
+    const res = await prisma.donasi.findMany({
+      select: {
+        id: true,
+        user: true,
+        terumbuKarangId: true,
+        jumlahDonasi: true,
+        buktiPembayaran: true,
+        nomortelepon: true,
+        terumbuKarang: true,
+        tanggalDonasi: true,
+        userId: true,
+        gambar: true,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.error("Terjadi kesalahan pada getDonasi:", error);
+    throw error; 
+  }
 };
 
 const getKarang = async () => {
