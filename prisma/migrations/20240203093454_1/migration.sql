@@ -112,6 +112,22 @@ CREATE TABLE "Donasi" (
 );
 
 -- CreateTable
+CREATE TABLE "Pembelian" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "merchandiseId" TEXT NOT NULL,
+    "nama" TEXT NOT NULL,
+    "jumlahBarang" INTEGER NOT NULL,
+    "Alamat" TEXT NOT NULL,
+    "totalHarga" INTEGER NOT NULL,
+    "buktiTranfer" TEXT NOT NULL,
+    "noTelepon" TEXT NOT NULL,
+    "tanggalPembelian" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Pembelian_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Volunteer" (
     "id" TEXT NOT NULL,
     "namaOrganisasi" TEXT NOT NULL,

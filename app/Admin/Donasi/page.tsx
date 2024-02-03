@@ -6,28 +6,22 @@ import UpdateDonasi from "./updateDonasi";
 import NavbarAdmin from "../NavbarAdmin";
 import { FaWhatsapp } from "react-icons/fa";
 import Link from "next/link";
-
 const getDonasi = async () => {
-  try {
-    const res = await prisma.donasi.findMany({
-      select: {
-        id: true,
-        user: true,
-        terumbuKarangId: true,
-        jumlahDonasi: true,
-        buktiPembayaran: true,
-        nomortelepon: true,
-        terumbuKarang: true,
-        tanggalDonasi: true,
-        userId: true,
-        gambar: true,
-      },
-    });
-    return res;
-  } catch (error) {
-    console.error("Terjadi kesalahan pada getDonasi:", error);
-    throw error; 
-  }
+  const res = await prisma.donasi.findMany({
+    select: {
+      id: true,
+      user: true,
+      terumbuKarangId: true,
+      jumlahDonasi: true,
+      buktiPembayaran: true,
+      nomortelepon: true,
+      terumbuKarang: true,
+      tanggalDonasi: true,
+      userId: true,
+      gambar: true,
+    },
+  });
+  return res;
 };
 
 const getKarang = async () => {
@@ -44,10 +38,7 @@ const Donasi = async () => {
       <div className="bg-white shadow-md rounded-md p-4">
         <h1 className="text-2xl font-bold mb-4">Manajemen Donasi</h1>
         <div className="mb-2">
-          <div><AddDonasi karangs={Karangs} /></div>
-          <div>
-            {/* tombol download tabel donasi */}
-          </div>
+          <AddDonasi karangs={Karangs} />
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full">

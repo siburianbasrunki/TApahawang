@@ -10,13 +10,11 @@ import Merchandise from "../Admin/Merchandise/page";
 import Paket from "../Admin/Paket/page";
 import Galery from "./Galery/page";
 import BookingVillas from "../Admin/BookingVilla/page"
-import BookingTransportasi from "../Admin/BookingTransportasi/page"
 const componentMap = {
   "/Admin/Donasi": <Donasi />,
   "/Admin/Transportasi": <Transportasi />,
   "/Admin/Villa": <Villa />,
   "/Admin/BookingVilla": <BookingVillas />,
-  "/Admin/BookingTransportasi": <BookingTransportasi />,
   "/Admin/Volunteer": <Volunteer />,
   "/Admin/Merchandise": <Merchandise />,
   "/Admin/Paket": <Paket/>,
@@ -58,15 +56,6 @@ const DashboardUser = () => {
             </Link>
           </li>
           <li className="mb-2">
-            <Link href="/Admin/BookingTransportasi"
-                className={`cursor-pointer ${
-                  pathName === "/Admin/BookingTransportasi" ? "text-[#030DFF]" : ""
-                }`}
-              >
-                Data Booking Transportasi
-            </Link>
-          </li>
-          <li className="mb-2">
             <Link href="/Admin/Villa"
                 className={`cursor-pointer ${
                   pathName === "/Admin/Villa" ? "text-[#030DFF]" : ""
@@ -94,11 +83,14 @@ const DashboardUser = () => {
             </Link>
           </li>
           <li className="mb-2">
-            <Link href="/Admin/Merchandise" className={`cursor-pointer ${pathName === "/Admin/Merchandise" ? "text-[#030DFF]" : ""}` }>
-              Merchandise
+            <Link href="/Admin/Merchandise"
+                className={`cursor-pointer ${
+                  pathName === "/Admin/Merchandise" ? "text-[#030DFF]" : ""
+                }`}
+              >
+                Merchandise
             </Link>
           </li>
-          
           <li className="mb-2">
             <Link href="/Admin/Paket"
                 className={`cursor-pointer ${
@@ -120,6 +112,7 @@ const DashboardUser = () => {
         </ul>
       </div>
       <div className="w-3/4 p-4 renderContent">
+        {/* Render komponen yang sesuai dengan rute */}
         {content}
       </div>
     </div>

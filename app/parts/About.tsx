@@ -22,7 +22,7 @@ const About = () => {
       <div className="flex flex-col lg:flex-row items-center p-4 lg:p-8">
         <div className={`lg:w-full mb-4 lg:mb-0`}>
           <Image
-            src="/assets/pahawanglogo.png"
+            src="/assets/pulau.png"
             width={500}
             height={500}
             alt="AboutImg"
