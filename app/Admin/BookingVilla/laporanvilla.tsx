@@ -16,6 +16,7 @@ interface BookingVillaData {
   userId: string;
   totalbayar: string;
 }
+
 interface LaporanVillaProps {
   bookingData: BookingVillaData[];
 }
@@ -133,11 +134,7 @@ const LaporanVilla: React.FC<LaporanVillaProps> = ({ bookingData }) => {
               </Text>
               <View style={styles.imageCell}>
                 <Image style={styles.image} src={booking.bukti} />
-                <Text style={{ fontSize: 10, textAlign: "center" }}>
-                  Bukti Pembayaran
-                </Text>
               </View>
-
               <Text style={styles.tableCell}>{booking.totalbayar}</Text>
             </View>
           ))}
