@@ -1,6 +1,7 @@
 import { useState, SyntheticEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+
 type Donasi = {
   id: string;
   terumbuKarangId: string;
@@ -8,16 +9,20 @@ type Donasi = {
   buktiPembayaran: string;
   nomortelepon: string;
 };
+
 const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
   const [karangid, setKarangId] = useState<string | null>(
     donasi.terumbuKarangId
   );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
   const router = useRouter();
 
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
+
+    setIsLoading(true); 
 
     const formData = new FormData();
     if (selectedFile) {
@@ -30,12 +35,13 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
           formData
         );
 
-        // setGambar(data.secure_url || null);
         await axios.patch(`/api/donasi/${donasi.id}`, {
           gambar: data?.secure_url || null,
         });
       } catch (error) {
         console.error("Error uploading image:", error);
+      } finally {
+        setIsLoading(false); 
       }
     }
 
@@ -51,6 +57,7 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
     const file = e.target.files?.[0] || null;
     setSelectedFile(file);
   };
+
   return (
     <div>
       <button className="btn btn-info" onClick={handleModal}>
@@ -73,8 +80,14 @@ const UpdateDonasi = ({ donasi }: { donasi: Donasi }) => {
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Update
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

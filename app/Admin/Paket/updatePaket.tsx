@@ -2,31 +2,40 @@
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-type Paket ={
-    id: string;
-    namaPaket: string
-    asalKomunitas: string
-    nomorTelepon: string
-    gambarPaket: string
-}
-const UpdatePaket = ({paket} : {paket:Paket}) => {
+type Paket = {
+  id: string;
+  namaPaket: string;
+  asalKomunitas: string;
+  nomorTelepon: string;
+  gambarPaket: string;
+};
+const UpdatePaket = ({ paket }: { paket: Paket }) => {
   const [namaPaket, setNamaPaket] = useState(paket.namaPaket);
   const [asalKomunitas, setAsalKomunitas] = useState(paket.asalKomunitas);
   const [nomorTelepon, setNomorTelepon] = useState(paket.nomorTelepon);
   const [gambarPaket, setGambarPaket] = useState(paket.gambarPaket);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.patch(`/api/paket/${paket.id}`, {
-      namaPaket: namaPaket,
-      asalKomunitas: asalKomunitas,
-      nomorTelepon:nomorTelepon,
-      gambarPaket: gambarPaket,
-    });
-    
-    router.refresh();
-    setIsOpen(false);
+    setIsLoading(true);
+
+    try {
+      await axios.patch(`/api/paket/${paket.id}`, {
+        namaPaket: namaPaket,
+        asalKomunitas: asalKomunitas,
+        nomorTelepon: nomorTelepon,
+        gambarPaket: gambarPaket,
+      });
+
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during update:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleModal = () => {
@@ -36,7 +45,7 @@ const UpdatePaket = ({paket} : {paket:Paket}) => {
   return (
     <div>
       <button className="btn btn-info " onClick={handleModal}>
-       Edit Paket
+        Edit Paket
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">
@@ -82,13 +91,19 @@ const UpdatePaket = ({paket} : {paket:Paket}) => {
                 placeholder="masukan file gambar"
               />
             </div>
-            
+
             <div className="modal-action">
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Update
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

@@ -15,19 +15,26 @@ const UpdateMerch = ({ galeri }: { galeri: Galery }) => {
   const [deskripsi, setDeskripsi] = useState(galeri.deskripsi);
   const [gambar, setGambar] = useState<string | null>(galeri.gambar);
   const [tanggal, setTanggal] = useState(galeri.tanggal);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    await axios.patch(`/api/galery/${galeri.id}`, {
-      title: title,
-      deskripsi: deskripsi,
-    });
-    router.refresh();
-    setIsOpen(false);
+    try {
+      await axios.patch(`/api/galery/${galeri.id}`, {
+        title: title,
+        deskripsi: deskripsi,
+      });
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during update:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleModal = () => {
@@ -67,8 +74,14 @@ const UpdateMerch = ({ galeri }: { galeri: Galery }) => {
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Update
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
@@ -29,13 +28,16 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
   const [alertSuccess, setAlertSuccess] = useState(false);
   const [totalBayar, setTotalBayar] = useState("");
   const [jumlahHari, setJumlahHari] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!selectedVilla?.id) {
       console.error("Invalid villaId");
+      setIsLoading(false);
       return;
     }
 
@@ -81,6 +83,8 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
         title: "Pemesanan Gagal",
         text: "Cek Apakah Anda sudah Login Atau Daftar Akun",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -232,7 +236,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
               <label className="label font-bold" htmlFor="buktiPembayaran">
                 Upload Bukti Pembayaran
               </label>
-              
+
               <div className="file-input-wrapper">
                 <input
                   type="file"
@@ -251,8 +255,14 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
               >
                 Tutup
               </button>
-              <button type="submit" className="btn btn-primary">
-                Submit
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Sedang Diproses" : "Pesan"}
               </button>
             </div>
           </form>

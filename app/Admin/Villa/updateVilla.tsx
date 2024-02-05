@@ -2,34 +2,46 @@
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-type Villa ={
-    id: string;
-    nama: string;
-    deskripsi: string;
-    hargaPerMalam: number;
-    gambar: string;
-    ketersediaan: number;
-}
-const UpdateVilla = ({villa} : {villa:Villa}) => {
+
+type Villa = {
+  id: string;
+  nama: string;
+  deskripsi: string;
+  hargaPerMalam: number;
+  gambar: string;
+  ketersediaan: number;
+};
+
+const UpdateVilla = ({ villa }: { villa: Villa }) => {
   const [nama, setNama] = useState(villa.nama);
   const [deskripsi, setDeskripsi] = useState(villa.deskripsi);
   const [hargaPerMalam, setHargaPerMalam] = useState(villa.hargaPerMalam);
   const [gambar, setGambar] = useState(villa.gambar);
   const [ketersediaan, setKetersediaan] = useState(villa.ketersediaan);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.patch(`/api/villas/${villa.id}`, {
-      nama: nama,
-      deskripsi: deskripsi,
-      hargaPerMalam: Number(hargaPerMalam),
-      gambar: gambar,
-      ketersediaan: Number(ketersediaan),
-    });
-    
-    router.refresh();
-    setIsOpen(false);
+
+    setIsLoading(true);
+    try {
+      await axios.patch(`/api/villas/${villa.id}`, {
+        nama: nama,
+        deskripsi: deskripsi,
+        hargaPerMalam: Number(hargaPerMalam),
+        gambar: gambar,
+        ketersediaan: Number(ketersediaan),
+      });
+
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during update:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleModal = () => {
@@ -39,7 +51,7 @@ const UpdateVilla = ({villa} : {villa:Villa}) => {
   return (
     <div>
       <button className="btn btn-info " onClick={handleModal}>
-       Edit
+        Edit
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">
@@ -99,8 +111,14 @@ const UpdateVilla = ({villa} : {villa:Villa}) => {
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Update
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

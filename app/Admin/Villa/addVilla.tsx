@@ -10,41 +10,49 @@ const AddVilla = () => {
   const [gambar, setGambar] = useState<File | null>(null);
   const [ketersediaan, setKetersediaan] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    // upload image to cloudinary
-    const formData = new FormData();
-    formData.append('file', gambar as File);
-    formData.append('upload_preset', 'villas');
-    const data = await axios.post(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      formData
-    );
+    setIsLoading(true); 
 
-    await axios.post('/api/villas', {
-      nama: nama,
-      deskripsi: deskripsi,
-      hargaPerMalam: Number(hargaPerMalam),
-      gambar: data.data.secure_url,
-      ketersediaan: Number(ketersediaan),
-    });
+    try {
+      const formData = new FormData();
+      formData.append('file', gambar as File);
+      formData.append('upload_preset', 'villas');
+      const data = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
 
-    setNama('');
-    setDeskripsi('');
-    setHargaPerMalam('');
-    setGambar(null);
-    setKetersediaan('');
-    router.refresh();
-    setIsOpen(false);
+      await axios.post('/api/villas', {
+        nama: nama,
+        deskripsi: deskripsi,
+        hargaPerMalam: Number(hargaPerMalam),
+        gambar: data.data.secure_url,
+        ketersediaan: Number(ketersediaan),
+      });
+
+      setNama('');
+      setDeskripsi('');
+      setHargaPerMalam('');
+      setGambar(null);
+      setKetersediaan('');
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+       
+      console.error("Error during submission:", error);
+    } finally {
+      setIsLoading(false);  
+    }
   };
 
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
-
   return (
     <div>
       <button className='btn' onClick={handleModal}>
@@ -87,8 +95,8 @@ const AddVilla = () => {
             <div className='form-control w-full'>
               <label className='label font-bold'>file gambar</label>
               <input
-                type='file' // Updated to type="file"
-                onChange={(e) => setGambar(e.target.files?.[0] || null)} // Updated to handle file selection
+                type='file'  
+                onChange={(e) => setGambar(e.target.files?.[0] || null)}  
                 className='input input-bordered'
                 placeholder='masukan file gambar'
               />
@@ -107,8 +115,12 @@ const AddVilla = () => {
               <button type='button' className='btn' onClick={handleModal}>
                 Close
               </button>
-              <button type='submit' className='btn btn-primary'>
-                Submit
+              <button
+                type='submit'
+                className={`btn btn-primary ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Data sedang dikirim, harap tunggu...." : "Submit"}
               </button>
             </div>
           </form>

@@ -5,33 +5,37 @@ import { useRouter } from "next/navigation";
 const AddKarang = () => {
   const [nama, setNama] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
-  const [gambar,setGambar] = useState<File | null>(null)
+  const [gambar, setGambar] = useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", gambar as File);
+      formData.append("upload_preset", "terumbukarang");
+      const data = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
 
-    const formData = new FormData();
-    formData.append('file', gambar as File);
-    formData.append('upload_preset', 'terumbukarang');
-    const data = await axios.post(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      formData
-    );
-
-
-
-    await axios.post("/api/karang", {
-      nama: nama,
-      deskripsi: deskripsi,
-      gambar: data.data.secure_url,
-      
-    });
-    setNama("");
-    setDeskripsi("");
-    setGambar(null)
-    router.refresh();
-    setIsOpen(false);
+      await axios.post("/api/karang", {
+        nama: nama,
+        deskripsi: deskripsi,
+        gambar: data.data.secure_url,
+      });
+      setNama("");
+      setDeskripsi("");
+      setGambar(null);
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during submission:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleModal = () => {
@@ -67,21 +71,25 @@ const AddKarang = () => {
                 placeholder="masukan deskripsi singkat"
               />
             </div>
-            <div className='form-control w-full'>
-              <label className='label font-bold'>file gambar</label>
+            <div className="form-control w-full">
+              <label className="label font-bold">file gambar</label>
               <input
-                type='file' // Updated to type="file"
+                type="file" 
                 onChange={(e) => setGambar(e.target.files?.[0] || null)} // Updated to handle file selection
-                className='input input-bordered'
-                placeholder='masukan file gambar'
+                className="input input-bordered"
+                placeholder="masukan file gambar"
               />
             </div>
             <div className="modal-action">
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Submit
+              <button
+                type='submit'
+                className={`btn btn-primary ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Data sedang dikirim, harap tunggu...." : "Submit"}
               </button>
             </div>
           </form>

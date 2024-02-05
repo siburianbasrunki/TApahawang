@@ -6,28 +6,38 @@ type TerumbuKarang = {
   id: string;
   nama: string;
   deskripsi: string;
-  gambar: string
-}
+  gambar: string;
+};
 const UpdateKarang = ({ karang }: { karang: TerumbuKarang }) => {
   const [nama, setNama] = useState(karang.nama);
   const [deskripsi, setDeskripsi] = useState(karang.deskripsi);
   const [gambar, setGambar] = useState<string | null>(karang.gambar);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.patch(`/api/karang/${karang.id}`, {
-      nama : nama,
-      deskripsi : deskripsi,
-    })
+    setIsLoading(true);
 
-    router.refresh()
-    setIsOpen(false);
+    try {
+      await axios.patch(`/api/karang/${karang.id}`, {
+        nama: nama,
+        deskripsi: deskripsi,
+      });
+
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during update:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const handleModal = () => {
     setIsOpen(!isOpen);
-  }
+  };
   return (
     <div>
       <button className="btn btn-info " onClick={handleModal}>
@@ -57,13 +67,19 @@ const UpdateKarang = ({ karang }: { karang: TerumbuKarang }) => {
                 placeholder="masukan deskripsi singkat"
               />
             </div>
-            
+
             <div className="modal-action">
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Update
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

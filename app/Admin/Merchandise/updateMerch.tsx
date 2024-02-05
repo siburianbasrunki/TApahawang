@@ -10,7 +10,7 @@ type Merchandise = {
   harga: number;
   gambar: string;
   ketersediaan: number;
-  noTelepon:string;
+  noTelepon: string;
 };
 
 const UpdateMerch = ({ merch }: { merch: Merchandise }) => {
@@ -18,22 +18,33 @@ const UpdateMerch = ({ merch }: { merch: Merchandise }) => {
   const [deskripsi, setDeskripsi] = useState(merch.deskripsi);
   const [harga, setHarga] = useState(merch.harga);
   const [ketersediaan, setKetersediaan] = useState(merch.ketersediaan);
-const [noTelepon,setNoTelepon] = useState(merch.noTelepon);
+  const [noTelepon, setNoTelepon] = useState(merch.noTelepon);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.patch(`/api/merchandise/${merch.id}`, {
+    setIsLoading(true);
+
+    try {
+       await axios.patch(`/api/merchandise/${merch.id}`, {
       nama: nama,
       deskripsi: deskripsi,
       harga: Number(harga),
       ketersediaan: Number(ketersediaan),
-      noTelepon:noTelepon,
+      noTelepon: noTelepon,
     });
 
     router.refresh();
     setIsOpen(false);
+    } catch (error) {
+       
+      console.error("Error during update:", error);
+    } finally {
+      setIsLoading(false); 
+    }
+   
   };
 
   const handleModal = () => {
@@ -88,7 +99,7 @@ const [noTelepon,setNoTelepon] = useState(merch.noTelepon);
                 placeholder="nomor telepon/Wa"
               />
             </div>
-            
+
             <div className="form-control w-full">
               <label className="label font-bold">Jumlah stok</label>
               <input
@@ -103,8 +114,12 @@ const [noTelepon,setNoTelepon] = useState(merch.noTelepon);
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Update
+              <button
+                type="submit"
+                className={`btn btn-primary ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

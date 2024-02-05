@@ -2,21 +2,33 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+
 type Villa = {
-    id: string;
-    nama: string;
-    deskripsi: string;
-    hargaPerMalam: number;
-    gambar: string;
-    ketersediaan: number;
-}
-const DeleteVilla = ({villa} :{villa: Villa}) => {
+  id: string;
+  nama: string;
+  deskripsi: string;
+  hargaPerMalam: number;
+  gambar: string;
+  ketersediaan: number;
+};
+
+const DeleteVilla = ({ villa }: { villa: Villa }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
   const router = useRouter();
+
   const handleDelete = async (villaId: string) => {
-    await axios.delete(`/api/villas/${villaId}`)
-    router.refresh();
-    setIsOpen(false);
+    setIsLoading(true); 
+
+    try {
+      await axios.delete(`/api/villas/${villaId}`);
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during deletion:", error);
+    } finally {
+      setIsLoading(false); 
+    }
   };
 
   const handleModal = () => {
@@ -36,8 +48,13 @@ const DeleteVilla = ({villa} :{villa: Villa}) => {
             <button type="button" className="btn btn-danger" onClick={handleModal}>
               No
             </button>
-            <button className="btn btn-success " type="button" onClick={() => handleDelete(villa.id)}>
-              Yes
+            <button
+              className={`btn btn-success ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+              type="button"
+              onClick={() => handleDelete(villa.id)}
+              disabled={isLoading}
+            >
+              {isLoading ? "Deleting..." : "Yes"}
             </button>
           </div>
         </div>
@@ -47,3 +64,4 @@ const DeleteVilla = ({villa} :{villa: Villa}) => {
 };
 
 export default DeleteVilla;
+

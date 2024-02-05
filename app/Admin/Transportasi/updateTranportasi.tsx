@@ -2,34 +2,48 @@
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-type Transportasi ={
-    id: string;
-    nama: string;
-    deskripsi: string;
-    harga: number;
-    gambar: string;
-    ketersediaan: number;
-}
-const UpdateTranportasi = ({transportasi} : {transportasi:Transportasi}) => {
+type Transportasi = {
+  id: string;
+  nama: string;
+  deskripsi: string;
+  harga: number;
+  gambar: string;
+  ketersediaan: number;
+};
+const UpdateTranportasi = ({
+  transportasi,
+}: {
+  transportasi: Transportasi;
+}) => {
   const [nama, setNama] = useState(transportasi.nama);
   const [deskripsi, setDeskripsi] = useState(transportasi.deskripsi);
   const [harga, setHarga] = useState(transportasi.harga);
   const [gambar, setGambar] = useState(transportasi.gambar);
   const [ketersediaan, setKetersediaan] = useState(transportasi.ketersediaan);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const handleUpdate = async (e: SyntheticEvent) => {
     e.preventDefault();
-    await axios.patch(`/api/transportasi/${transportasi.id}`, {
-      nama: nama,
-      deskripsi: deskripsi,
-      harga: Number(harga),
-      gambar: gambar,
-      ketersediaan: Number(ketersediaan),
-    });
-    
-    router.refresh();
-    setIsOpen(false);
+    setIsLoading(true);
+
+    try {
+      await axios.patch(`/api/transportasi/${transportasi.id}`, {
+        nama: nama,
+        deskripsi: deskripsi,
+        harga: Number(harga),
+        gambar: gambar,
+        ketersediaan: Number(ketersediaan),
+      });
+
+      router.refresh();
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Error during update:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleModal = () => {
@@ -39,7 +53,7 @@ const UpdateTranportasi = ({transportasi} : {transportasi:Transportasi}) => {
   return (
     <div>
       <button className="btn btn-info " onClick={handleModal}>
-       Edit
+        Edit
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">
@@ -99,8 +113,14 @@ const UpdateTranportasi = ({transportasi} : {transportasi:Transportasi}) => {
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Update
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update"}
               </button>
             </div>
           </form>

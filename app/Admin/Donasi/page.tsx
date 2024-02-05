@@ -121,6 +121,8 @@ const Donasi = () => {
   return (
     <>
       <div className="bg-white shadow-md rounded-md p-4">
+        <div className="flex justify-between">
+          
         <h1 className="text-2xl font-bold mb-4">Manajemen Donasi</h1>
         <div className="flex justify-end items-center gap-4 mb-4">
           <div
@@ -134,9 +136,10 @@ const Donasi = () => {
               <FiRefreshCcw />
             </div>
           </div>
-          <div>
+          {/* <div>
             <AddDonasi karangs={karangs} />
-          </div>
+          </div> */}
+        </div>
         </div>
 
         {donasis ? (

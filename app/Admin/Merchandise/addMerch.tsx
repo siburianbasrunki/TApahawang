@@ -11,11 +11,12 @@ const AddMerch = () => {
   const [ketersediaan, setKetersediaan] = useState('');
   const [noTelepon,setNoTelepon] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-
+    setIsLoading(true)
     const formData = new FormData();
     formData.append('file', gambar as File);
     formData.append('upload_preset', 'merchandise');
@@ -45,6 +46,8 @@ const AddMerch = () => {
       setIsOpen(false);
     } catch (error) {
       console.error('Error uploading image or posting data:', error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -124,8 +127,12 @@ const AddMerch = () => {
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Submit
+              <button
+                type='submit'
+                className={`btn btn-primary ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Data sedang dikirim, harap tunggu...." : "Submit"}
               </button>
             </div>
           </form>

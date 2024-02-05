@@ -9,11 +9,20 @@ type terumbuKarang = {
 };
 const DeleteKarang = ({ karang }: { karang: terumbuKarang }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading,setIsLoading] = useState(false)
   const router = useRouter();
   const handleDelete = async (karangId: string) => {
-    await axios.delete(`/api/karang/${karangId}`);
+    setIsLoading(true); 
+    try {
+      await axios.delete(`/api/karang/${karangId}`);
     router.refresh();
     setIsOpen(false);
+  } catch (error) {
+    console.error("Error during deletion:", error);
+  } finally {
+    setIsLoading(false); 
+  }
+    
   };
 
   const handleModal = () => {
@@ -38,11 +47,12 @@ const DeleteKarang = ({ karang }: { karang: terumbuKarang }) => {
               No
             </button>
             <button
-              className="btn btn-success "
+              className={`btn btn-success ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
               type="button"
               onClick={() => handleDelete(karang.id)}
+              disabled={isLoading}
             >
-              Yes
+              {isLoading ? "Deleting..." : "Yes"}
             </button>
           </div>
         </div>

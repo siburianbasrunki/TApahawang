@@ -12,41 +12,55 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
   const [terumbuKarang, setTerumbuKarang] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const gambar_karang = karangs.find((karang) => karang.id === terumbuKarang);
+    setIsLoading(true); 
 
-    const formData = new FormData();
-    formData.append("file", bukti as File);
-    formData.append("upload_preset", "buktipembayaran");
-    const data = await axios.post(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      formData
-    );
+    try {
+      const gambar_karang = karangs.find((karang) => karang.id === terumbuKarang);
 
-    await axios.post("/api/donasi", {
-      terumbuKarangId: terumbuKarang,
-      jumlahDonasi: jlhDonasi,
-      buktiPembayaran: data.data.secure_url,
-      nomortelepon: telepon,
-      userId: userId,
-      gambar: gambar_karang?.gambar,
-    });
+      const formData = new FormData();
+      formData.append("file", bukti as File);
+      formData.append("upload_preset", "buktipembayaran");
+      const data = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
 
-    setTerumbuKarang("");
-    setJlhDonasi("");
-    setBukti(null);
-    setTelepon("");
-    router.refresh();
-    setIsOpen(false);
+      await axios.post("/api/donasi", {
+        terumbuKarangId: terumbuKarang,
+        jumlahDonasi: jlhDonasi,
+        buktiPembayaran: data.data.secure_url,
+        nomortelepon: telepon,
+        userId: userId,
+        gambar: gambar_karang?.gambar,
+      });
 
-    Swal.fire({
-      icon: "success",
-      title: "Donasi Berhasil!",
-      text: "Informasi Selanjutnya Akan Dikirim Melalui WhatsApp. Cek riwayat donasi Anda di profil.",
-    });
+      setTerumbuKarang("");
+      setJlhDonasi("");
+      setBukti(null);
+      setTelepon("");
+      router.refresh();
+      setIsOpen(false);
+
+      Swal.fire({
+        icon: "success",
+        title: "Donasi Berhasil!",
+        text: "Informasi Selanjutnya Akan Dikirim Melalui WhatsApp. Cek riwayat donasi Anda di profil.",
+      });
+    } catch (error) {
+      console.error("Error during submission:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Donasi Gagal!",
+        text: "Terjadi kesalahan saat mengirim donasi. Silakan coba lagi.",
+      });
+    } finally {
+      setIsLoading(false); 
+    }
   };
 
   const handleModal = () => {
@@ -92,7 +106,6 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
               <label className="label font-bold">
                 Bukti Pembayaran (image)
               </label>
-
               <input
                 type="file"
                 className="input input-bordered"
@@ -130,8 +143,14 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
               <button type="button" className="btn" onClick={handleModal}>
                 Close
               </button>
-              <button type="submit" className="btn btn-primary">
-                Simpan
+              <button
+                type="submit"
+                className={` bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Data sedang dikirim, harap tunggu...." : "Submit"}
               </button>
             </div>
           </form>

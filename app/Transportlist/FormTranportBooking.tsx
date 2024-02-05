@@ -24,11 +24,13 @@ const FormTransportBooking: React.FC<FormTransportBookingProps> = ({
   const [tanggalCheckin, setTanggalCheckin] = useState("");
   const [buktiTranfer, setBuktiTranfer] = useState<File | null>(null);
   const [jumlahPenumpang, setJumlahPenumpang] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [noTelepon, setNoTelepon] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!selectedTransport?.id) {
       console.error("invalid villaId");
       return;
@@ -75,6 +77,8 @@ const FormTransportBooking: React.FC<FormTransportBookingProps> = ({
         title: "Pemesanan Gagal",
         text: "Cek Apakah Anda sudah Login Atau Daftar Akun",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -228,8 +232,14 @@ const FormTransportBooking: React.FC<FormTransportBookingProps> = ({
               >
                 Tutup
               </button>
-              <button type="submit" className="btn btn-primary">
-                Submit
+              <button
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? "Sedang Diproses" : "Pesan"}
               </button>
             </div>
           </form>
