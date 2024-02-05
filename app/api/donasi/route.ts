@@ -19,6 +19,19 @@ export const POST = async (request: Request) => {
 };
 
 export const GET = async (req: NextRequest) => {
-  const donasis = await prisma.donasi.findMany({});
+  const donasis = await prisma.donasi.findMany({
+    select: {
+      id: true,
+      user: true,
+      terumbuKarangId: true,
+      jumlahDonasi: true,
+      buktiPembayaran: true,
+      nomortelepon: true,
+      terumbuKarang: true,
+      tanggalDonasi: true,
+      userId: true,
+      gambar: true,
+    },
+  });
   return NextResponse.json({ donasis });
 };

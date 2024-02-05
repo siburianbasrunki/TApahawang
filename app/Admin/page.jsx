@@ -9,7 +9,7 @@ import Volunteer from "./Volunteer/page";
 import Donasi from "./Donasi/page";
 import Paket from "./Paket/page";
 import Galery from "../Admin/Galery/page";
-import BookingVilla from "../Admin/BookingVilla/page"
+import BookingVilla from "../Admin/BookingVilla/page";
 const Dashboard = () => {
   const [activePage, setActivePage] = React.useState("Villa");
 
