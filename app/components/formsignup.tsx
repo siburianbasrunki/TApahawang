@@ -1,10 +1,11 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { FaLaptopHouse } from "react-icons/fa";
 
 export default function RegisterForm() {
   const [formValues, setFormValues] = useState({});
-
+  const [isLoading, setIsLoading] = useState(false);
   function handleInput(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setFormValues((old) => ({ ...old, [name]: value }));
@@ -12,7 +13,7 @@ export default function RegisterForm() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -28,6 +29,8 @@ export default function RegisterForm() {
       return signIn(undefined, { callbackUrl: "/" });
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -37,7 +40,10 @@ export default function RegisterForm() {
         <h3 className="text-2xl font-semibold mb-6 text-center">Register</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-600"
+            >
               Name
             </label>
             <input
@@ -50,7 +56,10 @@ export default function RegisterForm() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-600"
+            >
               Email
             </label>
             <input
@@ -63,7 +72,10 @@ export default function RegisterForm() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600"
+            >
               Password
             </label>
             <input
@@ -75,7 +87,10 @@ export default function RegisterForm() {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="confirm" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="confirm"
+              className="block text-sm font-medium text-gray-600"
+            >
               Confirm Password
             </label>
             <input
@@ -87,8 +102,14 @@ export default function RegisterForm() {
             />
           </div>
           <div className="text-center">
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-md">
-              Register
+            <button
+              type="submit"
+              className={`btn btn-primary ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading....." : "Register"}
             </button>
           </div>
         </form>
