@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useState, useEffect } from "react";
 import AddDonasi from "./addDonasi";
