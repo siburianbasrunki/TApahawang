@@ -69,6 +69,7 @@ CREATE TABLE "BookingVilla" (
     "tanggalCheckout" TIMESTAMP(3) NOT NULL,
     "bukti" TEXT NOT NULL,
     "totalbayar" TEXT NOT NULL,
+    "validasiPembayaran" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "BookingVilla_pkey" PRIMARY KEY ("id")
 );

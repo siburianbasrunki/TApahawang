@@ -8,7 +8,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import dynamic from "next/dynamic";
 import PdfTiketFile from "./pdftiketvilla";
-// Import PDFDownloadLink dynamically (only on the client side)
 const DynamicPDFDownloadLink = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
   { ssr: false }
@@ -32,6 +31,7 @@ interface BoVillas {
   villaId: string;
   tanggalCheckin: string;
   tanggalCheckout: string;
+  validasiPembayaran: boolean;
 }
 
 const ProfilePage: NextPage = () => {
@@ -153,24 +153,39 @@ const ProfilePage: NextPage = () => {
                       <p className="mb-4">
                         Check-out: {formatDate(bovilla.tanggalCheckout)}
                       </p>
+                      <p>
+                        Status :{" "}
+                        {bovilla.validasiPembayaran
+                          ? "Sudah divalidasi"
+                          : "Belum divalidasi"}
+                      </p>
                       <div className="flex justify-end">
-                        <DynamicPDFDownloadLink
-                          document={<PdfTiketFile bookingData={bovilla} />}
-                          fileName="tiketvillapahawang"
-                        >
-                          {({ loading }) => (
-                            <button
-                              className={`px-4 py-2 bg-blue-500 text-white rounded ${
-                                loading ? "opacity-50 cursor-not-allowed" : ""
-                              }`}
-                              disabled={loading}
-                            >
-                              {loading
-                                ? "Loading Document..."
-                                : "Download File"}
-                            </button>
-                          )}
-                        </DynamicPDFDownloadLink>
+                        {bovilla.validasiPembayaran ? (
+                          <DynamicPDFDownloadLink
+                            document={<PdfTiketFile bookingData={bovilla} />}
+                            fileName="tiketvillapahawang"
+                          >
+                            {({ loading }) => (
+                              <button
+                                className={`px-4 py-2 bg-blue-500 text-white rounded ${
+                                  loading ? "opacity-50 cursor-not-allowed" : ""
+                                }`}
+                                disabled={loading}
+                              >
+                                {loading
+                                  ? "Loading Document..."
+                                  : "Download Tiket"}
+                              </button>
+                            )}
+                          </DynamicPDFDownloadLink>
+                        ) : (
+                          <button
+                            className="px-4 py-2 bg-gray-300 text-blue-500 rounded cursor-not-allowed"
+                            disabled
+                          >
+                            Download Tiket
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))
@@ -203,7 +218,7 @@ const ProfilePage: NextPage = () => {
                         </svg>
                         <span>
                           Gambar dari terumbu karang yang didonasi akan diupdate
-                          setiap bulan
+                          minggu
                         </span>
                       </div>
                       <div className="flex flex-col md:flex-row">
@@ -222,7 +237,7 @@ const ProfilePage: NextPage = () => {
                             <span className="font-semibold">
                               Jumlah Donasi:
                             </span>{" "}
-                            {donasi.jumlahDonasi}
+                            Rp {donasi.jumlahDonasi}
                             <br />
                             <span className="font-semibold">
                               Terumbu Karang ID:

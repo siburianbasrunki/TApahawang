@@ -13,7 +13,8 @@ export const POST = async (request: Request) => {
         tanggalCheckout: body.tanggalCheckout + "T00:00:00.000Z",
         bukti: body.bukti,
         userId: body.userId,
-        totalbayar :body.totalbayar,
+        totalbayar: body.totalbayar,
+        validasiPembayaran: body.validasiPembayaran,
       },
     });
 
@@ -30,4 +31,28 @@ export const POST = async (request: Request) => {
 export const GET = async (req: NextRequest) => {
   const bookings = await prisma.bookingVilla.findMany({});
   return NextResponse.json({ bookings });
+};
+
+
+export const PUT = async (request: Request) => {
+  try {
+    const body = await request.json();
+
+    const { id, isValid } = body;
+
+    const isPaymentValid = isValid === "Valid";
+
+    await prisma.bookingVilla.update({
+      where: { id: id },
+      data: { validasiPembayaran: isPaymentValid },
+    });
+
+    return NextResponse.json({ message: "Validation status updated successfully" });
+  } catch (error) {
+    console.error("Error updating validation status:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 };

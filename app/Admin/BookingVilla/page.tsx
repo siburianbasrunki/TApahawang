@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import LaporanVilla from "./laporanvilla";
 import dynamic from "next/dynamic";
-// Import PDFDownloadLink dynamically (only on the client side)
 const DynamicPDFDownloadLink = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
   { ssr: false }
 );
 
 interface BookingVillaData {
+  id: string;
   villaId: string;
   tanggalCheckin: string;
   tanggalCheckout: string;
@@ -56,15 +56,18 @@ const SkeletonTable = () => {
 };
 
 const BookingVilla = () => {
-  const [bookingVillas, setBookingVillas] =
-    useState<BookingVillaResponse | null>(null);
+  const [bookingVillas, setBookingVillas] = useState<BookingVillaData[]>([]);
+
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [validationStatus, setValidationStatus] = useState<
+    Record<string, string>
+  >({});
 
   const fetchData = async () => {
     try {
       const res = await fetch("/api/villas/booking");
-      const json: BookingVillaResponse = await res.json();
-      setBookingVillas(json);
+      const json = await res.json();
+      setBookingVillas(json.bookings);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -75,6 +78,21 @@ const BookingVilla = () => {
   const handleRefreshClick = () => {
     setIsRefreshing(true);
     fetchData();
+  };
+
+  const handleValidationChange = async (id: any, isValid: any) => {
+    try {
+      await fetch("/api/villas/booking", {
+        method: "PUT",
+        body: JSON.stringify({ id, isValid }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setValidationStatus({ ...validationStatus, [id]: isValid });
+    } catch (error) {
+      console.error("Error updating validation status:", error);
+    }
   };
 
   useEffect(() => {
@@ -100,26 +118,10 @@ const BookingVilla = () => {
                 <FiRefreshCcw />
               </div>
             </div>
-            <div>
-              <DynamicPDFDownloadLink
-                document={
-                  <LaporanVilla bookingData={bookingVillas?.bookings || []} />
-                }
-                fileName="laporanbookingvilla"
-              >
-                {({ loading }) =>
-                  loading ? (
-                    <button>Loading Document...</button>
-                  ) : (
-                    <button>Download File</button>
-                  )
-                }
-              </DynamicPDFDownloadLink>
-            </div>
           </div>
         </div>
 
-        {bookingVillas ? (
+        {bookingVillas.length > 0 ? (
           <div>
             <table className="w-full overflow-x-auto">
               <thead className="bg-gray-50 text-gray-700 uppercase">
@@ -130,10 +132,11 @@ const BookingVilla = () => {
                   <th className="px-4 py-3 text-left">Check Out</th>
                   <th className="px-4 py-3 text-left">Bukti Pembayaran</th>
                   <th className="px-4 py-3 text-left">Total Pembayaran</th>
+                  <th className="px-4 py-3 text-left">Validasi Pembayaran</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {bookingVillas.bookings.map((booking, index) => (
+                {bookingVillas.map((booking, index) => (
                   <tr key={index} className="border-b border-gray-200">
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {booking.villaId}
@@ -148,7 +151,7 @@ const BookingVilla = () => {
                       {booking.tanggalCheckout}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      <Image
+                      <img
                         src={booking.bukti}
                         alt="Villa Image"
                         width={100}
@@ -158,13 +161,55 @@ const BookingVilla = () => {
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {booking.totalbayar}
                     </td>
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                      <select
+                        value={validationStatus[booking.id] || ""}
+                        onChange={(e) =>
+                          handleValidationChange(booking.id, e.target.value)
+                        }
+                        className="select select-bordered w-full max-w-xs bg-blue-500 text-white"
+                      >
+                        <option value="" disabled>
+                          Pilih
+                        </option>
+                        <option value="Valid">Valid</option>
+                        <option value="Unvalid">Unvalid</option>
+                      </select>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <SkeletonTable />
+          <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
+            <table className="w-full">
+              <thead className="bg-gray-50 text-gray-700 uppercase">
+                <tr>
+                  <th className="px-4 py-3 text-left">Villa ID</th>
+                  <th className="px-4 py-3 text-left">Tangal CheckIn</th>
+                  <th className="px-4 py-3 text-left">Tangal CheckOut</th>
+                  <th className="px-4 py-3 text-left">Bukti Pembayaran</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                <tr className="border-b border-gray-200">
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    Loading...
+                  </td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    Loading...
+                  </td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    Loading...
+                  </td>
+                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    Loading...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

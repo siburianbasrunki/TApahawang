@@ -7,8 +7,8 @@ const Footer = () => {
         <nav>
           <header className="footer-title">Kontak Kami</header>
           <p>Kecamatan Punduh Pidada, kabupaten Pesawaran, Lampung Selatan</p>
-          <p>Email: info@pahawangparadise.com</p>
-          <p>Telepon: +123-456-7890</p>
+          <p>Email: </p>
+          <p>Telepon: </p>
         </nav>
 
         <nav>
@@ -24,7 +24,7 @@ const Footer = () => {
         </nav>
       </footer>
       <footer className="footer px-10 py-4 border-t bg-[#212529] text-white flex items-center text-center ">
-        <p>&copy; 2023 Pahawang Paradise. Hak Cipta Dilindungi.</p>
+        <p>&copy; 2024 Badan Usaha Milik Desa Wisata Pulau Pahawang. Hak Cipta Dilindungi.</p>
       </footer>
     </>
   );
