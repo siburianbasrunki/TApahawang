@@ -22,7 +22,7 @@ const SkeletonTable = () => {
   return (
     <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
       <table className="w-full">
-        <thead className="bg-gray-50 text-gray-700 uppercase">
+        <thead className="bg-gray-50 text-gray-700 capitalize">
           <tr>
             <th className="px-4 py-3 text-left">ID</th>
             <th className="px-4 py-3 text-left">Nama Villa</th>
@@ -30,8 +30,7 @@ const SkeletonTable = () => {
             <th className="px-4 py-3 text-left">Harga Permalam (Rupiah)</th>
             <th className="px-4 py-3 text-left">Gambar Villa</th>
             <th className="px-4 py-3 text-left">Ketersedian Kamar</th>
-            <th className="px-4 py-3 text-left">Update</th>
-            <th className="px-4 py-3 text-left">Hapus</th>
+            
           </tr>
         </thead>
         <tbody className="bg-white">
@@ -54,12 +53,8 @@ const SkeletonTable = () => {
             <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
               Loading...
             </td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-              Loading...
-            </td>
-            <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-              Loading...
-            </td>
+            
+            
           </tr>
         </tbody>
       </table>
@@ -70,7 +65,7 @@ const Transportasi = () => {
   const [transportasis, setTransportasi] =
     useState<transportasiResponse | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [transportasisPerPage] = useState(5); // Number of transportasi items per page, adjust as needed
+  const [transportasisPerPage] = useState(5);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchData = async () => {
@@ -94,7 +89,6 @@ const Transportasi = () => {
     fetchData();
   }, []);
 
-  // Calculate current transportasi items based on pagination
   const indexOfLastTransportasi = currentPage * transportasisPerPage;
   const indexOfFirstTransportasi =
     indexOfLastTransportasi - transportasisPerPage;
@@ -116,7 +110,7 @@ const Transportasi = () => {
           </div>
           <div className="flex justify-end items-center gap-4  mb-4">
             <div
-              className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -134,20 +128,35 @@ const Transportasi = () => {
 
         {transportasis ? (
           <div>
-            <table className="w-full overflow-x-auto">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
+            <table className="w-full overflow-x-auto rounded-lg">
+              <thead className="bg-gray-50 text-gray-700 capitalize  rounded-lg">
                 <tr>
-                  <th className="px-4 py-3 text-left">Nama Kapal</th>
-                  <th className="px-4 py-3 text-left">Biaya Sewa (Rupiah)</th>
-                  <th className="px-4 py-3 text-left">Gambar Kapal</th>
-                  <th className="px-4 py-3 text-left">Jumlah Orang</th>
-                  <th className="px-4 py-3 text-left">Update</th>
-                  <th className="px-4 py-3 text-left">Hapus</th>
+                  <th className="px-4 py-3 text-center items-center align-center text-sm">
+                    Nama Kapal
+                  </th>
+                  <th className="px-4 py-3 text-center items-center align-center text-sm">
+                    Biaya Sewa (Rupiah)
+                  </th>
+                  <th className="px-4 py-3 text-center items-center align-center text-sm">
+                    Gambar Kapal
+                  </th>
+                  <th className="px-4 py-3 text-center items-center align-center text-sm">
+                    Jumlah Orang
+                  </th>
+                  <th className="px-4 py-3 text-center items-center align-center text-sm">
+                    Update
+                  </th>
+                  <th className="px-4 py-3 text-center items-center align-center text-sm">
+                    Hapus
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {currentTransportasis.map((transport, index) => (
-                  <tr key={transport.id} className="border-b border-gray-200">
+                  <tr
+                    key={transport.id}
+                    className="border-b border-gray-200 capitalize text-sm text-center items-center align-center rounded-lg"
+                  >
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {transport.nama}
                     </td>
@@ -176,12 +185,11 @@ const Transportasi = () => {
               </tbody>
             </table>
 
-            {/* Pagination controls */}
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-center">
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="bg-gray-300 px-3 py-1 mr-2"
+                className="btn btn-sm bg-gray-300 px-3 py-1 mr-2"
               >
                 Previous
               </button>
@@ -190,7 +198,7 @@ const Transportasi = () => {
                 disabled={
                   indexOfLastTransportasi >= transportasis.transportasis.length
                 }
-                className="bg-gray-300 px-3 py-1"
+                className="btn btn-sm bg-gray-300 px-3 py-1"
               >
                 Next
               </button>

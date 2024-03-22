@@ -70,7 +70,7 @@ const SkeletonTabel = () => {
 const Merchandise = () => {
   const [merchs, setMerchs] = useState<MerchData[] | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [merchsPerPage] = useState(5); // Number of merchandise items per page, adjust as needed
+  const [merchsPerPage] = useState(5); 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchData = async () => {
@@ -120,7 +120,7 @@ const Merchandise = () => {
           </div>
           <div className="flex justify-end items-center gap-4  mb-4">
             <div
-              className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -139,22 +139,22 @@ const Merchandise = () => {
         {merchs ? (
           <div>
             <table className="w-full overflow-x-auto">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
+              <thead className="bg-gray-50 text-gray-700 capitalize rounded-lg">
                 <tr>
-                  <th className="px-4 py-3 text-left">
+                  <th className="px-4 py-3 text-center text-sm">
                     <button onClick={handleSortByName}>Nama Barang</button>
                   </th>
-                  <th className="px-4 py-3 text-left">Deskripsi</th>
-                  <th className="px-4 py-3 text-left">Gambar Barang</th>
-                  <th className="px-4 py-3 text-left">Nomor Telepon</th>
-                  <th className="px-4 py-3 text-left">Harga (Rupiah)</th>
-                  <th className="px-4 py-3 text-left">Update</th>
-                  <th className="px-4 py-3 text-left">Hapus</th>
+                  <th className="px-4 py-3 text-center text-sm">Deskripsi</th>
+                  <th className="px-4 py-3 text-center text-sm">Gambar Barang</th>
+                  <th className="px-4 py-3 text-center text-sm">Nomor Telepon</th>
+                  <th className="px-4 py-3 text-center text-sm">Harga (Rupiah)</th>
+                  <th className="px-4 py-3 text-center text-sm">Update</th>
+                  <th className="px-4 py-3 text-center text-sm">Hapus</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {currentMerchs.map((merch, index) => (
-                  <tr key={merch.id} className="border-b border-gray-200">
+                  <tr key={merch.id} className="border-b border-gray-200 capitalize text-sm text-center">
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {merch.nama}
                     </td>
@@ -187,18 +187,18 @@ const Merchandise = () => {
               </tbody>
             </table>
 
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-center">
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="bg-gray-300 px-3 py-1 mr-2"
+                className="btn btn-sm bg-gray-300 px-3 py-1 mr-2"
               >
                 Previous
               </button>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={indexOfLastMerch >= merchs.length}
-                className="bg-gray-300 px-3 py-1"
+                className="btn btn-sm bg-gray-300 px-3 py-1"
               >
                 Next
               </button>

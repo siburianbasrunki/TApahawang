@@ -13,6 +13,7 @@ export const POST = async (request: Request) => {
         tanggalCheckout: body.tanggalCheckout + "T00:00:00.000Z",
         bukti: body.bukti,
         userId: body.userId,
+        name: body.name,
         totalbayar: body.totalbayar,
         validasiPembayaran: body.validasiPembayaran,
       },
@@ -33,7 +34,6 @@ export const GET = async (req: NextRequest) => {
   return NextResponse.json({ bookings });
 };
 
-
 export const PUT = async (request: Request) => {
   try {
     const body = await request.json();
@@ -47,7 +47,9 @@ export const PUT = async (request: Request) => {
       data: { validasiPembayaran: isPaymentValid },
     });
 
-    return NextResponse.json({ message: "Validation status updated successfully" });
+    return NextResponse.json({
+      message: "Validation status updated successfully",
+    });
   } catch (error) {
     console.error("Error updating validation status:", error);
     return NextResponse.json(

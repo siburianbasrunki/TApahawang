@@ -1,6 +1,7 @@
 "use client";
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
+import { FaPlus } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 const AddKarang = () => {
   const [nama, setNama] = useState("");
@@ -44,8 +45,8 @@ const AddKarang = () => {
 
   return (
     <div>
-      <button className="btn" onClick={handleModal}>
-        Add New
+      <button className="btn flex items-center" onClick={handleModal}>
+       <FaPlus/> Add New
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">

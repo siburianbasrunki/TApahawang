@@ -35,7 +35,7 @@ const SkeletonTable = () => {
   return (
     <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
       <table className="w-full">
-        <thead className="bg-gray-50 text-gray-700 uppercase">
+        <thead className="bg-gray-50 text-gray-700 capitalize">
           <tr>
             <th className="px-6 py-3 text-left">ID</th>
             <th className="px-6 py-3 text-left">Nama Donatur</th>
@@ -48,7 +48,6 @@ const SkeletonTable = () => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {/* Placeholder row for skeleton loading */}
           <tr className="border-b border-gray-200">
             <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
               Loading...
@@ -122,51 +121,49 @@ const Donasi = () => {
     <>
       <div className="bg-white shadow-md rounded-md p-4">
         <div className="flex justify-between">
-          
-        <h1 className="text-2xl font-bold mb-4">Manajemen Donasi</h1>
-        <div className="flex justify-end items-center gap-4 mb-4">
-          <div
-            className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
-            onClick={handleRefreshClick}
-          >
-            <div>
-              <small>refresh data</small>
-            </div>
-            <div>
-              <FiRefreshCcw />
+          <h1 className="text-2xl font-bold mb-4">Manajemen Donasi</h1>
+          <div className="flex justify-end items-center gap-4 mb-4">
+            <div
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
+              onClick={handleRefreshClick}
+            >
+              <div>
+                <small>refresh data</small>
+              </div>
+              <div>
+                <FiRefreshCcw />
+              </div>
             </div>
           </div>
-          {/* <div>
-            <AddDonasi karangs={karangs} />
-          </div> */}
-        </div>
         </div>
 
         {donasis ? (
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-gray-100 text-gray-600 uppercase">
+              <thead className="bg-gray-100 text-gray-600 capitalize">
                 <tr>
-                  <th className="px-6 py-3 text-left">ID</th>
-                  <th className="px-6 py-3 text-left">Nama Donatur</th>
-                  <th className="px-6 py-3 text-left">Jumlah Donasi</th>
-                  <th className="px-6 py-3 text-left">Bukti Pembayaran</th>
-                  <th className="px-6 py-3 text-left">Nomor WhatsApp</th>
-                  <th className="px-6 py-3 text-left">Terumbu Karang</th>
-                  <th className="px-6 py-3 text-left">Update</th>
-                  <th className="px-6 py-3 text-left">Chat</th>
+                  <th className="px-6 py-3 text-center text-sm">ID</th>
+                  <th className="px-6 py-3 text-center text-sm">Nama Donatur</th>
+                  <th className="px-6 py-3 text-center text-sm">Jumlah Donasi</th>
+                  <th className="px-6 py-3 text-center text-sm">Bukti Pembayaran</th>
+                  <th className="px-6 py-3 text-center text-sm">Nomor WhatsApp</th>
+                  <th className="px-6 py-3 text-center text-sm">Terumbu Karang</th>
+                  <th className="px-6 py-3 text-center text-sm">Update</th>
+                  <th className="px-6 py-3 text-center text-sm">Chat</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {currentDonasis.map((donasi, index) => {
                   return (
-                    <tr key={donasi.id} className="border-b">
-                      <td className="px-6 py-4 text-gray-700">{donasi.id}</td>
+                    <tr key={donasi.id} className="border-b capitalize text-center text-sm">
+                      <td className="px-6 py-4 text-gray-700 ">
+                        {donasi.id.slice(0, 8)}
+                      </td>
                       <td className="px-6 py-4 text-gray-700">
                         {donasi.user ? donasi.user.name : "Unknown User"}
                       </td>
                       <td className="px-6 py-4 text-gray-700">
-                        Rp. {donasi.jumlahDonasi}
+                        Rp{donasi.jumlahDonasi}
                       </td>
                       <td className="px-6 py-4 text-gray-700">
                         <Image
@@ -207,14 +204,14 @@ const Donasi = () => {
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="bg-gray-300 px-3 py-1 mr-2"
+                className="btn btn-sm bg-gray-300 px-3 py-1 mr-2"
               >
                 Previous
               </button>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={indexOfLastDonasi >= donasis.donasis.length}
-                className="bg-gray-300 px-3 py-1"
+                className="btn btn-sm bg-gray-300 px-3 py-1"
               >
                 Next
               </button>

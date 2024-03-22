@@ -2,6 +2,7 @@
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { FaPlus } from "react-icons/fa";
 
 const AddPaket = () => {
   const [namaPaket, setNamaPaket] = useState("");
@@ -50,8 +51,8 @@ const AddPaket = () => {
 
   return (
     <div>
-      <button className="btn" onClick={handleModal}>
-        Add New Paket
+      <button className="btn flex items-center" onClick={handleModal}>
+        <FaPlus/> Add New Paket
       </button>
 
       <div className={isOpen ? "modal modal-open" : "modal"}>

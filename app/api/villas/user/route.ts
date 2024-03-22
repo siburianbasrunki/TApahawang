@@ -14,6 +14,8 @@ export const POST = async (req: NextRequest) => {
       tanggalCheckin: true,
       tanggalCheckout: true,
       userId: true,
+      name: true,
+      totalbayar: true,
       validasiPembayaran: true,
     },
   });

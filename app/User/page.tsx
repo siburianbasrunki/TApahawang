@@ -32,6 +32,8 @@ interface BoVillas {
   tanggalCheckin: string;
   tanggalCheckout: string;
   validasiPembayaran: boolean;
+  totalbayar: number;
+  name: string;
 }
 
 const ProfilePage: NextPage = () => {
@@ -138,60 +140,88 @@ const ProfilePage: NextPage = () => {
             {showBookingHistory ? (
               <div className="bg-white p-4 rounded shadow">
                 <h2 className="text-2xl font-bold mb-4">Riwayat Booking</h2>
-                {dataBoVillas.length > 0 ? (
-                  dataBoVillas.map((bovilla) => (
-                    <div
-                      key={bovilla.id}
-                      className="bg-gray-100 mb-6 p-6 rounded-lg shadow-md"
-                    >
-                      <p className="text-lg font-semibold mb-2">
-                        ID Villa: {bovilla.villaId}
-                      </p>
-                      <p className="mb-2">
-                        Check-in: {formatDate(bovilla.tanggalCheckin)}
-                      </p>
-                      <p className="mb-4">
-                        Check-out: {formatDate(bovilla.tanggalCheckout)}
-                      </p>
-                      <p>
-                        Status :{" "}
-                        {bovilla.validasiPembayaran
-                          ? "Sudah divalidasi"
-                          : "Belum divalidasi"}
-                      </p>
-                      <div className="flex justify-end">
-                        {bovilla.validasiPembayaran ? (
-                          <DynamicPDFDownloadLink
-                            document={<PdfTiketFile bookingData={bovilla} />}
-                            fileName="tiketvillapahawang"
-                          >
-                            {({ loading }) => (
-                              <button
-                                className={`px-4 py-2 bg-blue-500 text-white rounded ${
-                                  loading ? "opacity-50 cursor-not-allowed" : ""
-                                }`}
-                                disabled={loading}
-                              >
-                                {loading
-                                  ? "Loading Document..."
-                                  : "Download Tiket"}
-                              </button>
-                            )}
-                          </DynamicPDFDownloadLink>
-                        ) : (
-                          <button
-                            className="px-4 py-2 bg-gray-300 text-blue-500 rounded cursor-not-allowed"
-                            disabled
-                          >
-                            Download Tiket
-                          </button>
-                        )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {dataBoVillas.length > 0 ? (
+                    dataBoVillas.map((bovilla) => (
+                      <div
+                        key={bovilla.id}
+                        className="bg-gray-100 p-6 rounded-lg shadow-md"
+                      >
+                        <p className="text-lg mb-2">
+                          ID Villa: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {bovilla.villaId.slice(0, 8)}
+                          </span>
+                        </p>
+                        <p className="text-lg mb-2">
+                          Nama Pemesan: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {" "}
+                            {bovilla.name}
+                          </span>
+                        </p>
+                        <p className="text-lg mb-2">
+                          Check-in: <br />{" "}
+                          <span className="font-semibold text xl">
+                            {formatDate(bovilla.tanggalCheckin)}
+                          </span>
+                        </p>
+                        <p className="text-lg mb-4">
+                          Check-out: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {formatDate(bovilla.tanggalCheckout)}
+                          </span>
+                        </p>
+                        <p className="text-lg mb-4">
+                          Total Bayar: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {bovilla.totalbayar}
+                          </span>
+                        </p>
+                        <p>
+                          Status:{" "}
+                          {bovilla.validasiPembayaran
+                            ? "Sudah divalidasi/Download Tiket(Screenshoot)"
+                            : "Belum divalidasi"}
+                        </p>
+                        <div className="flex justify-end mt-4">
+                          {bovilla.validasiPembayaran ? (
+                            <DynamicPDFDownloadLink
+                              document={<PdfTiketFile bookingData={bovilla} />}
+                              fileName="tiketvillapahawang"
+                            >
+                              {({ loading }) => (
+                                <button
+                                  className={`px-4 py-2 bg-blue-500 text-white rounded ${
+                                    loading
+                                      ? "opacity-50 cursor-not-allowed"
+                                      : ""
+                                  }`}
+                                  disabled={loading}
+                                >
+                                  {loading
+                                    ? "Loading Document..."
+                                    : "Download Tiket"}
+                                </button>
+                              )}
+                            </DynamicPDFDownloadLink>
+                          ) : (
+                            <button
+                              className="px-4 py-2 bg-gray-300 text-blue-500 rounded cursor-not-allowed"
+                              disabled
+                            >
+                              Download Tiket
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500">Tidak ada riwayat booking.</p>
-                )}
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-center">
+                      Tidak ada riwayat booking.
+                    </p>
+                  )}
+                </div>
               </div>
             ) : (
               <div className="bg-white p-4 rounded shadow">

@@ -64,6 +64,7 @@ model BookingVilla {
   id                 String   @id @default(uuid())
   userId             String
   villaId            String
+  name               String
   tanggalCheckin     DateTime
   tanggalCheckout    DateTime
   bukti              String
@@ -74,16 +75,17 @@ model BookingVilla {
 }
 
 model BookingTransportasiLaut {
-  id               String           @id @default(uuid())
-  userId           String
-  transportasiId   String
-  tanggalCheckin   DateTime
-  nama             String
-  noTelepon        String
-  jumlahPenumpang  Int
-  buktiTranfer     String
-  user             User             @relation(fields: [userId], references: [id])
-  transportasiLaut TransportasiLaut @relation(fields: [transportasiId], references: [id])
+  id                 String           @id @default(uuid())
+  userId             String
+  transportasiId     String
+  tanggalCheckin     DateTime
+  nama               String
+  noTelepon          String
+  jumlahPenumpang    Int
+  buktiTranfer       String
+  validasiPembayaran Boolean          @default(false)
+  user               User             @relation(fields: [userId], references: [id])
+  transportasiLaut   TransportasiLaut @relation(fields: [transportasiId], references: [id])
 }
 
 model TerumbuKarang {

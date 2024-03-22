@@ -32,7 +32,6 @@ const SkeletonTable = () => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {/* Placeholder row for skeleton loading */}
           <tr className="border-b border-gray-200">
             <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
               Loading...
@@ -62,7 +61,7 @@ const SkeletonTable = () => {
 const TerumbuKarang = () => {
   const [karangs, setKarangs] = useState<KarangResponse | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [karangsPerPage] = useState(5); // Number of karangs items per page, adjust as needed
+  const [karangsPerPage] = useState(5); 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchData = async () => {
@@ -86,7 +85,6 @@ const TerumbuKarang = () => {
     fetchData();
   }, []);
 
-  // Calculate current karangs items based on pagination
   const indexOfLastKarang = currentPage * karangsPerPage;
   const indexOfFirstKarang = indexOfLastKarang - karangsPerPage;
   const currentKarangs = karangs
@@ -104,7 +102,7 @@ const TerumbuKarang = () => {
           </div>
           <div className="flex justify-end items-center gap-4  mb-4">
             <div
-              className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -121,21 +119,21 @@ const TerumbuKarang = () => {
         </div>
         {karangs ? (
           <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead className="bg-gray-100 text-gray-600 uppercase">
+            <table className="min-w-full rounded-lg">
+              <thead className="bg-gray-100 text-gray-600 capitalize">
                 <tr>
-                  <th className="px-6 py-3 text-left">Nama Terumbu Karang</th>
-                  <th className="px-6 py-3 text-left">
+                  <th className="px-6 py-3 text-center text-sm">Nama Terumbu Karang</th>
+                  <th className="px-6 py-3 text-center text-sm">
                     Deskripsi Terumbu Karang
                   </th>
-                  <th className="px-6 py-3 text-left">Gambar</th>
-                  <th className="px-6 py-3 text-left">Update</th>
-                  <th className="px-6 py-3 text-left">Hapus</th>
+                  <th className="px-6 py-3 text-center text-sm">Gambar</th>
+                  <th className="px-6 py-3 text-center text-sm">Update</th>
+                  <th className="px-6 py-3 text-center text-sm">Hapus</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {currentKarangs.map((karang, index) => (
-                  <tr key={karang.id} className="border-b">
+                  <tr key={karang.id} className="border-b capitalize text-sm text-center">
                     <td className="px-6 py-4 text-gray-700">{karang.nama}</td>
                     <td className="px-6 py-4 text-gray-700">
                       {karang.deskripsi}
@@ -146,6 +144,7 @@ const TerumbuKarang = () => {
                         alt={karang.gambar}
                         width={100}
                         height={100}
+                        className="rounded-lg"
                       />
                     </td>
                     <td className="px-6 py-4 text-gray-700">
@@ -159,18 +158,18 @@ const TerumbuKarang = () => {
               </tbody>
             </table>
 
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-center">
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="bg-gray-300 px-3 py-1 mr-2"
+                className="btn btn-sm bg-gray-300 px-3 py-1 mr-2"
               >
                 Previous
               </button>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={indexOfLastKarang >= karangs.karangs.length}
-                className="bg-gray-300 px-3 py-1"
+                className="btn btn-sm bg-gray-300 px-3 py-1"
               >
                 Next
               </button>

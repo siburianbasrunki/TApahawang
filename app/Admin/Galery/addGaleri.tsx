@@ -2,6 +2,7 @@
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { FaPlus } from "react-icons/fa";
 
 const AddGalery = () => {
   const [title, setTitle] = useState("");
@@ -51,7 +52,8 @@ const AddGalery = () => {
 
   return (
     <div>
-      <button className="btn " onClick={handleModal}>
+      <button className="btn flex items-center" onClick={handleModal}>
+        <FaPlus />
         Add Activity
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>

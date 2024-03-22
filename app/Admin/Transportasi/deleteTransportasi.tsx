@@ -40,7 +40,7 @@ const DeleteTransportasi = ({
 
   return (
     <div>
-      <button className="btn btn-error " onClick={handleModal}>
+      <button className="btn bg-red-500 " onClick={handleModal}>
         Delete
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
@@ -52,7 +52,7 @@ const DeleteTransportasi = ({
           <div className="modal-action">
             <button
               type="button"
-              className="btn btn-danger"
+              className="btn bg-red-500"
               onClick={handleModal}
             >
               No

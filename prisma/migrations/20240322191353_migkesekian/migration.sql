@@ -65,6 +65,7 @@ CREATE TABLE "BookingVilla" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "villaId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "tanggalCheckin" TIMESTAMP(3) NOT NULL,
     "tanggalCheckout" TIMESTAMP(3) NOT NULL,
     "bukti" TEXT NOT NULL,
@@ -84,6 +85,7 @@ CREATE TABLE "BookingTransportasiLaut" (
     "noTelepon" TEXT NOT NULL,
     "jumlahPenumpang" INTEGER NOT NULL,
     "buktiTranfer" TEXT NOT NULL,
+    "validasiPembayaran" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "BookingTransportasiLaut_pkey" PRIMARY KEY ("id")
 );

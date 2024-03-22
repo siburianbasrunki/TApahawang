@@ -2,8 +2,8 @@
 import { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { FaPlus } from "react-icons/fa";
 
-// Interface to describe the expected structure of Cloudinary response
 interface CloudinaryResponse {
   secure_url: string;
   // Add other fields if necessary
@@ -62,8 +62,8 @@ const AddTransportasi = () => {
 
   return (
     <div>
-      <button className="btn" onClick={handleModal}>
-        Add New
+      <button className="btn flex items-center" onClick={handleModal}>
+        <FaPlus/> Add New
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">

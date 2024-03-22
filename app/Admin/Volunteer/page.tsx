@@ -22,7 +22,7 @@ const SkeletonTable = () => {
   return (
     <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
       <table className="w-full">
-        <thead className="bg-gray-50 text-gray-700 uppercase">
+        <thead className="bg-gray-50 text-gray-700 capitalize">
           <tr>
             <th className="px-4 py-3 text-left">ID</th>
             <th className="px-4 py-3 text-left">Nama Organisasi</th>
@@ -35,7 +35,6 @@ const SkeletonTable = () => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {/* Placeholder row for skeleton loading */}
           <tr className="border-b border-gray-200">
             <td
               className="px-4 py-3 whitespace
@@ -126,7 +125,7 @@ const Volunteer = () => {
           </div>
           <div className="flex justify-end items-center gap-4  mb-4">
             <div
-              className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -141,19 +140,19 @@ const Volunteer = () => {
         <div className="overflow-x-auto">
           {volunteers ? (
             <table className="w-full">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
+              <thead className="bg-gray-50 text-gray-700 capitalize">
                 <tr>
-                  <th className="px-4 py-3 text-left">Nama Organisasi</th>
-                  <th className="px-4 py-3 text-left">Asal Organisasi</th>
-                  <th className="px-4 py-3 text-left">Email</th>
+                  <th className="px-4 py-3 text-center text-sm">Nama Organisasi</th>
+                  <th className="px-4 py-3 text-center text-sm">Asal Organisasi</th>
+                  <th className="px-4 py-3 text-center text-sm">Email</th>
 
-                  <th className="px-4 py-3 text-left">Surat</th>
-                  <th className="px-4 py-3 text-left">Chat WA</th>
+                  <th className="px-4 py-3 text-center text-sm">Surat</th>
+                  <th className="px-4 py-3 text-center text-sm">Chat WA</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {volunteers.volunteers.map((volunteer, index) => (
-                  <tr className="border-b border-gray-200" key={volunteer.id}>
+                  <tr className="border-b border-gray-200 text-center text-sm capitalize" key={volunteer.id}>
                     <td
                       className="px-4 py-3 whitespace
                       -no-wrap text-gray-700"

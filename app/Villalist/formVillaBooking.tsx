@@ -21,7 +21,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
-  const [nama, setNama] = useState("");
+  const [name, setName] = useState("");
   const [tanggalCheckin, setTanggalCheckin] = useState("");
   const [tanggalCheckout, setTanggalCheckout] = useState("");
   const [bukti, setBukti] = useState<File | null>(null);
@@ -56,12 +56,12 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
         tanggalCheckin: tanggalCheckin,
         tanggalCheckout: tanggalCheckout,
         bukti: data.data.secure_url,
-        nama: nama,
+        name: name,
         userId: userId,
         totalbayar: totalBayar,
       });
 
-      setNama("");
+      setName("");
       setTanggalCheckin("");
       setTanggalCheckout("");
       setBukti(null);
@@ -190,8 +190,8 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
                 id="nama"
                 className="input input-bordered"
                 placeholder="Masukkan nama Anda"
-                value={nama}
-                onChange={(e) => setNama(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 

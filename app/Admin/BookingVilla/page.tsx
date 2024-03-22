@@ -1,25 +1,19 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
-import LaporanVilla from "./laporanvilla";
-import dynamic from "next/dynamic";
-const DynamicPDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
-  { ssr: false }
-);
-
+import { IoMdDownload } from "react-icons/io";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import Image from "next/image";
 interface BookingVillaData {
   id: string;
   villaId: string;
   tanggalCheckin: string;
   tanggalCheckout: string;
   bukti: string;
-  userId: string;
+  name: string;
   totalbayar: string;
-}
-interface BookingVillaResponse {
-  bookings: BookingVillaData[];
+  validasiPembayaran: boolean;
 }
 
 const SkeletonTable = () => {
@@ -57,7 +51,6 @@ const SkeletonTable = () => {
 
 const BookingVilla = () => {
   const [bookingVillas, setBookingVillas] = useState<BookingVillaData[]>([]);
-
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [validationStatus, setValidationStatus] = useState<
     Record<string, string>
@@ -95,9 +88,51 @@ const BookingVilla = () => {
     }
   };
 
+  function formatDate(dateString: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString("id-ID", options);
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  const getRowClassName = (isValid: boolean) => {
+    return isValid ? " " : "bg-red-500";
+  };
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Laporan Pemesanan Villa", 10, 10);
+    doc.autoTable({
+      head: [
+        [
+          { content: "Villa ID", styles: { halign: "center" } },
+          { content: "Nama Pemesan", styles: { halign: "center" } },
+          { content: "Check In", styles: { halign: "center" } },
+          { content: "Check Out", styles: { halign: "center" } },
+          { content: "Total Pembayaran", styles: { halign: "center" } },
+          { content: "Status Pembayaran", styles: { halign: "center" } },
+        ],
+      ],
+      body: bookingVillas.map((booking) => [
+        booking.villaId.slice(0, 8),
+        booking.name,
+        formatDate(booking.tanggalCheckin),
+        formatDate(booking.tanggalCheckout),
+        booking.totalbayar,
+        booking.validasiPembayaran ? "Valid" : "Unvalid",
+      ]),
+      startY: 20,
+      margin: { horizontal: 10 },
+      styles: { overflow: "linebreak" },
+    });
+    doc.save("laporan_sewa_villa.pdf");
+  };
 
   return (
     <div>
@@ -108,7 +143,7 @@ const BookingVilla = () => {
           </div>
           <div className="flex justify-end items-center gap-4 mb-4">
             <div
-              className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -117,41 +152,58 @@ const BookingVilla = () => {
               <div>
                 <FiRefreshCcw />
               </div>
+              <div>
+                <button onClick={downloadPDF} className="btn">
+                  <IoMdDownload /> Export PDF
+                </button>
+              </div>
             </div>
           </div>
         </div>
-
         {bookingVillas.length > 0 ? (
           <div>
-            <table className="w-full overflow-x-auto">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
+            <table className="w-full overflow-x-auto rounded-lg">
+              <thead className="bg-gray-50 text-gray-700 capitalize rounded-lg">
                 <tr>
-                  <th className="px-4 py-3 text-left">Villa ID</th>
-                  <th className="px-4 py-3 text-left">Id Pemesan</th>
-                  <th className="px-4 py-3 text-left">Check In</th>
-                  <th className="px-4 py-3 text-left">Check Out</th>
-                  <th className="px-4 py-3 text-left">Bukti Pembayaran</th>
-                  <th className="px-4 py-3 text-left">Total Pembayaran</th>
-                  <th className="px-4 py-3 text-left">Validasi Pembayaran</th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Nama Pemesan
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">Villa ID</th>
+                  <th className="px-4 py-3 text-center text-sm">Check In</th>
+                  <th className="px-4 py-3 text-center text-sm">Check Out</th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Bukti Pembayaran
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Total Pembayaran
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Validasi Pembayaran
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {bookingVillas.map((booking, index) => (
-                  <tr key={index} className="border-b border-gray-200">
+                  <tr
+                    key={index}
+                    className={`border-b border-gray-200 items-center align-center text-sm capitalize ${getRowClassName(
+                      booking.validasiPembayaran
+                    )}`}
+                  >
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      {booking.villaId}
+                      {booking.name}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      {booking.userId}
+                      {booking.villaId.slice(0, 8)}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      {booking.tanggalCheckin}
+                      {formatDate(booking.tanggalCheckin)}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      {booking.tanggalCheckout}
+                      {formatDate(booking.tanggalCheckout)}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      <img
+                      <Image
                         src={booking.bukti}
                         alt="Villa Image"
                         width={100}
@@ -182,34 +234,7 @@ const BookingVilla = () => {
             </table>
           </div>
         ) : (
-          <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
-            <table className="w-full">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
-                <tr>
-                  <th className="px-4 py-3 text-left">Villa ID</th>
-                  <th className="px-4 py-3 text-left">Tangal CheckIn</th>
-                  <th className="px-4 py-3 text-left">Tangal CheckOut</th>
-                  <th className="px-4 py-3 text-left">Bukti Pembayaran</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white">
-                <tr className="border-b border-gray-200">
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                    Loading...
-                  </td>
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                    Loading...
-                  </td>
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                    Loading...
-                  </td>
-                  <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                    Loading...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <SkeletonTable />
         )}
       </div>
     </div>

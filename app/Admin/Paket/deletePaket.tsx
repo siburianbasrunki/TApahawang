@@ -33,7 +33,7 @@ const DeletePaket = ({ paket }: { paket: Paket }) => {
 
   return (
     <div>
-      <button className="btn btn-error " onClick={handleModal}>
+      <button className="btn bg-red-500 " onClick={handleModal}>
         Delete Paket
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>
@@ -45,7 +45,7 @@ const DeletePaket = ({ paket }: { paket: Paket }) => {
           <div className="modal-action">
             <button
               type="button"
-              className="btn btn-danger"
+              className="btn bg-red-500"
               onClick={handleModal}
             >
               No

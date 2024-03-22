@@ -112,7 +112,7 @@ const Villa = () => {
           </div>
           <div className="flex justify-end items-center gap-4 mb-4">
             <div
-              className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -130,33 +130,33 @@ const Villa = () => {
 
         {villas ? (
           <div>
-            <table className="w-full overflow-x-auto">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
+            <table className="w-full overflow-x-auto rounded-lg">
+              <thead className="bg-gray-50 text-gray-700 capitalize rounded-lg">
                 <tr>
-                  <th className="px-4 py-3 text-left">Nama Villa</th>
-                  <th className="px-4 py-3 text-left">Deskripsi</th>
-                  <th className="px-4 py-3 text-left">
+                  <th className="px-4 py-3 text-center text-sm">Nama Villa</th>
+                  <th className="px-4 py-3 text-center text-sm">Deskripsi</th>
+                  <th className="px-4 py-3 text-center text-sm">
                     Harga Permalam (Rupiah)
                   </th>
-                  <th className="px-4 py-3 text-left">Gambar Villa</th>
-                  <th className="px-4 py-3 text-left">Ketersedian Kamar</th>
-                  <th className="px-4 py-3 text-left">Update</th>
-                  <th className="px-4 py-3 text-left">Hapus</th>
+                  <th className="px-4 py-3 text-center text-sm">Gambar Villa</th>
+                  <th className="px-4 py-3 text-center text-sm">Ketersedian Kamar</th>
+                  <th className="px-4 py-3 text-center text-sm">Update</th>
+                  <th className="px-4 py-3 text-center text-sm">Hapus</th>
                 </tr>
               </thead>
-              <tbody className="bg-white">
+              <tbody className="bg-white rounded-lg">
                 {currentVillas.map((villa, index) => (
-                  <tr key={villa.id} className="border-b border-gray-200">
-                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                  <tr key={villa.id} className="border-b border-gray-200 rounded-lg text-sm">
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700 text-center items-center">
                       {villa.nama}
                     </td>
-                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700 text-center items-center">
                       {villa.deskripsi}
                     </td>
-                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700 text-center items-center">
                       Rp {villa.hargaPerMalam}
                     </td>
-                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700 text-center items-center">
                       <Image
                         src={villa.gambar}
                         alt="Villa Image"
@@ -164,13 +164,13 @@ const Villa = () => {
                         height={100}
                       />
                     </td>
-                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700 text-center items-center">
                       {villa.ketersediaan}
                     </td>
-                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700 text-center items-center">
                       <UpdateVilla villa={villa} />
                     </td>
-                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700 text-center items-center">
                       <DeleteVilla villa={villa} />
                     </td>
                   </tr>
@@ -182,14 +182,14 @@ const Villa = () => {
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="bg-gray-300 px-3 py-1 mr-2"
+                className="btn btn-sm bg-gray-300 px-3 py-1 mr-2"
               >
                 Previous
               </button>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={indexOfLastVilla >= villas.villas.length}
-                className="bg-gray-300 px-3 py-1"
+                className="btn btn-sm bg-gray-300 px-3 py-1"
               >
                 Next
               </button>

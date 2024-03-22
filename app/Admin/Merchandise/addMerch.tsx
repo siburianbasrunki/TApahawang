@@ -1,25 +1,26 @@
-"use client"
-import { useState, SyntheticEvent } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState, SyntheticEvent } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { FaPlus } from "react-icons/fa";
 
 const AddMerch = () => {
-  const [nama, setNama] = useState('');
-  const [deskripsi, setDeskripsi] = useState('');
-  const [harga, setHarga] = useState('');
+  const [nama, setNama] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
+  const [harga, setHarga] = useState("");
   const [gambar, setGambar] = useState<File | null>(null);
-  const [ketersediaan, setKetersediaan] = useState('');
-  const [noTelepon,setNoTelepon] = useState('');
+  const [ketersediaan, setKetersediaan] = useState("");
+  const [noTelepon, setNoTelepon] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     const formData = new FormData();
-    formData.append('file', gambar as File);
-    formData.append('upload_preset', 'merchandise');
+    formData.append("file", gambar as File);
+    formData.append("upload_preset", "merchandise");
 
     try {
       const { data } = await axios.post(
@@ -32,22 +33,22 @@ const AddMerch = () => {
         deskripsi: deskripsi,
         harga: Number(harga),
         gambar: data?.secure_url || null,
-        noTelepon : noTelepon,
+        noTelepon: noTelepon,
         ketersediaan: Number(ketersediaan),
       });
 
-      setNama('');
-      setDeskripsi('');
-      setHarga('');
+      setNama("");
+      setDeskripsi("");
+      setHarga("");
       setGambar(null);
-      setKetersediaan('');
-      setNoTelepon('');
+      setKetersediaan("");
+      setNoTelepon("");
       router.refresh();
       setIsOpen(false);
     } catch (error) {
-      console.error('Error uploading image or posting data:', error);
+      console.error("Error uploading image or posting data:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -57,10 +58,10 @@ const AddMerch = () => {
 
   return (
     <div>
-      <button className="btn" onClick={handleModal}>
-        Add New
+      <button className="btn flex items-center" onClick={handleModal}>
+        <FaPlus /> Add New
       </button>
-      <div className={isOpen ? 'modal modal-open' : 'modal'}>
+      <div className={isOpen ? "modal modal-open" : "modal"}>
         <div className="modal-box">
           <h3 className="font-bold  text-lg">Add New Merch</h3>
           <form onSubmit={handleSubmit}>
@@ -128,8 +129,10 @@ const AddMerch = () => {
                 Close
               </button>
               <button
-                type='submit'
-                className={`btn btn-primary ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                type="submit"
+                className={`btn btn-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 disabled={isLoading}
               >
                 {isLoading ? "Data sedang dikirim, harap tunggu...." : "Submit"}

@@ -22,15 +22,15 @@ const SkeletonTable = () => {
   return (
     <div className="animate-pulse bg-gray-200 p-4 rounded mb-4 w-full">
       <table className="w-full">
-        <thead className="bg-gray-50 text-gray-700 uppercase">
+        <thead className="bg-gray-50 text-gray-700 capitalize">
           <tr>
-            <th className="px-4 py-3 text-left">ID Paket</th>
-            <th className="px-4 py-3 text-left">Nama Paket</th>
-            <th className="px-4 py-3 text-left">Asal Komunitas</th>
-            <th className="px-4 py-3 text-left">Nomor Telepon</th>
-            <th className="px-4 py-3 text-left">Gambar Paket</th>
-            <th className="px-4 py-3 text-left">Update</th>
-            <th className="px-4 py-3 text-left">Hapus</th>
+            <th className="px-4 py-3 text-center text-sm">ID Paket</th>
+            <th className="px-4 py-3 text-center text-sm">Nama Paket</th>
+            <th className="px-4 py-3 text-center text-sm">Asal Komunitas</th>
+            <th className="px-4 py-3 text-center text-sm">Nomor Telepon</th>
+            <th className="px-4 py-3 text-center text-sm">Gambar Paket</th>
+            <th className="px-4 py-3 text-center text-sm">Update</th>
+            <th className="px-4 py-3 text-center text-sm">Hapus</th>
           </tr>
         </thead>
         <tbody className="bg-white">
@@ -112,7 +112,6 @@ const Paket = () => {
     fetchData();
   }, []);
 
-  // Calculate current pakets items based on pagination
   const indexOfLastPaket = currentPage * paketsPerPage;
   const indexOfFirstPaket = indexOfLastPaket - paketsPerPage;
   const currentPakets = pakets
@@ -128,7 +127,7 @@ const Paket = () => {
           </div>
           <div className="flex justify-end items-center gap-4  mb-4">
             <div
-              className="text-2xl cursor-pointer text-green-700 flex items-center gap-x-2 "
+              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -146,19 +145,28 @@ const Paket = () => {
         {pakets ? (
           <div>
             <table className="w-full">
-              <thead className="bg-gray-50 text-gray-700 uppercase">
+              <thead className="bg-gray-50 text-gray-700 capitalize rounded-lg">
                 <tr>
-                  <th className="px-4 py-3 text-left">Nama Paket</th>
-                  <th className="px-4 py-3 text-left">Owner/Pemilik</th>
-                  <th className="px-4 py-3 text-left">Nomor Telepon</th>
-                  <th className="px-4 py-3 text-left">Gambar Paket</th>
-                  <th className="px-4 py-3 text-left">Update</th>
-                  <th className="px-4 py-3 text-left">Hapus</th>
+                  <th className="px-4 py-3 text-center text-sm">Nama Paket</th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Owner/Pemilik
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Nomor Telepon
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Gambar Paket
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">Update</th>
+                  <th className="px-4 py-3 text-center text-sm">Hapus</th>
                 </tr>
               </thead>
               <tbody className="bg-white">
                 {currentPakets.map((paket, index) => (
-                  <tr className="border-b border-gray-200" key={paket.id}>
+                  <tr
+                    className="border-b border-gray-200 capitalize text-sm text-center"
+                    key={paket.id}
+                  >
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {paket.namaPaket}
                     </td>
@@ -191,14 +199,14 @@ const Paket = () => {
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="bg-gray-300 px-3 py-1 mr-2"
+                className="btn btn-sm bg-gray-300 px-3 py-1 mr-2"
               >
                 Previous
               </button>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={indexOfLastPaket >= pakets.pakets.length}
-                className="bg-gray-300 px-3 py-1"
+                className="btn btn-sm bg-gray-300 px-3 py-1"
               >
                 Next
               </button>

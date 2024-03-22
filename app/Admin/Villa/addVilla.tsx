@@ -2,7 +2,7 @@
 import { useState, SyntheticEvent } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-
+import { FaPlus } from "react-icons/fa";
 const AddVilla = () => {
   const [nama, setNama] = useState('');
   const [deskripsi, setDeskripsi] = useState('');
@@ -55,8 +55,8 @@ const AddVilla = () => {
   };
   return (
     <div>
-      <button className='btn' onClick={handleModal}>
-        Add New
+      <button className='btn flex items-center' onClick={handleModal}>
+       <FaPlus/> Add New
       </button>
       <div className={isOpen ? 'modal modal-open' : 'modal'}>
         <div className='modal-box'>

@@ -57,22 +57,28 @@ const Donate = async () => {
             <h1 className="text-4xl lg:text-5xl font-bold mb-4">
               Manfaat Donasi
             </h1>
-            <p className="text-lg leading-relaxed">
-              Manfaat donasi ini adalah Anda dapat menjadi agen perubahan
-              positif dalam pemulihan dan pelestarian terumbu karang yang sangat
-              penting bagi ekosistem laut dan perubahan iklim global. Dengan
-              berkontribusi, Anda mendukung pemulihan ekosistem, menyerap
-              karbon, serta memberikan mata pencaharian kepada komunitas
-              nelayan, sambil juga memperoleh kepuasan pribadi, pembaruan
-              tentang pertumbuhan terumbu karang yang Anda donasi, dan
-              kesempatan untuk meningkatkan kesadaran tentang kelestarian
-              terumbu karang di seluruh dunia.
-            </p>
-            {/* <a href="/Login">
-            <button className="btn btn-primary font-bold capitalize mt-4">
-              Login untuk donasi
-            </button>
-          </a> */}
+            <div className="text-lg leading-relaxed">
+              <p>
+                Manfaat donasi ini adalah Anda dapat menjadi agen perubahan
+                positif dalam pemulihan dan pelestarian terumbu karang yang
+                sangat penting bagi ekosistem laut dan perubahan iklim global.
+                Dengan berkontribusi, Anda mendukung pemulihan ekosistem,
+                menyerap karbon, serta memberikan mata pencaharian kepada
+                komunitas nelayan, sambil juga memperoleh kepuasan pribadi,
+                pembaruan tentang pertumbuhan terumbu karang yang Anda donasi,
+                dan kesempatan untuk meningkatkan kesadaran tentang kelestarian
+                terumbu karang di seluruh dunia.
+              </p>
+              <span className="font-bold">Syarat Donasi :</span>
+              <ol className="list-decimal ml-6">
+                <li>Sudah register dan login pada website ini</li>
+                <li>
+                  Lihat daftar terumbu karang sebelum klik tombol AYO DONASI
+                </li>
+                <li>Minimal Donasi 80rb untuk 1 fragmen Terumbu Karang</li>
+              </ol>
+            </div>
+
             <AddDonasi karangs={Karangs} />
           </div>
         </div>
