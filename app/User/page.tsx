@@ -108,15 +108,15 @@ const ProfilePage: NextPage = () => {
       <div>
         <Navbar />
       </div>
-      <div className="max-w-screen-md mx-auto">
-        <div className="bg-blue-500 p-4 text-white text-center w-full">
+      <div className="max-w-screen-md mx-auto shadow-md">
+        <div className="bg-blue-500 p-4 text-white text-center w-full rounded-lg">
           <h1 className="text-2xl font-bold">Profile Page</h1>
           <p>Selamat datang, {session?.user?.name || "Guest(belum Login)"}!</p>
         </div>
         <div className="mt-4">
           <div className="flex justify-around">
             <button
-              className={`px-4 py-2 focus:outline-none ${
+              className={`px-4 py-2 focus:outline-none rounded-lg ${
                 showBookingHistory
                   ? "bg-blue-500 text-white"
                   : "bg-gray-300 text-blue-500"
@@ -126,7 +126,7 @@ const ProfilePage: NextPage = () => {
               Riwayat Booking
             </button>
             <button
-              className={`px-4 py-2 focus:outline-none ${
+              className={`px-4 py-2 focus:outline-none rounded-lg ${
                 !showBookingHistory
                   ? "bg-blue-500 text-white"
                   : "bg-gray-300 text-blue-500"
@@ -230,7 +230,7 @@ const ProfilePage: NextPage = () => {
                   dataDonasi.map((donasi) => (
                     <div
                       key={donasi.id}
-                      className="bg-base-200 mb-4 p-4 sm:p-6 lg:p-8"
+                      className="bg-base-200 mb-4 p-4 sm:p-6 lg:p-8 rounded-lg"
                     >
                       <div role="alert" className="alert alert-info mb-4">
                         <svg
@@ -261,7 +261,7 @@ const ProfilePage: NextPage = () => {
                         />
                         <div className="flex-1 p-4">
                           <p className="text-xl md:text-2xl lg:text-xl font-bold mb-4">
-                            ID Donasi: {donasi.id}
+                            ID Donasi: {donasi.id.slice(0, 8)}
                           </p>
                           <p className="text-lg py-2">
                             <span className="font-semibold">
@@ -272,7 +272,7 @@ const ProfilePage: NextPage = () => {
                             <span className="font-semibold">
                               Terumbu Karang ID:
                             </span>{" "}
-                            {donasi.terumbuKarangId}
+                            {donasi.terumbuKarangId.slice(0, 8)}
                           </p>
                         </div>
                       </div>

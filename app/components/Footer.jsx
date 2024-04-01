@@ -23,7 +23,7 @@ const Footer = () => {
           </div>
         </nav>
       </footer>
-      <footer className="footer px-10 py-4 border-t bg-[#212529] text-white flex items-center text-center ">
+      <footer className="footer px-10 py-4 border-t bg-[#212529] text-white flex justify-center items-center text-center ">
         <p>&copy; 2024 Badan Usaha Milik Desa Wisata Pulau Pahawang. Hak Cipta Dilindungi.</p>
       </footer>
     </>
