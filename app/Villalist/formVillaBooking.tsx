@@ -3,7 +3,6 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-
 interface VillaData {
   id: string;
   nama: string;
