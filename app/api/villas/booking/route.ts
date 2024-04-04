@@ -1,6 +1,6 @@
 // import module twilio
-const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
-const authToken = "d7f1baea867fe2db11e4cd2025eb2dea";
+const accountSid = process.env.NEXT_ACCOUNTSID;
+const authToken = process.env.NEXT_AUTHTOKEN;
 const client = require('twilio')(accountSid, authToken);
 
 // import prisma
