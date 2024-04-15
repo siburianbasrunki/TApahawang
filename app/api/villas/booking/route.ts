@@ -1,14 +1,11 @@
-// import module twilio
-const accountSid = process.env.NEXT_ACCOUNTSID;
-const authToken = process.env.NEXT_AUTHTOKEN;
-const client = require('twilio')(accountSid, authToken);
+const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
+const authToken = "6284cffe7965266a648f4ca611f847cc";
+const client = require("twilio")(accountSid, authToken);
 
-// import prisma
 import { NextRequest, NextResponse } from "next/server";
 import type { BookingVilla } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
-// fungsi untuk mengirim pesan WhatsApp
 export const sendWhatsAppMessage = async (to: string, message: string) => {
   try {
     await client.messages.create({
@@ -17,12 +14,11 @@ export const sendWhatsAppMessage = async (to: string, message: string) => {
       to: `whatsapp:${to}`,
     });
     console.log("Pesan WhatsApp berhasil dikirim.");
-  } catch (error) { 
+  } catch (error) {
     console.error("Error saat mengirim pesan WhatsApp:", error);
   }
 };
 
-// POST endpoint
 export const POST = async (request: Request) => {
   try {
     const body: BookingVilla = await request.json();
@@ -40,8 +36,11 @@ export const POST = async (request: Request) => {
       },
     });
 
-    await sendWhatsAppMessage("+6282277611415", "Ada Pemesanan Villa cek website");
-    
+    await sendWhatsAppMessage(
+      "+6282277611415",
+      "Ada Pemesanan Villa cek website"
+    );
+
     return NextResponse.json(bookingVilla);
   } catch (error) {
     console.error("Error creating villa booking:", error);

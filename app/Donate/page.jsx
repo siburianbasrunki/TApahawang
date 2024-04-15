@@ -3,12 +3,15 @@ import Link from "next/link";
 import React from "react";
 import style from "./donate.module.css";
 import bgDonate from "../../public/assets/bgdonate.png";
-import Donateft from "../../public/assets/donateft.png";
+import Karang from "../../public/assets/karang.jpg";
+import KarangRusak from "../../public/assets/karangrusak.JPG";
+import RakKarang from "../../public/assets/rakkarang.JPG";
 import { prisma } from "@/lib/prisma";
 import AddDonasi from "../Admin/Donasi/addDonasi";
 import ListTerumbu from "./ListTerumbu";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 const getKarang = async () => {
   const res = await prisma.terumbuKarang.findMany();
   return res;
@@ -45,12 +48,43 @@ const Donate = async () => {
             </div>
           </div>
         </section>
+        <div className="bg-[#F3F5F7]">
+          <ListTerumbu />
+        </div>
+        <div className="flex flex-col md:flex-row justify-around items-center p-4">
+          <div className="mb-4 md:mb-0 md:mr-4">
+            <Image
+              src={KarangRusak}
+              alt="karang rusak"
+              width={400}
+              height={400}
+              className="rounded-lg"
+            />
+            <h2 className="text-center">
+              Terumbu Karang sebelum di transplantasi
+            </h2>
+          </div>
+          <div>
+            <Image
+              src={RakKarang}
+              alt="rak karang"
+              width={400}
+              height={400}
+              className="rounded-lg"
+            />
+            <h2 className="text-center">Transplantasi terumbu karang</h2>
+          </div>
+        </div>
 
-        <ListTerumbu />
-
-        <div className="flex flex-col lg:flex-row items-center p-4 lg:p-8 bg-[#F3F5F7]">
+        <div className="flex flex-col lg:flex-row items-center p-3 lg:p-4 bg-[#F3F5F7]">
           <div className={`lg:w-1/2 ${style.AboutImg}`}>
-            <Image src={Donateft} width={400} alt="AboutImg" height={300} />
+            <Image
+              src={Karang}
+              width={400}
+              alt="rak-karang"
+              height={250}
+              className="rounded-lg"
+            />
           </div>
 
           <div className={`lg:w-1/2 ${style.AboutTxt} lg:pl-8`}>

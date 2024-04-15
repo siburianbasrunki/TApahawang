@@ -4,7 +4,6 @@ import Image from "next/image";
 import FormTransportBooking from "./FormTranportBooking";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { MdAirlineSeatReclineNormal } from "react-icons/md";
 interface TransportasiData {
   id: string;
   nama: string;

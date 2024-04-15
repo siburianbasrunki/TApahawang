@@ -51,7 +51,7 @@ const ListTerumbu = () => {
 
   return (
     <div className="container mx-auto ">
-      <p className="text-3xl font-bold mb-4 mt-4 text-center text-gray-800 uppercase lg:leading-none">
+      <p className="text-3xl font-bold p-4 text-center text-gray-800 uppercase lg:leading-none">
         Terumbu Karang Pulau Pahawang
       </p>
       {karangs && karangs.karangs.length > 0 ? (
@@ -75,7 +75,7 @@ const ListTerumbu = () => {
                 <div className="hero-content flex-col lg:flex-row gap-4">
                   <Image
                     src={karang.gambar}
-                    className="max-w-sm rounded-lg"
+                    className="max-w-sm rounded-lg "
                     alt={karang.nama}
                     width={400}
                     height={400}
