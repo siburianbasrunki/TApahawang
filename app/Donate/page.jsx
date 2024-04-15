@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import style from "./donate.module.css";
 import bgDonate from "../../public/assets/bgdonate.png";
-import Karang from "../../public/assets/karang.jpg";
+import Karang from "../../public/assets/karang.JPG";
 import KarangRusak from "../../public/assets/karangrusak.JPG";
 import RakKarang from "../../public/assets/rakkarang.JPG";
 import { prisma } from "@/lib/prisma";
@@ -11,7 +11,6 @@ import AddDonasi from "../Admin/Donasi/addDonasi";
 import ListTerumbu from "./ListTerumbu";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { FaCircleArrowLeft } from "react-icons/fa6";
 const getKarang = async () => {
   const res = await prisma.terumbuKarang.findMany();
   return res;
