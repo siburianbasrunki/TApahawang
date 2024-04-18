@@ -7,8 +7,8 @@ const Footer = () => {
         <nav>
           <header className="footer-title">Kontak Kami</header>
           <p>Kecamatan Punduh Pidada, kabupaten Pesawaran, Lampung Selatan</p>
-          <p>Email: </p>
-          <p>Telepon: </p>
+          <p>Email: pahawangisland2024@gmail.com</p>
+          <p>Telepon: 083822360864</p>
         </nav>
 
         <nav>
