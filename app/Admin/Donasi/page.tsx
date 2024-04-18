@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import AddDonasi from "./addDonasi";
 import Image from "next/image";
 import UpdateDonasi from "./updateDonasi";
 import NavbarAdmin from "../NavbarAdmin";
@@ -23,6 +22,7 @@ interface DonasiData {
     nama: string;
     gambar: string;
   };
+  validasiPembayaran: boolean;
   userId: string;
   gambar: string;
 }
@@ -86,7 +86,9 @@ const Donasi = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [donasisPerPage] = useState(4);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
+  const [validationStatus, setValidationStatus] = useState<
+    Record<string, string>
+  >({});
   const fetchData = async () => {
     try {
       const res = await fetch("/api/karang");
@@ -106,11 +108,27 @@ const Donasi = () => {
     setIsRefreshing(true);
     fetchData();
   };
+  const handleValidationChange = async (id: any, isValid: any) => {
+    try {
+      await fetch("/api/donasi", {
+        method: "PUT",
+        body: JSON.stringify({ id, isValid }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setValidationStatus({ ...validationStatus, [id]: isValid });
+    } catch (error) {
+      console.error("Error updating validation status:", error);
+    }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
-
+  const getRowClassName = (isValid: boolean) => {
+    return isValid ? "bg-red-500" : "";
+  };
   const indexOfLastDonasi = currentPage * donasisPerPage;
   const indexOfFirstDonasi = indexOfLastDonasi - donasisPerPage;
   const currentDonasis = donasis
@@ -143,11 +161,24 @@ const Donasi = () => {
               <thead className="bg-gray-100 text-gray-600 capitalize">
                 <tr>
                   <th className="px-6 py-3 text-center text-sm">ID</th>
-                  <th className="px-6 py-3 text-center text-sm">Nama Donatur</th>
-                  <th className="px-6 py-3 text-center text-sm">Jumlah Donasi</th>
-                  <th className="px-6 py-3 text-center text-sm">Bukti Pembayaran</th>
-                  <th className="px-6 py-3 text-center text-sm">Nomor WhatsApp</th>
-                  <th className="px-6 py-3 text-center text-sm">Terumbu Karang</th>
+                  <th className="px-6 py-3 text-center text-sm">
+                    Nama Donatur
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm">
+                    Jumlah Uang Donasi
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm">
+                    Bukti Donasi
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm">
+                    Nomor WhatsApp
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm">
+                    Terumbu Karang
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm">
+                    Validasi Donasi
+                  </th>
                   <th className="px-6 py-3 text-center text-sm">Update</th>
                   <th className="px-6 py-3 text-center text-sm">Chat</th>
                 </tr>
@@ -155,7 +186,12 @@ const Donasi = () => {
               <tbody className="bg-white">
                 {currentDonasis.map((donasi, index) => {
                   return (
-                    <tr key={donasi.id} className="border-b capitalize text-center text-sm">
+                    <tr
+                      key={donasi.id}
+                      className={`border-b capitalize text-center text-sm ${getRowClassName(
+                        donasi.validasiPembayaran
+                      )}`}
+                    >
                       <td className="px-6 py-4 text-gray-700 ">
                         {donasi.id.slice(0, 8)}
                       </td>
@@ -185,6 +221,21 @@ const Donasi = () => {
                           height={100}
                           className="rounded-md"
                         />
+                      </td>
+                      <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                        <select
+                          value={validationStatus[donasi.id] || ""}
+                          onChange={(e) =>
+                            handleValidationChange(donasi.id, e.target.value)
+                          }
+                          className="select select-bordered w-full max-w-xs bg-blue-500 text-white"
+                        >
+                          <option value="" disabled>
+                            Pilih
+                          </option>
+                          <option value="Valid">Valid</option>
+                          <option value="Unvalid">Unvalid</option>
+                        </select>
                       </td>
                       <td className="px-6 py-4 text-gray-700">
                         <UpdateDonasi donasi={donasi} />

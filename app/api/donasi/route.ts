@@ -13,6 +13,7 @@ export const POST = async (request: Request) => {
       tanggalDonasi: "2023-11-30T00:00:00.000Z",
       userId: body.userId,
       gambar: body.gambar,
+      validasiPembayaran: body.validasiPembayaran,
     },
   });
   return NextResponse.json(donasi);
@@ -34,4 +35,28 @@ export const GET = async (req: NextRequest) => {
     },
   });
   return NextResponse.json({ donasis });
+};
+
+export const PUT = async (request: Request) => {
+  try {
+    const body = await request.json();
+    const { id, isValid } = body;
+    const isPaymentValid = isValid === "Valid";
+
+    await prisma.donasi.update({
+      where: { id: id },
+      data: { validasiPembayaran: isPaymentValid },
+    });
+    console.log("success");
+    
+    return NextResponse.json({
+      message: "Validation status updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating validation status:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 };

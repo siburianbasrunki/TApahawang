@@ -110,6 +110,7 @@ CREATE TABLE "Donasi" (
     "buktiPembayaran" TEXT NOT NULL,
     "nomortelepon" TEXT NOT NULL,
     "gambar" TEXT NOT NULL,
+    "validasiPembayaran" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Donasi_pkey" PRIMARY KEY ("id")
 );

@@ -104,7 +104,7 @@ const AddDonasi = ({ karangs }: { karangs: TerumbuKarang[] }) => {
                 4100301083554 ( Bank Lampung) a.n HERWIN
               </p>
               <label className="label font-bold">
-                Bukti Pembayaran (image)
+                Bukti Transfer Donasi (foto/screenshoot)
               </label>
               <input
                 type="file"
