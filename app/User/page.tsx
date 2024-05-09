@@ -35,7 +35,12 @@ interface BoVillas {
   totalbayar: number;
   name: string;
 }
-
+interface BoTranspotasi {
+  id : string;
+  jumlahPenumpang : string;
+  tanggalCheckin : string;
+  name : string;
+}
 const ProfilePage: NextPage = () => {
   const [session, setSession] = useState<{ user: { name: string } } | null>(
     null
@@ -44,7 +49,7 @@ const ProfilePage: NextPage = () => {
   const [showBookingHistory, setShowBookingHistory] = useState(true);
   const [dataBoVillas, setDataBoVillas] = useState<BoVillas[]>([]);
   const [dataDonasi, setDataDonasi] = useState<Donasi[]>([]);
-
+  const [dataBoTranspotasi,setDataBoTransportasi] = useState<BoTranspotasi[]>([]);
   const fetchData = async () => {
     try {
       const sessionData = await fetch("/api/auth/session").then((res) =>
@@ -78,6 +83,18 @@ const ProfilePage: NextPage = () => {
       console.error("Error fetching booking data:", error);
     }
   };
+
+  const fetchDataBoTransportasi = async (userId:string)=>{
+    try {
+      const data_transportasi = await axios.post("/api/transportasi/user",{
+        userId : userId
+      })
+      setDataBoTransportasi([...data_transportasi.data.botransportasi])
+    } catch (error) {
+      console.log("Error fetching booking transpotasi data");
+      
+    }
+  }
   function formatDate(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -91,6 +108,7 @@ const ProfilePage: NextPage = () => {
     fetchData();
     fetchDataDonasi(userId);
     fetchDataBoVillas(userId);
+    fetchDataBoTransportasi(userId);
   }, [userId]);
 
   if (!session) {
@@ -123,7 +141,17 @@ const ProfilePage: NextPage = () => {
               }`}
               onClick={() => setShowBookingHistory(true)}
             >
-              Riwayat Booking
+              Riwayat Booking Villa
+            </button>
+            <button
+              className={`px-4 py-2 focus:outline-none rounded-lg ${
+                showBookingHistory
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-blue-500"
+              }`}
+              onClick={() => setShowBookingHistory(true)}
+            >
+              Riwayat Sewa Kapal
             </button>
             <button
               className={`px-4 py-2 focus:outline-none rounded-lg ${

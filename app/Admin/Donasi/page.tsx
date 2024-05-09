@@ -89,6 +89,8 @@ const Donasi = () => {
   const [validationStatus, setValidationStatus] = useState<
     Record<string, string>
   >({});
+  const [searchQuery, setSearchQuery] = useState("");
+
   const fetchData = async () => {
     try {
       const res = await fetch("/api/karang");
@@ -127,13 +129,26 @@ const Donasi = () => {
     fetchData();
   }, []);
   const getRowClassName = (isValid: boolean) => {
-    return isValid ? "bg-red-500" : "";
+    return isValid ? " " : "bg-red-500";
   };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredDonasi = donasis
+    ? donasis.donasis.filter(
+        (donasi) =>
+          donasi.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          donasi.id.includes(searchQuery)
+      )
+    : [];
+
   const indexOfLastDonasi = currentPage * donasisPerPage;
   const indexOfFirstDonasi = indexOfLastDonasi - donasisPerPage;
-  const currentDonasis = donasis
-    ? donasis.donasis.slice(indexOfFirstDonasi, indexOfLastDonasi)
-    : [];
+  const currentDonasis = filteredDonasi.slice(
+    indexOfFirstDonasi,
+    indexOfLastDonasi
+  );
 
   return (
     <>
@@ -154,7 +169,29 @@ const Donasi = () => {
             </div>
           </div>
         </div>
-
+        <div>
+          <label className="input input-bordered flex items-center gap-2 mt-4 mb-4">
+            <input
+              type="text"
+              className="grow w-96"
+              placeholder="Cari donasi berdasarkan nama donatur"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="w-4 h-4 opacity-70"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </label>
+        </div>
         {donasis ? (
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -187,7 +224,7 @@ const Donasi = () => {
                 {currentDonasis.map((donasi, index) => {
                   return (
                     <tr
-                      key={donasi.id}
+                      key={index}
                       className={`border-b capitalize text-center text-sm ${getRowClassName(
                         donasi.validasiPembayaran
                       )}`}

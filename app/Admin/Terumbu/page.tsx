@@ -61,8 +61,9 @@ const SkeletonTable = () => {
 const TerumbuKarang = () => {
   const [karangs, setKarangs] = useState<KarangResponse | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [karangsPerPage] = useState(5); 
+  const [karangsPerPage] = useState(5);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
@@ -84,25 +85,36 @@ const TerumbuKarang = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
+  const filteredKarangs = karangs
+    ? karangs.karangs.filter(
+        (karang) =>
+          karang.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          karang.id.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
   const indexOfLastKarang = currentPage * karangsPerPage;
   const indexOfFirstKarang = indexOfLastKarang - karangsPerPage;
-  const currentKarangs = karangs
-    ? karangs.karangs.slice(indexOfFirstKarang, indexOfLastKarang)
-    : [];
+  const currentKarangs = filteredKarangs.slice(
+    indexOfFirstKarang,
+    indexOfLastKarang
+  );
 
   return (
     <>
       <div className="bg-white shadow-md rounded-md p-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center w-full">
           <div>
-            <h1 className="text-2xl font-bold mb-4">
+            <h1 className="text-xl md:text-2xl font-bold mb-4">
               Management Terumbu Karang
             </h1>
           </div>
-          <div className="flex justify-end items-center gap-4  mb-4">
+          <div className="flex flex-col sm:flex-row justify-end items-center gap-4 mb-4">
             <div
-              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
+              className="text-lg md:text-xl cursor-pointer text-black flex items-center gap-x-1 "
               onClick={handleRefreshClick}
             >
               <div>
@@ -117,12 +129,37 @@ const TerumbuKarang = () => {
             </div>
           </div>
         </div>
+        <div>
+          <label className="input input-bordered flex items-center gap-2 mt-4 mb-4">
+            <input
+              type="text"
+              className="grow w-96"
+              placeholder="Cari karang berdasarkan nama atau id karang"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="w-4 h-4 opacity-70"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </label>
+        </div>
         {karangs ? (
           <div className="overflow-x-auto">
             <table className="min-w-full rounded-lg">
               <thead className="bg-gray-100 text-gray-600 capitalize">
                 <tr>
-                  <th className="px-6 py-3 text-center text-sm">Nama Terumbu Karang</th>
+                  <th className="px-6 py-3 text-center text-sm">
+                    Nama Terumbu Karang
+                  </th>
                   <th className="px-6 py-3 text-center text-sm">
                     Deskripsi Terumbu Karang
                   </th>
@@ -133,7 +170,10 @@ const TerumbuKarang = () => {
               </thead>
               <tbody className="bg-white">
                 {currentKarangs.map((karang, index) => (
-                  <tr key={karang.id} className="border-b capitalize text-sm text-center">
+                  <tr
+                    key={karang.id}
+                    className="border-b capitalize text-sm text-center"
+                  >
                     <td className="px-6 py-4 text-gray-700">{karang.nama}</td>
                     <td className="px-6 py-4 text-gray-700">
                       {karang.deskripsi}

@@ -1,10 +1,10 @@
-const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
-const authToken = "6284cffe7965266a648f4ca611f847cc";
-const client = require("twilio")(accountSid, authToken);
-
 import { NextRequest, NextResponse } from "next/server";
 import type { BookingVilla } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+
+const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
+const authToken = "506b1e989a8e815a21463762c9866b0c";
+const client = require("twilio")(accountSid, authToken);
 
 export const sendWhatsAppMessage = async (to: string, message: string) => {
   try {
@@ -38,7 +38,7 @@ export const POST = async (request: Request) => {
 
     await sendWhatsAppMessage(
       "+6282277611415",
-      "Ada Pemesanan Villa cek website"
+      "Ada Pesanan Villa masuk cek website pulaupahawang.id/Admin"
     );
 
     return NextResponse.json(bookingVilla);

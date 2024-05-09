@@ -62,6 +62,9 @@ const BookingTransportasi = () => {
   const [validationStatus, setValidationStatus] = useState<
     Record<string, string>
   >({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [BookingPerPage] = useState(4);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
@@ -98,7 +101,9 @@ const BookingTransportasi = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
   const getRowClassName = (isValid: boolean) => {
     return isValid ? " " : "bg-red-400";
   };
@@ -128,7 +133,21 @@ const BookingTransportasi = () => {
     });
     doc.save("booking_transportasi.pdf");
   };
-
+  const filteredBooking = bookingTransportasis
+    ? bookingTransportasis.bookings.filter(
+        (bookingTransport) =>
+          bookingTransport.nama
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          bookingTransport.id.includes(searchQuery)
+      )
+    : [];
+  const indexofLastBooking = currentPage * BookingPerPage;
+  const indexOfFirstBooking = indexofLastBooking - BookingPerPage;
+  const currentBooking = filteredBooking.slice(
+    indexOfFirstBooking,
+    indexofLastBooking
+  );
   return (
     <div>
       <div className="bg-white shadow-md rounded-md p-4">
@@ -150,31 +169,63 @@ const BookingTransportasi = () => {
                 <FiRefreshCcw />
               </div>
             </div>
-            <button
-              className="btn"
-              onClick={downloadPDF}
-            >
+            <button className="btn" onClick={downloadPDF}>
               <IoMdDownload />
               Export PDF
             </button>
           </div>
+        </div>
+        <div>
+          <label className="input input-bordered flex items-center gap-2 mt-4 mb-4">
+            <input
+              type="text"
+              className="grow w-96"
+              placeholder="Cari pesanan berdasarkan nama atau id pesanan"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="w-4 h-4 opacity-70"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </label>
         </div>
         {bookingTransportasis ? (
           <div>
             <table className="w-full overflow-x-auto rounded-lg">
               <thead className="bg-gray-50 text-gray-700 capitalize rounded-lg">
                 <tr>
-                  <th className="px-4 py-3 text-center text-sm">Villa ID</th>
-                  <th className="px-4 py-3 text-center text-sm">Nama Pemesan</th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Transportasi ID
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Nama Pemesan
+                  </th>
                   <th className="px-4 py-3 text-center text-sm">Check In</th>
-                  <th className="px-4 py-3 text-center text-sm">Jumlah Penumpang</th>
-                  <th className="px-4 py-3 text-center text-sm">Nomor Telepon</th>
-                  <th className="px-4 py-3 text-center text-sm">Bukti Pembayaran</th>
-                  <th className="px-4 py-3 text-center text-sm">Validasi Pembayaran</th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Jumlah Penumpang
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Nomor Telepon
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Bukti Pembayaran
+                  </th>
+                  <th className="px-4 py-3 text-center text-sm">
+                    Validasi Pembayaran
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {bookingTransportasis.bookings.map((booking, index) => (
+                {currentBooking.map((booking, index) => (
                   <tr
                     key={index}
                     className={`border-b border-gray-200 capitalize rounded-lg text-center ${getRowClassName(
@@ -224,6 +275,24 @@ const BookingTransportasi = () => {
                 ))}
               </tbody>
             </table>
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="btn btn-sm bg-gray-300 px-3 py-1 mr-2"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={
+                  indexofLastBooking >= bookingTransportasis.bookings.length
+                }
+                className="btn btn-sm bg-gray-300 px-3 py-1"
+              >
+                Next
+              </button>
+            </div>
           </div>
         ) : (
           <SkeletonTable />

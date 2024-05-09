@@ -45,7 +45,7 @@ const AddKarang = () => {
 
   return (
     <div>
-      <button className="btn flex items-center" onClick={handleModal}>
+      <button className="btn flex items-center text-lg" onClick={handleModal}>
        <FaPlus/> Add New
       </button>
       <div className={isOpen ? "modal modal-open" : "modal"}>

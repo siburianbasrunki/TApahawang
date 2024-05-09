@@ -2,6 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import type { BookingTransportasiLaut } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
+const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
+const authToken = "506b1e989a8e815a21463762c9866b0c";
+const client = require("twilio")(accountSid, authToken);
+
+export const sendWhatsAppMessage = async (to: string, message: string) => {
+  try {
+    await client.messages.create({
+      body: message,
+      from: "whatsapp:+14155238886",
+      to: `whatsapp:${to}`,
+    });
+    console.log("Pesan WhatsApp berhasil dikirim.");
+  } catch (error) {
+    console.error("Error saat mengirim pesan WhatsApp:", error);
+  }
+};
 export const POST = async (request: Request) => {
   try {
     const body: BookingTransportasiLaut = await request.json();
@@ -15,10 +31,15 @@ export const POST = async (request: Request) => {
           userId: body.userId,
           buktiTranfer: body.buktiTranfer,
           nama: body.nama,
-          noTelepon : body.noTelepon,
-          validasiPembayaran : body.validasiPembayaran,
+          noTelepon: body.noTelepon,
+          validasiPembayaran: body.validasiPembayaran,
         },
       }
+    );
+
+    await sendWhatsAppMessage(
+      "+6282277611415",
+      "Ada Pesanan Kapal  masuk cek website pulaupahawang.id/Admin"
     );
 
     return NextResponse.json(bookingTransportasiLaut);

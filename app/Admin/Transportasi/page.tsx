@@ -30,7 +30,6 @@ const SkeletonTable = () => {
             <th className="px-4 py-3 text-left">Harga Permalam (Rupiah)</th>
             <th className="px-4 py-3 text-left">Gambar Villa</th>
             <th className="px-4 py-3 text-left">Ketersedian Kamar</th>
-            
           </tr>
         </thead>
         <tbody className="bg-white">
@@ -53,8 +52,6 @@ const SkeletonTable = () => {
             <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
               Loading...
             </td>
-            
-            
           </tr>
         </tbody>
       </table>
@@ -67,6 +64,7 @@ const Transportasi = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [transportasisPerPage] = useState(5);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchData = async () => {
     try {
@@ -89,28 +87,37 @@ const Transportasi = () => {
     fetchData();
   }, []);
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredTransportasis = transportasis
+    ? transportasis.transportasis.filter(
+        (trans) =>
+          trans.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          trans.id.includes(searchQuery)
+      )
+    : [];
   const indexOfLastTransportasi = currentPage * transportasisPerPage;
   const indexOfFirstTransportasi =
     indexOfLastTransportasi - transportasisPerPage;
-  const currentTransportasis = transportasis
-    ? transportasis.transportasis.slice(
-        indexOfFirstTransportasi,
-        indexOfLastTransportasi
-      )
-    : [];
+  const currentTransportasis = filteredTransportasis.slice(
+    indexOfFirstTransportasi,
+    indexOfLastTransportasi
+  );
 
   return (
     <>
       <div className="bg-white shadow-md rounded-md p-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center w-full">
           <div>
-            <h1 className="text-2xl font-bold mb-4">
+            <h1 className="text-xl md:text-2xl font-bold mb-4">
               Management Transportasi Laut
             </h1>
           </div>
-          <div className="flex justify-end items-center gap-4  mb-4">
+          <div className="flex flex-col sm:flex-row justify-end items-center gap-4 mb-4">
             <div
-              className="text-2xl cursor-pointer text-black flex items-center gap-x-2 "
+              className="text-lg md:text-xl cursor-pointer text-black flex items-center gap-x-1"
               onClick={handleRefreshClick}
             >
               <div>
@@ -125,15 +132,40 @@ const Transportasi = () => {
             </div>
           </div>
         </div>
-
+        <div>
+          <label className="input input-bordered flex items-center gap-2 mt-4 mb-4">
+            <input
+              type="text"
+              className="grow w-96"
+              placeholder="Cari transportasi berdasarkan nama atau id transportasi"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="w-4 h-4 opacity-70"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </label>
+        </div>
         {transportasis ? (
-          <div>
-            <table className="w-full overflow-x-auto rounded-lg">
+          <div className="overflow-x-auto">
+            <table className="w-full mix-w-max rounded-lg">
               <thead className="bg-gray-50 text-gray-700 capitalize  rounded-lg">
                 <tr>
                   <th className="px-4 py-3 text-center items-center align-center text-sm">
                     Nama Kapal
                   </th>
+                  {/* <th className="px-4 py-3 text-center items-center align-center text-sm">
+                    ID Kapal
+                  </th> */}
                   <th className="px-4 py-3 text-center items-center align-center text-sm">
                     Biaya Sewa (Rupiah)
                   </th>
@@ -160,8 +192,11 @@ const Transportasi = () => {
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {transport.nama}
                     </td>
+                    {/* <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                      {transport.id.slice(0, 5)}
+                    </td> */}
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      {transport.harga}
+                      Rp {transport.harga}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       <Image
@@ -169,6 +204,7 @@ const Transportasi = () => {
                         alt={transport.gambar}
                         width={100}
                         height={100}
+                        className="rounded rounded-lg"
                       />
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">

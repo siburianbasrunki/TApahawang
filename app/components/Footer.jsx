@@ -14,11 +14,11 @@ const Footer = () => {
         <nav>
           <header className="footer-title">Sosial Media</header>
           <div className="flex justify-around">
-            <a className="link link-hover">
+            <a className="link link-hover" href="https://wa.me/6283822360864">
               <AiOutlineWhatsApp className={Style.icon} />
             </a>
             <a className="link link-hover">
-              <AiOutlineInstagram className={Style.icon} />
+              <AiOutlineInstagram className={Style.icon} href="https://www.instagram.com/pahawang_island/" />
             </a>
           </div>
         </nav>
