@@ -8,10 +8,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import dynamic from "next/dynamic";
 import PdfTiketFile from "./pdftiketvilla";
+import PdfTiketTranasportasi from "./pdftikettransportasi";
+
 const DynamicPDFDownloadLink = dynamic(
   () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
   { ssr: false }
 );
+
 interface Donasi {
   id: string;
   user: string;
@@ -35,21 +38,28 @@ interface BoVillas {
   totalbayar: number;
   name: string;
 }
+
 interface BoTranspotasi {
-  id : string;
-  jumlahPenumpang : string;
-  tanggalCheckin : string;
-  name : string;
+  id: string;
+  transportasiId: string;
+  jumlahPenumpang: string;
+  tanggalCheckin: string;
+  nama: string;
+  validasiPembayaran: boolean;
 }
+
 const ProfilePage: NextPage = () => {
   const [session, setSession] = useState<{ user: { name: string } } | null>(
     null
   );
   const [userId, setUserId] = useState("");
-  const [showBookingHistory, setShowBookingHistory] = useState(true);
+  const [showBookingHistory, setShowBookingHistory] = useState("villa");
   const [dataBoVillas, setDataBoVillas] = useState<BoVillas[]>([]);
   const [dataDonasi, setDataDonasi] = useState<Donasi[]>([]);
-  const [dataBoTranspotasi,setDataBoTransportasi] = useState<BoTranspotasi[]>([]);
+  const [dataBoTranspotasi, setDataBoTransportasi] = useState<BoTranspotasi[]>(
+    []
+  );
+
   const fetchData = async () => {
     try {
       const sessionData = await fetch("/api/auth/session").then((res) =>
@@ -84,17 +94,17 @@ const ProfilePage: NextPage = () => {
     }
   };
 
-  const fetchDataBoTransportasi = async (userId:string)=>{
+  const fetchDataBoTransportasi = async (userId: string) => {
     try {
-      const data_transportasi = await axios.post("/api/transportasi/user",{
-        userId : userId
-      })
-      setDataBoTransportasi([...data_transportasi.data.botransportasi])
+      const data_transportasi = await axios.post("/api/transportasi/user", {
+        userId: userId,
+      });
+      setDataBoTransportasi([...data_transportasi.data.botransportasi]);
     } catch (error) {
-      console.log("Error fetching booking transpotasi data");
-      
+      console.error("Error fetching booking transportasi data:", error);
     }
-  }
+  };
+
   function formatDate(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -135,39 +145,41 @@ const ProfilePage: NextPage = () => {
           <div className="flex justify-around">
             <button
               className={`px-4 py-2 focus:outline-none rounded-lg ${
-                showBookingHistory
+                showBookingHistory === "villa"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-300 text-blue-500"
               }`}
-              onClick={() => setShowBookingHistory(true)}
+              onClick={() => setShowBookingHistory("villa")}
             >
               Riwayat Booking Villa
             </button>
             <button
               className={`px-4 py-2 focus:outline-none rounded-lg ${
-                showBookingHistory
+                showBookingHistory === "kapal"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-300 text-blue-500"
               }`}
-              onClick={() => setShowBookingHistory(true)}
+              onClick={() => setShowBookingHistory("kapal")}
             >
               Riwayat Sewa Kapal
             </button>
             <button
               className={`px-4 py-2 focus:outline-none rounded-lg ${
-                !showBookingHistory
+                showBookingHistory === "donasi"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-300 text-blue-500"
               }`}
-              onClick={() => setShowBookingHistory(false)}
+              onClick={() => setShowBookingHistory("donasi")}
             >
               Riwayat Donasi
             </button>
           </div>
           <div className="mt-4">
-            {showBookingHistory ? (
+            {showBookingHistory === "villa" && (
               <div className="bg-white p-4 rounded shadow">
-                <h2 className="text-2xl font-bold mb-4">Riwayat Booking</h2>
+                <h2 className="text-2xl font-bold mb-4">
+                  Riwayat Booking Villa
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {dataBoVillas.length > 0 ? (
                     dataBoVillas.map((bovilla) => (
@@ -184,7 +196,6 @@ const ProfilePage: NextPage = () => {
                         <p className="text-lg mb-2">
                           Nama Pemesan: <br />{" "}
                           <span className="font-semibold text-xl">
-                            {" "}
                             {bovilla.name}
                           </span>
                         </p>
@@ -251,7 +262,90 @@ const ProfilePage: NextPage = () => {
                   )}
                 </div>
               </div>
-            ) : (
+            )}
+            {showBookingHistory === "kapal" && (
+              <div className="bg-white p-4 rounded shadow">
+                <h2 className="text-2xl font-bold mb-4">Riwayat Sewa Kapal</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {dataBoTranspotasi.length > 0 ? (
+                    dataBoTranspotasi.map((botrans) => (
+                      <div
+                        key={botrans.id}
+                        className="bg-gray-100 p-6 rounded-lg shadow-md"
+                      >
+                        <p className="text-lg mb-2">
+                          ID Transportasi: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {botrans.transportasiId.slice(0, 8)}
+                          </span>
+                        </p>
+                        <p className="text-lg mb-2">
+                          Nama Pemesan: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {botrans.nama}
+                          </span>
+                        </p>
+                        <p className="text-lg mb-2">
+                          Check-in: <br />{" "}
+                          <span className="font-semibold text xl">
+                            {formatDate(botrans.tanggalCheckin)}
+                          </span>
+                        </p>
+                        <p className="text-lg mb-4">
+                          Jumlah Penumpang: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {botrans.jumlahPenumpang}
+                          </span>
+                        </p>
+                        <p>
+                          Status:{" "}
+                          {botrans.validasiPembayaran
+                            ? "Sudah divalidasi/Download Tiket(Screenshoot)"
+                            : "Belum divalidasi"}
+                        </p>
+                        <div className="flex justify-end mt-4">
+                          {botrans.validasiPembayaran ? (
+                            <DynamicPDFDownloadLink
+                              document={
+                                <PdfTiketTranasportasi bookingData={botrans} />
+                              }
+                              fileName="tiketvillapahawang"
+                            >
+                              {({ loading }) => (
+                                <button
+                                  className={`px-4 py-2 bg-blue-500 text-white rounded ${
+                                    loading
+                                      ? "opacity-50 cursor-not-allowed"
+                                      : ""
+                                  }`}
+                                  disabled={loading}
+                                >
+                                  {loading
+                                    ? "Loading Document..."
+                                    : "Download Tiket"}
+                                </button>
+                              )}
+                            </DynamicPDFDownloadLink>
+                          ) : (
+                            <button
+                              className="px-4 py-2 bg-gray-300 text-blue-500 rounded cursor-not-allowed"
+                              disabled
+                            >
+                              Download Tiket
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-center">
+                      Tidak ada riwayat sewa kapal.
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+            {showBookingHistory === "donasi" && (
               <div className="bg-white p-4 rounded shadow">
                 <p className="text-2xl font-bold mb-4">Riwayat Donasi</p>
                 {dataDonasi.length > 0 ? (

@@ -3,7 +3,7 @@ import type { BookingVilla } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
-const authToken = "506b1e989a8e815a21463762c9866b0c";
+const authToken = "623da7a6a4f51afb5abb3e61657d82c7";
 const client = require("twilio")(accountSid, authToken);
 
 export const sendWhatsAppMessage = async (to: string, message: string) => {
@@ -38,7 +38,17 @@ export const POST = async (request: Request) => {
 
     await sendWhatsAppMessage(
       "+6282277611415",
-      "Ada Pesanan Villa masuk cek website pulaupahawang.id/Admin"
+      `🏡 *Pesanan Villa Baru!* 🏡
+
+      Villa ID: ${body.villaId.slice(0, 8)}
+      Nama Pemesan: ${body.name}
+      Tanggal Check-in: ${body.tanggalCheckin}
+      Tanggal Check-out: ${body.tanggalCheckout}
+      Total Bayar: ${body.totalbayar.toLocaleString()}
+      
+      🔗 Cek detail dan Validasi Pembayaran pesanan di website: pulaupahawang.id/Admin
+      
+      Terima kasih telah mempercayakan layanan kami!`
     );
 
     return NextResponse.json(bookingVilla);

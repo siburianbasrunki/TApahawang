@@ -10,6 +10,7 @@ export const POST = async (req: NextRequest) => {
     },
     select: {
       id: true,
+      transportasiId:true,
       jumlahPenumpang: true,
       tanggalCheckin: true,
       nama: true,

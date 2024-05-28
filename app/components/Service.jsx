@@ -7,7 +7,7 @@ const Service = () => {
         <h1 className="text-3xl font-bold text-black text-center mb-8">
           Our Service
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="flex items-center card sm:w-full md:w-full lg:w-96 bg-[#727379] shadow-xl mx-2">
             <div className="card-body">
               <h2 className="card-title text-black text-3xl font-bold">

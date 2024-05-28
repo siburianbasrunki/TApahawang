@@ -3,7 +3,7 @@ import type { BookingTransportasiLaut } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
-const authToken = "506b1e989a8e815a21463762c9866b0c";
+const authToken = "623da7a6a4f51afb5abb3e61657d82c7";
 const client = require("twilio")(accountSid, authToken);
 
 export const sendWhatsAppMessage = async (to: string, message: string) => {
@@ -39,7 +39,17 @@ export const POST = async (request: Request) => {
 
     await sendWhatsAppMessage(
       "+6282277611415",
-      "Ada Pesanan Kapal  masuk cek website pulaupahawang.id/Admin"
+      `🚤 *Pesanan Sewa Kapal !* 🚤
+
+      Transportasi ID: ${body.transportasiId.slice(0, 8)}
+      Nama: ${body.nama}
+      Jumlah Penumpang: ${body.jumlahPenumpang}
+      Tanggal Check-in: ${new Date(
+        body.tanggalCheckin + "T00:00:00.000Z"
+      ).toLocaleDateString("id-ID")}
+      
+      
+      🔗 Cek detail pesanan dan validasi pembayaran di website: pulaupahawang.id/Admin`
     );
 
     return NextResponse.json(bookingTransportasiLaut);
