@@ -10,7 +10,6 @@ import dynamic from "next/dynamic";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-
 interface Donasi {
   id: string;
   user: string;
@@ -57,57 +56,66 @@ const ProfilePage: NextPage = () => {
   );
 
   const downloadPDFVilla = (villa: BoVillas) => {
-    const doc = new jsPDF('landscape');
-    
-    // Adding colored background
-    doc.setFillColor(255, 255, 204); // Light yellow background
-    doc.rect(0, 0, 297, 210, 'F');
-  
-    // Adding title
+    const doc = new jsPDF("landscape");
+
+    doc.setFillColor(255, 255, 204);
+    doc.rect(0, 0, 297, 210, "F");
+
     doc.setFontSize(24);
-    doc.setTextColor(0, 51, 102); // Dark blue
-    doc.text("Villa Booking Ticket", 140, 20, null, null, 'center');
-  
-    // Adding ticket details
+    doc.setTextColor(0, 51, 102);
+    doc.text("Villa Booking Ticket", 140, 20, null, null, "center");
+
     doc.setFontSize(16);
-    doc.setTextColor(0); // Black
+    doc.setTextColor(0);
     doc.text(`Villa ID: ${villa.villaId.slice(0, 8)}`, 20, 50);
     doc.text(`Nama Pemesan: ${villa.name}`, 20, 70);
     doc.text(`Tanggal Checkin: ${formatDate(villa.tanggalCheckin)}`, 20, 90);
     doc.text(`Tanggal Checkout: ${formatDate(villa.tanggalCheckout)}`, 20, 110);
     doc.text(`Total Bayar: ${villa.totalbayar}`, 20, 130);
-    doc.text(`Status Pembayaran: ${villa.validasiPembayaran ? "Valid" : "Unvalid"}`, 20, 150);
-  
-    // Saving the PDF
+    doc.text(
+      `Status Pembayaran: ${villa.validasiPembayaran ? "Valid" : "Unvalid"}`,
+      20,
+      150
+    );
+
     doc.save(`tiket_villa_${villa.id}.pdf`);
   };
-    
 
   const downloadPDFTransportasi = (transportasi: BoTranspotasi) => {
-    const doc = new jsPDF('landscape');
-    
-    // Adding colored background
-    doc.setFillColor(255, 204, 204); // Light red background
-    doc.rect(0, 0, 297, 210, 'F');
-  
-    // Adding title
+    const doc = new jsPDF("landscape");
+
+    doc.setFillColor(255, 204, 204);
+    doc.rect(0, 0, 297, 210, "F");
+
     doc.setFontSize(24);
-    doc.setTextColor(102, 0, 0); // Dark red
-    doc.text("Transportasi Booking Ticket", 140, 20, null, null, 'center');
-  
-    // Adding ticket details
+    doc.setTextColor(102, 0, 0);
+    doc.text("Transportasi Booking Ticket", 140, 20, null, null, "center");
+
     doc.setFontSize(16);
-    doc.setTextColor(0); // Black
-    doc.text(`Transportasi ID: ${transportasi.transportasiId.slice(0, 8)}`, 20, 50);
+    doc.setTextColor(0);
+    doc.text(
+      `Transportasi ID: ${transportasi.transportasiId.slice(0, 8)}`,
+      20,
+      50
+    );
     doc.text(`Nama Pemesan: ${transportasi.nama}`, 20, 70);
-    doc.text(`Tanggal Checkin: ${formatDate(transportasi.tanggalCheckin)}`, 20, 90);
+    doc.text(
+      `Tanggal Checkin: ${formatDate(transportasi.tanggalCheckin)}`,
+      20,
+      90
+    );
     doc.text(`Jumlah Penumpang: ${transportasi.jumlahPenumpang}`, 20, 110);
-    doc.text(`Status Pembayaran: ${transportasi.validasiPembayaran ? "Valid" : "Unvalid"}`, 20, 130);
-  
-    // Saving the PDF
+    doc.text(
+      `Status Pembayaran: ${
+        transportasi.validasiPembayaran ? "Valid" : "Unvalid"
+      }`,
+      20,
+      130
+    );
+
     doc.save(`tiket_transportasi_${transportasi.id}.pdf`);
   };
-  
+
   const fetchData = async () => {
     try {
       const sessionData = await fetch("/api/auth/session").then((res) =>
@@ -271,7 +279,12 @@ const ProfilePage: NextPage = () => {
                         </p>
                         <button
                           onClick={() => downloadPDFVilla(bovilla)}
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                          disabled={!bovilla.validasiPembayaran}
+                          className={`${
+                            bovilla.validasiPembayaran
+                              ? "bg-blue-500 hover:bg-blue-700"
+                              : "bg-gray-500 cursor-not-allowed"
+                          } text-white font-bold py-2 px-4 mt-4 rounded`}
                         >
                           Download Villa Booking PDF
                         </button>
@@ -325,7 +338,12 @@ const ProfilePage: NextPage = () => {
                         </p>
                         <button
                           onClick={() => downloadPDFTransportasi(botrans)}
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                          disabled={!botrans.validasiPembayaran}
+                          className={`${
+                            botrans.validasiPembayaran
+                              ? "bg-blue-500 hover:bg-blue-700"
+                              : "bg-gray-500 cursor-not-allowed"
+                          } text-white font-bold py-2 px-4 mt-4 rounded`}
                         >
                           Download Transportasi Booking PDF
                         </button>
