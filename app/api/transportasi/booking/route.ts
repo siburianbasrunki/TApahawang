@@ -3,7 +3,7 @@ import type { BookingTransportasiLaut } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
-const authToken = "623da7a6a4f51afb5abb3e61657d82c7";
+const authToken = "ae39e492e19f2808b761767e1cee15f3";
 const client = require("twilio")(accountSid, authToken);
 
 export const sendWhatsAppMessage = async (to: string, message: string) => {
