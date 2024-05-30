@@ -3,8 +3,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import KarangRusak from "../../public/assets/karangrusak.jpg";
-import RakKarang from "../../public/assets/rakkarang.jpg";
+import KarangRusak from "../../public/assets/karangrusak.png";
+import RakKarang from "../../public/assets/rakkarang.png";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
