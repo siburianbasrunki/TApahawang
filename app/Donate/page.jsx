@@ -4,8 +4,6 @@ import React from "react";
 import style from "./donate.module.css";
 import bgDonate from "../../public/assets/bgdonate.png";
 import Karang from "../../public/assets/karang.JPG";
-import KarangRusak from "../../public/assets/karangrusak.JPG";
-import RakKarang from "../../public/assets/rakkarang.JPG";
 import { prisma } from "@/lib/prisma";
 import AddDonasi from "../Admin/Donasi/addDonasi";
 import ListTerumbu from "./ListTerumbu";
@@ -47,36 +45,12 @@ const Donate = async () => {
             </div>
           </div>
         </section>
-        <div className="bg-[#F3F5F7]">
+        <div className="bg-[#F3F5F7] p-4 md:p-8 rounded-lg ">
           <ListTerumbu />
         </div>
-        <div className="flex flex-col md:flex-row justify-around items-center p-4">
-          <div className="mb-4 md:mb-0 md:mr-4">
-            <Image
-              src={KarangRusak}
-              alt="karang rusak"
-              width={400}
-              height={400}
-              className="rounded-lg"
-            />
-            <h2 className="text-center">
-              Terumbu Karang sebelum di transplantasi
-            </h2>
-          </div>
-          <div>
-            <Image
-              src={RakKarang}
-              alt="rak karang"
-              width={400}
-              height={400}
-              className="rounded-lg"
-            />
-            <h2 className="text-center">Transplantasi terumbu karang</h2>
-          </div>
-        </div>
 
-        <div className="flex flex-col lg:flex-row items-center p-3 lg:p-4 bg-[#F3F5F7]">
-          <div className={`lg:w-1/2 ${style.AboutImg}`}>
+        <div className="flex flex-col lg:flex-row items-center p-3 lg:p-4 bg-[#F3F5F7] rounded-lg">
+          <div className={`lg:w-1/2 mt-8 ${style.AboutImg}`}>
             <Image
               src={Karang}
               width={400}
@@ -87,7 +61,7 @@ const Donate = async () => {
           </div>
 
           <div className={`lg:w-1/2 ${style.AboutTxt} lg:pl-8`}>
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-center lg:text-left">
               Manfaat Donasi
             </h1>
             <div className="text-lg leading-relaxed">
@@ -102,7 +76,7 @@ const Donate = async () => {
                 dan kesempatan untuk meningkatkan kesadaran tentang kelestarian
                 terumbu karang di seluruh dunia.
               </p>
-              <span className="font-bold">Syarat Donasi :</span>
+              <span className="font-bold">Langkah-langkah Donasi :</span>
               <ol className="list-decimal ml-6">
                 <li>Sudah register dan login pada website ini</li>
                 <li>
@@ -111,8 +85,9 @@ const Donate = async () => {
                 <li>Minimal Donasi 80rb untuk 1 fragmen Terumbu Karang</li>
               </ol>
             </div>
-
-            <AddDonasi karangs={Karangs} />
+            <div className="mt-2 mb-4 ">
+              <AddDonasi karangs={Karangs} />
+            </div>
           </div>
         </div>
       </div>

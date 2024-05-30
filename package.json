@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@iconify/react": "^4.1.1",
+    "@onedoc/react-print": "^0.1.133",
     "@prisma/client": "^5.5.2",
     "@react-pdf/renderer": "^3.1.14",
     "axios": "^1.6.0",

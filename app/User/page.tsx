@@ -7,13 +7,9 @@ import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import dynamic from "next/dynamic";
-import PdfTiketFile from "./pdftiketvilla";
-import PdfTiketTranasportasi from "./pdftikettransportasi";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
-const DynamicPDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((module) => module.PDFDownloadLink),
-  { ssr: false }
-);
 
 interface Donasi {
   id: string;
@@ -60,6 +56,58 @@ const ProfilePage: NextPage = () => {
     []
   );
 
+  const downloadPDFVilla = (villa: BoVillas) => {
+    const doc = new jsPDF('landscape');
+    
+    // Adding colored background
+    doc.setFillColor(255, 255, 204); // Light yellow background
+    doc.rect(0, 0, 297, 210, 'F');
+  
+    // Adding title
+    doc.setFontSize(24);
+    doc.setTextColor(0, 51, 102); // Dark blue
+    doc.text("Villa Booking Ticket", 140, 20, null, null, 'center');
+  
+    // Adding ticket details
+    doc.setFontSize(16);
+    doc.setTextColor(0); // Black
+    doc.text(`Villa ID: ${villa.villaId.slice(0, 8)}`, 20, 50);
+    doc.text(`Nama Pemesan: ${villa.name}`, 20, 70);
+    doc.text(`Tanggal Checkin: ${formatDate(villa.tanggalCheckin)}`, 20, 90);
+    doc.text(`Tanggal Checkout: ${formatDate(villa.tanggalCheckout)}`, 20, 110);
+    doc.text(`Total Bayar: ${villa.totalbayar}`, 20, 130);
+    doc.text(`Status Pembayaran: ${villa.validasiPembayaran ? "Valid" : "Unvalid"}`, 20, 150);
+  
+    // Saving the PDF
+    doc.save(`tiket_villa_${villa.id}.pdf`);
+  };
+    
+
+  const downloadPDFTransportasi = (transportasi: BoTranspotasi) => {
+    const doc = new jsPDF('landscape');
+    
+    // Adding colored background
+    doc.setFillColor(255, 204, 204); // Light red background
+    doc.rect(0, 0, 297, 210, 'F');
+  
+    // Adding title
+    doc.setFontSize(24);
+    doc.setTextColor(102, 0, 0); // Dark red
+    doc.text("Transportasi Booking Ticket", 140, 20, null, null, 'center');
+  
+    // Adding ticket details
+    doc.setFontSize(16);
+    doc.setTextColor(0); // Black
+    doc.text(`Transportasi ID: ${transportasi.transportasiId.slice(0, 8)}`, 20, 50);
+    doc.text(`Nama Pemesan: ${transportasi.nama}`, 20, 70);
+    doc.text(`Tanggal Checkin: ${formatDate(transportasi.tanggalCheckin)}`, 20, 90);
+    doc.text(`Jumlah Penumpang: ${transportasi.jumlahPenumpang}`, 20, 110);
+    doc.text(`Status Pembayaran: ${transportasi.validasiPembayaran ? "Valid" : "Unvalid"}`, 20, 130);
+  
+    // Saving the PDF
+    doc.save(`tiket_transportasi_${transportasi.id}.pdf`);
+  };
+  
   const fetchData = async () => {
     try {
       const sessionData = await fetch("/api/auth/session").then((res) =>
@@ -217,47 +265,21 @@ const ProfilePage: NextPage = () => {
                             {bovilla.totalbayar}
                           </span>
                         </p>
-                        <p>
-                          Status:{" "}
-                          {bovilla.validasiPembayaran
-                            ? "Sudah divalidasi/Download Tiket(Screenshoot)"
-                            : "Belum divalidasi"}
+                        <p className="text-gray-700 mb-1">
+                          Status Pembayaran:{" "}
+                          {bovilla.validasiPembayaran ? "Valid" : "Unvalid"}
                         </p>
-                        <div className="flex justify-end mt-4">
-                          {bovilla.validasiPembayaran ? (
-                            <DynamicPDFDownloadLink
-                              document={<PdfTiketFile bookingData={bovilla} />}
-                              fileName="tiketvillapahawang"
-                            >
-                              {({ loading }) => (
-                                <button
-                                  className={`px-4 py-2 bg-blue-500 text-white rounded ${
-                                    loading
-                                      ? "opacity-50 cursor-not-allowed"
-                                      : ""
-                                  }`}
-                                  disabled={loading}
-                                >
-                                  {loading
-                                    ? "Loading Document..."
-                                    : "Download Tiket"}
-                                </button>
-                              )}
-                            </DynamicPDFDownloadLink>
-                          ) : (
-                            <button
-                              className="px-4 py-2 bg-gray-300 text-blue-500 rounded cursor-not-allowed"
-                              disabled
-                            >
-                              Download Tiket
-                            </button>
-                          )}
-                        </div>
+                        <button
+                          onClick={() => downloadPDFVilla(bovilla)}
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                        >
+                          Download Villa Booking PDF
+                        </button>
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-500 text-center">
-                      Tidak ada riwayat booking.
+                    <p className="text-red-500">
+                      Tidak ada riwayat booking villa.
                     </p>
                   )}
                 </div>
@@ -297,49 +319,21 @@ const ProfilePage: NextPage = () => {
                             {botrans.jumlahPenumpang}
                           </span>
                         </p>
-                        <p>
-                          Status:{" "}
-                          {botrans.validasiPembayaran
-                            ? "Sudah divalidasi/Download Tiket(Screenshoot)"
-                            : "Belum divalidasi"}
+                        <p className="text-gray-700 mb-1">
+                          Status Pembayaran:{" "}
+                          {botrans.validasiPembayaran ? "Valid" : "Unvalid"}
                         </p>
-                        <div className="flex justify-end mt-4">
-                          {botrans.validasiPembayaran ? (
-                            <DynamicPDFDownloadLink
-                              document={
-                                <PdfTiketTranasportasi bookingData={botrans} />
-                              }
-                              fileName="tiketvillapahawang"
-                            >
-                              {({ loading }) => (
-                                <button
-                                  className={`px-4 py-2 bg-blue-500 text-white rounded ${
-                                    loading
-                                      ? "opacity-50 cursor-not-allowed"
-                                      : ""
-                                  }`}
-                                  disabled={loading}
-                                >
-                                  {loading
-                                    ? "Loading Document..."
-                                    : "Download Tiket"}
-                                </button>
-                              )}
-                            </DynamicPDFDownloadLink>
-                          ) : (
-                            <button
-                              className="px-4 py-2 bg-gray-300 text-blue-500 rounded cursor-not-allowed"
-                              disabled
-                            >
-                              Download Tiket
-                            </button>
-                          )}
-                        </div>
+                        <button
+                          onClick={() => downloadPDFTransportasi(botrans)}
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                        >
+                          Download Transportasi Booking PDF
+                        </button>
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-500 text-center">
-                      Tidak ada riwayat sewa kapal.
+                    <p className="text-red-500">
+                      Tidak ada riwayat booking transportasi.
                     </p>
                   )}
                 </div>

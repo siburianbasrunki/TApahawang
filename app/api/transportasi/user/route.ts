@@ -14,6 +14,7 @@ export const POST = async (req: NextRequest) => {
       jumlahPenumpang: true,
       tanggalCheckin: true,
       nama: true,
+      validasiPembayaran: true
     },
   });
   return NextResponse.json({botransportasi})

@@ -70,6 +70,7 @@ export const GET = async (req: NextRequest) => {
       tanggalDonasi: true,
       userId: true,
       gambar: true,
+      validasiPembayaran: true,
     },
   });
   return NextResponse.json({ donasis });
@@ -85,7 +86,6 @@ export const PUT = async (request: Request) => {
       where: { id: id },
       data: { validasiPembayaran: isPaymentValid },
     });
-    console.log("success");
 
     return NextResponse.json({
       message: "Validation status updated successfully",
