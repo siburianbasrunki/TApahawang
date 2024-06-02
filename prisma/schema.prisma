@@ -70,6 +70,7 @@ model BookingVilla {
   bukti              String
   totalbayar         String
   validasiPembayaran Boolean  @default(false)
+  tanggalBooking     DateTime @default(now()) 
   user               User     @relation(fields: [userId], references: [id])
   villa              Villa    @relation(fields: [villaId], references: [id])
 }
@@ -78,6 +79,7 @@ model BookingTransportasiLaut {
   id                 String           @id @default(uuid())
   userId             String
   transportasiId     String
+  tanggalBooking     DateTime @default(now()) 
   tanggalCheckin     DateTime
   nama               String
   noTelepon          String

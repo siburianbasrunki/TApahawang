@@ -3,7 +3,7 @@ import type { BookingVilla } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
-const authToken = "ae39e492e19f2808b761767e1cee15f3";
+const authToken = "48475c4864bd45dd008a012caf418f2b";
 const client = require("twilio")(accountSid, authToken);
 
 export const sendWhatsAppMessage = async (to: string, message: string) => {
@@ -22,7 +22,7 @@ export const sendWhatsAppMessage = async (to: string, message: string) => {
 export const POST = async (request: Request) => {
   try {
     const body: BookingVilla = await request.json();
-
+    const tanggalBooking = new Date();
     const bookingVilla = await prisma.bookingVilla.create({
       data: {
         villaId: body.villaId,
@@ -33,6 +33,7 @@ export const POST = async (request: Request) => {
         name: body.name,
         totalbayar: body.totalbayar,
         validasiPembayaran: body.validasiPembayaran,
+        tanggalBooking: tanggalBooking,
       },
     });
 

@@ -45,6 +45,7 @@ const FormTransportBooking: React.FC<FormTransportBookingProps> = ({
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
+      const tanggalBooking = new Date().toISOString();
 
       await axios.post("/api/transportasi/booking", {
         tanggalCheckin: tanggalCheckin,
@@ -54,6 +55,7 @@ const FormTransportBooking: React.FC<FormTransportBookingProps> = ({
         userId: userId,
         transportasiId: selectedTransport?.id,
         jumlahPenumpang: Number(jumlahPenumpang),
+        tanggalBooking: tanggalBooking,
       });
 
       setNama("");

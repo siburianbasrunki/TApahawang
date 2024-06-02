@@ -14,6 +14,7 @@ interface BookingVillaData {
   name: string;
   totalbayar: string;
   validasiPembayaran: boolean;
+  tanggalBooking: string;
 }
 
 const SkeletonTable = () => {
@@ -118,6 +119,7 @@ const BookingVilla = () => {
         [
           { content: "Villa ID", styles: { halign: "center" } },
           { content: "Nama Pemesan", styles: { halign: "center" } },
+          { content: "Tangal Booking", styles: { halign: "center" } },
           { content: "Check In", styles: { halign: "center" } },
           { content: "Check Out", styles: { halign: "center" } },
           { content: "Total Pembayaran", styles: { halign: "center" } },
@@ -127,6 +129,7 @@ const BookingVilla = () => {
       body: bookingVillas.map((booking) => [
         booking.villaId.slice(0, 8),
         booking.name,
+        formatDate(booking.tanggalBooking),
         formatDate(booking.tanggalCheckin),
         formatDate(booking.tanggalCheckout),
         booking.totalbayar,
@@ -210,6 +213,7 @@ const BookingVilla = () => {
                     Nama Pemesan
                   </th>
                   <th className="px-4 py-3 text-center text-sm">Villa ID</th>
+                  <th className="px-4 py-3 text-center text-sm">Tgl Booking</th>
                   <th className="px-4 py-3 text-center text-sm">Check In</th>
                   <th className="px-4 py-3 text-center text-sm">Check Out</th>
                   <th className="px-4 py-3 text-center text-sm">
@@ -236,6 +240,10 @@ const BookingVilla = () => {
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {booking.villaId.slice(0, 8)}
+                    </td>
+
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                      {formatDate(booking.tanggalBooking)}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {formatDate(booking.tanggalCheckin)}

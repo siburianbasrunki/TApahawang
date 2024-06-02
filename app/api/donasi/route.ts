@@ -3,7 +3,7 @@ import type { Donasi } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 const accountSid = "AC0348070fe97afe239d512048a0d9bffe";
-const authToken = "ae39e492e19f2808b761767e1cee15f3";
+const authToken = "48475c4864bd45dd008a012caf418f2b";
 const client = require("twilio")(accountSid, authToken);
 
 export const sendWhatsAppMessage = async (to: string, message: string) => {

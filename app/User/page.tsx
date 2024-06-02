@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import dynamic from "next/dynamic";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { AiOutlineWhatsApp } from "react-icons/ai";
 
 interface Donasi {
   id: string;
@@ -32,6 +33,7 @@ interface BoVillas {
   validasiPembayaran: boolean;
   totalbayar: number;
   name: string;
+  tanggalBooking: string;
 }
 
 interface BoTranspotasi {
@@ -41,6 +43,7 @@ interface BoTranspotasi {
   tanggalCheckin: string;
   nama: string;
   validasiPembayaran: boolean;
+  tanggalBooking: string;
 }
 
 const ProfilePage: NextPage = () => {
@@ -68,14 +71,15 @@ const ProfilePage: NextPage = () => {
     doc.setFontSize(16);
     doc.setTextColor(0);
     doc.text(`Villa ID: ${villa.villaId.slice(0, 8)}`, 20, 50);
-    doc.text(`Nama Pemesan: ${villa.name}`, 20, 70);
-    doc.text(`Tanggal Checkin: ${formatDate(villa.tanggalCheckin)}`, 20, 90);
-    doc.text(`Tanggal Checkout: ${formatDate(villa.tanggalCheckout)}`, 20, 110);
-    doc.text(`Total Bayar: ${villa.totalbayar}`, 20, 130);
+    doc.text(`Nama Pemesan: ${villa.name}`, 20, 60);
+    doc.text(`tanggal booking : ${formatDate(villa.tanggalBooking)}`, 20, 70);
+    doc.text(`Tanggal Checkin: ${formatDate(villa.tanggalCheckin)}`, 20, 80);
+    doc.text(`Tanggal Checkout: ${formatDate(villa.tanggalCheckout)}`, 20, 90);
+    doc.text(`Total Bayar: ${villa.totalbayar}`, 20, 100);
     doc.text(
       `Status Pembayaran: ${villa.validasiPembayaran ? "Valid" : "Unvalid"}`,
       20,
-      150
+      110
     );
 
     doc.save(`tiket_villa_${villa.id}.pdf`);
@@ -98,19 +102,24 @@ const ProfilePage: NextPage = () => {
       20,
       50
     );
-    doc.text(`Nama Pemesan: ${transportasi.nama}`, 20, 70);
+    doc.text(`Nama Pemesan: ${transportasi.nama}`, 20, 60);
+    doc.text(
+      `tanggal booking : ${formatDate(transportasi.tanggalBooking)}`,
+      20,
+      70
+    );
     doc.text(
       `Tanggal Checkin: ${formatDate(transportasi.tanggalCheckin)}`,
       20,
-      90
+      80
     );
-    doc.text(`Jumlah Penumpang: ${transportasi.jumlahPenumpang}`, 20, 110);
+    doc.text(`Jumlah Penumpang: ${transportasi.jumlahPenumpang}`, 20, 90);
     doc.text(
       `Status Pembayaran: ${
         transportasi.validasiPembayaran ? "Valid" : "Unvalid"
       }`,
       20,
-      130
+      100
     );
 
     doc.save(`tiket_transportasi_${transportasi.id}.pdf`);
@@ -236,6 +245,33 @@ const ProfilePage: NextPage = () => {
                 <h2 className="text-2xl font-bold mb-4">
                   Riwayat Booking Villa
                 </h2>
+                <div role="alert" className="alert alert-warning mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="stroke-current shrink-0 w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <span className="text-center sm:text-left">
+                      Jika Ingin Membatalkan, Chat Admin Dengan Klik Icon
+                      WhatsApp{" "}
+                    </span>
+                    <a
+                      className="link link-hover flex items-center"
+                      href="https://wa.me/6283822360864"
+                    >
+                      <AiOutlineWhatsApp className="text-green-500 text-2xl sm:mr-2" />
+                    </a>
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {dataBoVillas.length > 0 ? (
                     dataBoVillas.map((bovilla) => (
@@ -243,31 +279,37 @@ const ProfilePage: NextPage = () => {
                         key={bovilla.id}
                         className="bg-gray-100 p-6 rounded-lg shadow-md"
                       >
-                        <p className="text-lg mb-2">
+                        <p className="text-md mb-2">
                           ID Villa: <br />{" "}
                           <span className="font-semibold text-xl">
                             {bovilla.villaId.slice(0, 8)}
                           </span>
                         </p>
-                        <p className="text-lg mb-2">
+                        <p className="text-md mb-2">
                           Nama Pemesan: <br />{" "}
                           <span className="font-semibold text-xl">
                             {bovilla.name}
                           </span>
                         </p>
-                        <p className="text-lg mb-2">
+                        <p className="text-md mb-2">
+                          Tanggal Booking: <br />{" "}
+                          <span className="font-semibold text-xl">
+                            {formatDate(bovilla.tanggalBooking)}
+                          </span>
+                        </p>
+                        <p className="text-md mb-2">
                           Check-in: <br />{" "}
                           <span className="font-semibold text xl">
                             {formatDate(bovilla.tanggalCheckin)}
                           </span>
                         </p>
-                        <p className="text-lg mb-4">
+                        <p className="text-md mb-4">
                           Check-out: <br />{" "}
                           <span className="font-semibold text-xl">
                             {formatDate(bovilla.tanggalCheckout)}
                           </span>
                         </p>
-                        <p className="text-lg mb-4">
+                        <p className="text-md mb-4">
                           Total Bayar: <br />{" "}
                           <span className="font-semibold text-xl">
                             {bovilla.totalbayar}
@@ -284,9 +326,9 @@ const ProfilePage: NextPage = () => {
                             bovilla.validasiPembayaran
                               ? "bg-blue-500 hover:bg-blue-700"
                               : "bg-gray-500 cursor-not-allowed"
-                          } text-white font-bold py-2 px-4 mt-4 rounded`}
+                          } text-white font-bold py-2 px-4 mt-4 rounded w-full`}
                         >
-                          Download Villa Booking PDF
+                          Download
                         </button>
                       </div>
                     ))
@@ -301,6 +343,33 @@ const ProfilePage: NextPage = () => {
             {showBookingHistory === "kapal" && (
               <div className="bg-white p-4 rounded shadow">
                 <h2 className="text-2xl font-bold mb-4">Riwayat Sewa Kapal</h2>
+                <div role="alert" className="alert alert-warning mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="stroke-current shrink-0 w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <span className="text-center sm:text-left">
+                      Jika Ingin Membatalkan, Chat Admin Dengan Klik Icon
+                      WhatsApp{" "}
+                    </span>
+                    <a
+                      className="link link-hover flex items-center"
+                      href="https://wa.me/6283822360864"
+                    >
+                      <AiOutlineWhatsApp className="text-green-500 text-2xl sm:mr-2" />
+                    </a>
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {dataBoTranspotasi.length > 0 ? (
                     dataBoTranspotasi.map((botrans) => (
@@ -308,25 +377,31 @@ const ProfilePage: NextPage = () => {
                         key={botrans.id}
                         className="bg-gray-100 p-6 rounded-lg shadow-md"
                       >
-                        <p className="text-lg mb-2">
+                        <p className="text-md mb-2">
                           ID Transportasi: <br />{" "}
                           <span className="font-semibold text-xl">
                             {botrans.transportasiId.slice(0, 8)}
                           </span>
                         </p>
-                        <p className="text-lg mb-2">
+                        <p className="text-md mb-2">
                           Nama Pemesan: <br />{" "}
                           <span className="font-semibold text-xl">
                             {botrans.nama}
                           </span>
                         </p>
-                        <p className="text-lg mb-2">
+                        <p className="text-md mb-2">
+                          Tanggal Booking: <br />{" "}
+                          <span className="font-semibold text xl">
+                            {formatDate(botrans.tanggalBooking)}
+                          </span>
+                        </p>
+                        <p className="text-md mb-2">
                           Check-in: <br />{" "}
                           <span className="font-semibold text xl">
                             {formatDate(botrans.tanggalCheckin)}
                           </span>
                         </p>
-                        <p className="text-lg mb-4">
+                        <p className="text-md mb-4">
                           Jumlah Penumpang: <br />{" "}
                           <span className="font-semibold text-xl">
                             {botrans.jumlahPenumpang}
@@ -397,7 +472,7 @@ const ProfilePage: NextPage = () => {
                           <p className="text-xl md:text-2xl lg:text-xl font-bold mb-4">
                             ID Donasi: {donasi.id.slice(0, 8)}
                           </p>
-                          <p className="text-lg py-2">
+                          <p className="text-md py-2">
                             <span className="font-semibold">
                               Jumlah Donasi:
                             </span>{" "}

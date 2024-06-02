@@ -17,6 +17,7 @@ export const POST = async (req: NextRequest) => {
       name: true,
       totalbayar: true,
       validasiPembayaran: true,
+      tanggalBooking: true,
     },
   });
   return NextResponse.json({ bovillas });

@@ -3,6 +3,7 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+
 interface VillaData {
   id: string;
   nama: string;
@@ -34,6 +35,17 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
     e.preventDefault();
     setIsLoading(true);
 
+    const today = new Date().toISOString().split("T")[0];
+    if (tanggalCheckin < today || tanggalCheckout < today) {
+      Swal.fire({
+        icon: "error",
+        title: "Tanggal Tidak Valid",
+        text: "Tanggal check-in dan check-out tidak boleh kurang dari hari ini.",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     if (!selectedVilla?.id) {
       console.error("Invalid villaId");
       setIsLoading(false);
@@ -49,7 +61,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
-
+      const tanggalBooking = new Date().toISOString();
       await axios.post("/api/villas/booking", {
         villaId: selectedVilla?.id,
         tanggalCheckin: tanggalCheckin,
@@ -58,6 +70,7 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
         name: name,
         userId: userId,
         totalbayar: totalBayar,
+        tanggalBooking: tanggalBooking,
       });
 
       setName("");
@@ -203,7 +216,19 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
                 id="checkIn"
                 className="input input-bordered"
                 value={tanggalCheckin}
-                onChange={(e) => setTanggalCheckin(e.target.value)}
+                onChange={(e) => {
+                  const today = new Date().toISOString().split("T")[0];
+                  if (e.target.value < today) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Tanggal Tidak Valid",
+                      text: "Tanggal check-in tidak boleh kurang dari hari ini.",
+                    });
+                    setTanggalCheckin("");
+                  } else {
+                    setTanggalCheckin(e.target.value);
+                  }
+                }}
               />
             </div>
 
@@ -216,7 +241,19 @@ const FormVillaBooking: React.FC<FormVillaBookingProps> = ({
                 id="checkOut"
                 className="input input-bordered"
                 value={tanggalCheckout}
-                onChange={(e) => setTanggalCheckout(e.target.value)}
+                onChange={(e) => {
+                  const today = new Date().toISOString().split("T")[0];
+                  if (e.target.value < today) {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Tanggal Tidak Valid",
+                      text: "Tanggal check-out tidak boleh kurang dari hari ini.",
+                    });
+                    setTanggalCheckout("");
+                  } else {
+                    setTanggalCheckout(e.target.value);
+                  }
+                }}
               />
             </div>
             <div>

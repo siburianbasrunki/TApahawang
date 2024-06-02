@@ -10,12 +10,13 @@ export const POST = async (req: NextRequest) => {
     },
     select: {
       id: true,
-      transportasiId:true,
+      transportasiId: true,
       jumlahPenumpang: true,
       tanggalCheckin: true,
       nama: true,
-      validasiPembayaran: true
+      validasiPembayaran: true,
+      tanggalBooking: true,
     },
   });
-  return NextResponse.json({botransportasi})
+  return NextResponse.json({ botransportasi });
 };

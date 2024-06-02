@@ -16,6 +16,7 @@ interface BookingTranportasiData {
   nama: string;
   noTelepon: string;
   validasiPembayaran: boolean;
+  tanggalBooking: string;
 }
 
 interface BookingTranportasiResponse {
@@ -97,6 +98,14 @@ const BookingTransportasi = () => {
       console.error("Error updating validation status:", error);
     }
   };
+  function formatDate(dateString: string): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString("id-ID", options);
+  }
 
   useEffect(() => {
     fetchData();
@@ -116,6 +125,7 @@ const BookingTransportasi = () => {
         [
           "Tranportasi ID",
           "Nama Pemesan",
+          "tanggal Booking",
           "Check In",
           "Jumlah Penumpang",
           "Nomor Telepon",
@@ -125,6 +135,7 @@ const BookingTransportasi = () => {
       body: bookingTransportasis?.bookings.map((booking) => [
         booking.transportasiId.slice(0, 5),
         booking.nama,
+        formatDate(booking.tanggalBooking),
         booking.tanggalCheckin,
         booking.jumlahPenumpang,
         booking.noTelepon,
@@ -209,6 +220,7 @@ const BookingTransportasi = () => {
                   <th className="px-4 py-3 text-center text-sm">
                     Nama Pemesan
                   </th>
+                  <th className="px-4 py-3 text-center text-sm">Tanggal Booking</th>
                   <th className="px-4 py-3 text-center text-sm">Check In</th>
                   <th className="px-4 py-3 text-center text-sm">
                     Jumlah Penumpang
@@ -239,7 +251,10 @@ const BookingTransportasi = () => {
                       {booking.nama}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
-                      {booking.tanggalCheckin}
+                      {formatDate(booking.tanggalBooking)}
+                    </td>
+                    <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
+                      {formatDate(booking.tanggalCheckin)}
                     </td>
                     <td className="px-4 py-3 whitespace-no-wrap text-gray-700">
                       {booking.jumlahPenumpang} orang
